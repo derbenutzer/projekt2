@@ -1,68 +1,60 @@
 import { Injectable } from '@angular/core';
-import { Forum } from './forum';
+import { Post } from './post';
 import { Headers, Http, RequestOptions } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
-import {ForumList} from "./forum-list";
+import {PostList} from "./post-list";
 
 @Injectable()
-export class ForumService {
+export class PostService {
 
   private apiUrl = 'http://localhost:8180/api/rt';  // URL to web api
 
   constructor (private http: Http){};
 
-/*  getForums(): Promise<Forum[]> {
+/*  getPosts(): Promise<Post[]> {
     return this.http.get(this.apiUrl)
       .toPromise()
-      .then(response => response.json() as Forum[])
+      .then(response => response.json() as Post[])
       .catch(this.handleError);
   }*/
 
-  getForums(): Promise<ForumList> {
+  getPosts(): Promise<PostList> {
     return this.http.get(this.apiUrl)
       .toPromise()
-      .then(response => new ForumList(response.json() as Forum[]))
+      .then(response => new PostList(response.json() as Post[]))
       .catch(this.handleError);
   }
 
-  getForum(id: string): Promise<Forum> {
+  getPost(id: string): Promise<Post> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get(url)
       .toPromise()
-      .then(response => response.json() as Forum)
+      .then(response => response.json() as Post)
       .catch(this.handleError);
   }
 
-  createNewForum(title: string, owner: string, categories: string[]): void{
-    this.initializeForum()
-      .then(id => this.updateForum(id, title, owner, categories));
+  createNewPost(author:string, title: string, content: string, tags: string[]): void{
+    this.initializePost()
+      .then(id => this.updatePost(id, author, title, content, tags));
   }
 
-  initializeForum(): Promise<string> {
+  initializePost(): Promise<string> {
     return this.http.post(this.apiUrl,"test")
       .toPromise()
       .then(response => response.json().id)
       .catch(this.handleError);
   }
 
-  updateForum(id: string, title: string, owner: string, categories: string[] ): Promise<Forum> {
+  updatePost(id: string, author:string, title: string, content: string, tags: string[] ): Promise<Post> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     console.log("id: "+ id);
     const url = `${this.apiUrl}/${id}`;
 
-    return this.http.put(url,{"title":title,"owner":owner, "categories":categories},options)
+    return this.http.put(url,{"title":title,"author":author, "tags":tags},options)
       .toPromise()
       .then(response => response.json())
-      .catch(this.handleError);
-  }
-
-  deleteForum(id: string): Promise<string> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.delete(url)
-      .toPromise()
-      .then(response => console.log(response))
       .catch(this.handleError);
   }
 

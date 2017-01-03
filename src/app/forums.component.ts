@@ -5,6 +5,7 @@ import { ForumService } from './forum.service';
 import { OnInit } from '@angular/core';
 //import { RouterModule }   from '@angular/router';
 import { Router }   from '@angular/router';
+import {ForumList} from "./forum-list";
 
 
 @Component({
@@ -25,12 +26,17 @@ export class ForumsComponent implements OnInit {
     private router: Router,
     private forumService: ForumService) { }
 
-  forums: Forum[];
+  //forums: Forum[];
+  forumList: ForumList;
   selectedForum: Forum;
 
-  getForums(): void {
+/*  getForums(): void {
     this.forumService.getForums().then(forums => this.forums = forums);
-  }
+  }*/
+
+  getForums(): void {
+   this.forumService.getForums().then(forumList => this.forumList = forumList);
+   }
 
 
   onSelect(forum: Forum): void {

@@ -1,3 +1,4 @@
+/*
 import {ForumOwner} from "./forum-owner";
 
 export class Forum {
@@ -22,3 +23,4 @@ export class Forum {
   };
 
 }
+*/

@@ -3,12 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 import {HomeComponent} from "./home.component";
 import {CreateForumComponent} from "./create-forum.component";
 import {ForumDetailComponent} from "./forum-detail.component";
+import {PostDetailComponent} from "./post-detail.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home',  component: HomeComponent },
-  { path: 'detail/:id', component: ForumDetailComponent },
-  { path: 'create-forum',     component: CreateForumComponent}
+  { path: 'forum/:id', component: ForumDetailComponent },
+  { path: 'create-forum',     component: CreateForumComponent},
+  { path: 'post/:id', component: PostDetailComponent }
 ];
 @NgModule({
   imports: [ RouterModule.forRoot(routes) ],
