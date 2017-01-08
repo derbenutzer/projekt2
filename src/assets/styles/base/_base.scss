@@ -1,0 +1,70 @@
+// -----------------------------------------------------------------------------
+// This file contains very basic styles.
+// -----------------------------------------------------------------------------
+
+/*
+!**
+ * Set up a decent box model on the root element
+ *!
+html {
+  box-sizing: border-box;
+}
+
+!**
+ * Make all elements from the DOM inherit from the parent box-sizing
+ * Since `*` has a specificity of 0, it does not override the `html` value
+ * making all elements inheriting from the root box-sizing value
+ * See: https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
+ *!
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+!**
+ * Basic styles for links
+ *!
+a {
+  color: $primary-text-color;
+  text-decoration: none;
+
+  @include on-event {
+    color: $text-color;
+    text-decoration: underline;
+  }
+}
+
+
+html {
+  font-family:$text-font-stack;
+  font-size:18px;
+}
+
+.nav li {
+  list-style: none;
+}
+
+*/
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+span.forumLICreateDate {
+  float: right;
+  color: grey;
+  font-size:$small-text;
+}
+
+span.forumLICreateDate i {
+  padding-right: 0.5rem;
+}
+
+.categoriesContainer {
+  width: 100%;
+}
