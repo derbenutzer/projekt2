@@ -24,13 +24,15 @@ import {PostList} from "./post-list";
         <label>Category: </label><span>{{forum.categories}}</span></div>
       <div>
         <label>Location: </label><span>{{forum.location}}</span></div>
-      <button (click)="goBack()">Back</button>
-      <button (click)="deleteForum()">Delete</button>
+      <button class="waves-effect waves-light btn" (click)="goBack()">Back</button>
+      <button class="waves-effect waves-light btn" (click)="deleteForum()"><i class="material-icons left">delete</i>Delete</button>
       <div>
-        <ul>
-          <li *ngFor="let post of postList.getSortedByDate()"  class="col-1-4">
+        <h3>Beiträge</h3>
+        <ul class="postList collection">
+          <li class="collection-item avatar" *ngFor="let post of postList.getSortedByDate()">
+            <img src="assets/images/fake-user.jpg" alt="user image" class="circle">
             <div>
-              <h3><a [routerLink]="['/post', post.id]"  class="linkToPost">{{ post.title }}</a></h3>
+              <a [routerLink]="['/post', post.id]"  class="linkToPost">{{ post.title }}</a>
               <div>Posted by: {{ post.author.getName() }} on: <time>{{ post.createDate | amDateFormat:'LL'}}</time></div>
             </div>      
           </li>

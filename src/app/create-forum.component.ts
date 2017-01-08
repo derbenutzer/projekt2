@@ -25,7 +25,9 @@ import {ForumService} from "./forum.service";
         <label for="categories">Kategorien</label>
         <input #categories type="text" class="form-control">
       </div>
-      <button type="submit" class="btn btn-default">Submit</button>
+      <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+        <i class="material-icons right">send</i>
+      </button>
     </form>
     </div>
   `,
