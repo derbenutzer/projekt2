@@ -1,63 +1,105 @@
 import { Component } from '@angular/core';
+import { Location } from '@angular/common';
 //import {Forum} from "./forum";
 import {ForumService} from "./forum.service";
+import {ActivatedRoute, Params} from "@angular/router";
+import {Forum} from "./forum";
 //import {ForumOwner} from "./forum-owner";
 
 @Component({
   selector: 'create-forum',
   template: `    
     <h2>{{pageTitle}}</h2>
-    <div class="container">
-    <form (submit)="addForum(
-        title.value,
-        owner.value,
-        categories.value
-    )">
+    <div *ngIf="forum">
+    <form (submit)="sendForm()">
       <div class="form-group">
         <label for="title">Titel</label>
-        <input #title type="text" class="form-control" required>
+        <input name="title" type="text" class="form-control" [(ngModel)]="forum.title" placeholder="Titel" required>
       </div>
       <div class="form-group">
-        <label for="owner">Owner</label>
-        <input #owner type="text" class="form-control" required>
+        <label for="owner">Erstellt von:</label>
+        <input name="owner" type="text" class="form-control" [(ngModel)]="forum.owner" placeholder="Name des Erstellers" required>
       </div>
       <div class="form-group">
         <label for="categories">Kategorien</label>
-        <input #categories type="text" class="form-control">
+        <input name="categoriesInput" type="text" class="form-control" [(ngModel)]="categoriesInput" placeholder="Kategorie1, Kategorie2, Kategorie3, etc." >
       </div>
-      <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+      <button class="btn waves-effect waves-light" type="submit" name="action">Senden
         <i class="material-icons right">send</i>
       </button>
+      <button type="button" class="waves-effect waves-light btn" (click)="goBack()">Zurück</button>
     </form>
     </div>
   `,
 })
 export class CreateForumComponent {
 
-  pageTitle="Forum erstellen";
   submitted = false;
+  isEdit = false;
 
-  id: string;
-  title: string;
-  owner: string;
-  categories: string[];
-  //forum: Forum;
+  pageTitle: string;
+  categoriesInput: string;
+  forum: Forum;
 
-  constructor(private forumService: ForumService) { }
+  constructor(private forumService: ForumService,
+              private route: ActivatedRoute,
+              private location: Location) {
+  };
 
-  addForum(title: string, owner: string, categories?: string): void {
+  ngOnInit(): void {
 
-    this.title = title;
-    this.owner = owner;
-    if(categories){
-      this.categories = categories.split(",");
+    if (window.location.href.indexOf("edit") > -1) {
+
+      this.route.params
+        .switchMap((params: Params) => this.forumService.getForum(params['id']))
+        .subscribe(forum => {
+          this.forum = forum;
+          this.categoriesInput = forum.categories.join(",");
+          this.isEdit = true;
+          this.pageTitle="Forum editieren";
+        })
+    }
+    else {
+      this.forum  = new Forum('', '', ['']);
+      this.categoriesInput="";
+      this.pageTitle="Forum erstellen";
+    }
+  }
+
+  handleCategoriesInput(): void {
+    if(this.categoriesInput){
+      this.forum.categories = this.categoriesInput.split(",");
     }
     else{
-      this.categories = ["noch keine Kategorie"]
+      this.forum.categories = ["noch keine Kategorie"]
+    }
+  }
+
+  sendForm(): void {
+
+    this.handleCategoriesInput();
+
+    if(this.isEdit){
+      this.updateForum();
+    }
+    else{
+      this.createNewForum();
     }
 
-    this.forumService.createNewForum(this.title, this.owner, this.categories);
     this.submitted = true;
+
   };
+
+  createNewForum(): void {
+    this.forumService.createNewForum(this.forum.title, this.forum.owner, this.forum.categories);
+  }
+
+  updateForum(): void {
+    this.forumService.updateForum(this.forum._id, this.forum.title, this.forum.owner, this.forum.categories);
+  }
+
+  goBack(): void {
+    this.location.back();
+  }
 
 }

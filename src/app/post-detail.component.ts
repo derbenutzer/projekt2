@@ -20,7 +20,7 @@ import { PostList } from "./post-list";
         <label>Author: </label><span>{{post.author.getName()}}</span></div>
       <div>
         <label>Created: </label><time>{{post.createDate | amDateFormat:'LL'}}</time></div>
-      <button (click)="goBack()">Back</button>
+      <button class="btn"(click)="goBack()">Back</button>
       <div>{{post.content}}</div>
     </div>
   `,

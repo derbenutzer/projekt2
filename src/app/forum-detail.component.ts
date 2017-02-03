@@ -25,9 +25,11 @@ import {PostList} from "./post-list";
       <div>
         <label>Location: </label><span>{{forum.location}}</span></div>
       <button class="waves-effect waves-light btn" (click)="goBack()">Back</button>
-      <button class="waves-effect waves-light btn" (click)="deleteForum()"><i class="material-icons left">delete</i>Delete</button>
+      <button class="waves-effect waves-light btn" (click)="deleteForum()"><i class="material-icons left">delete</i>Löschen</button>
+      <button [routerLink]="['/forum',forum._id,'edit']" class="waves-effect waves-light btn"><i class="material-icons left">edit</i>Editieren</button>
       <div>
         <h3>Beiträge</h3>
+        <button routerLink="/create-post" class="btn">Eintrag erstellen</button>
         <ul class="postList collection">
           <li class="collection-item avatar" *ngFor="let post of postList.getSortedByDate()">
             <img src="assets/images/fake-user.jpg" alt="user image" class="circle">
@@ -39,7 +41,6 @@ import {PostList} from "./post-list";
         </ul>
       </div>
     </div>
-    
   `,
 })
 
@@ -48,6 +49,7 @@ export class ForumDetailComponent implements OnInit {
   @Input() forum: Forum;
 
   postList: PostList = new PostList([]);
+  id: string;
 
   constructor(
     private forumService: ForumService,
@@ -59,9 +61,14 @@ export class ForumDetailComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    console.log(this.route.params);
+
     this.route.params
       .switchMap((params: Params) => this.forumService.getForum(params['id']))
       .subscribe(forum => this.forum = forum);
+
+    console.log(this.forum);
 
     this.postService.getPostList()
       .then(postList => this.postList = postList);

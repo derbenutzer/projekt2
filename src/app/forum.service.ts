@@ -20,7 +20,11 @@ export class ForumService {
   }*/
 
   getForums(): Promise<ForumList> {
-    return this.http.get(this.apiUrl)
+    let headers = new Headers({ 'Authorization': 'Bearer '+ localStorage.getItem('id_token')});
+    let options = new RequestOptions({ headers: headers });
+
+
+    return this.http.get(this.apiUrl,options)
       .toPromise()
       .then(response => new ForumList(response.json() as Forum[]))
       .catch(this.handleError);
@@ -62,7 +66,8 @@ export class ForumService {
     const url = `${this.apiUrl}/${id}`;
     return this.http.delete(url)
       .toPromise()
-      .then(response => console.log(response))
+      //.then(response => console.log(response))
+      .then(response => response.json())
       .catch(this.handleError);
   }
 

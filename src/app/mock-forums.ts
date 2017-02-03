@@ -1,20 +1,20 @@
-/*
+
 import { Forum } from './forum';
-import {ForumOwner} from "./forum-owner";
+import {ForumList} from "./forum-list";
 
-let testOwner = new ForumOwner(11,'Mr. Nice',"Mr.Nice@angular.com");
 
-export const FORUMS: Forum[] = [
-  {id: 11, name: 'Mr. Nice',owner:testOwner,location: "zurich",category:"test"},
-  {id: 12, name: 'Narco',owner:testOwner,location: "zurich",category:"test"},
-  {id: 13, name: 'Bombasto',owner:testOwner,location: "zurich",category:"test"},
-  {id: 14, name: 'Celeritas',owner:testOwner,location: "zurich",category:"test"},
-  {id: 15, name: 'Magneta',owner:testOwner,location: "zurich",category:"test"},
-  {id: 16, name: 'RubberMan',owner:testOwner,location: "st.gallen",category:"test"},
-  {id: 17, name: 'Dynama',owner:testOwner,location: "zurich",category:"test"},
-  {id: 18, name: 'Dr IQ',owner:testOwner,location: "st.gallen",category:"test"},
-  {id: 19, name: 'Magma',owner:testOwner,location: "zurich",category:"test"},
-  {id: 20, name: 'Tornado',owner:testOwner,location: "st.gallen",category:"test"}
+let forums: Forum[] = [
+  new Forum('Mr. Nice',"testOwner",["test"]),
+  new Forum('Narco',"testOwner",["test"]),
+  new Forum('Bombasto',"testOwner",["test"]),
+  new Forum('Celeritas',"testOwner",["test"]),
+  new Forum('Magneta',"testOwner",["test"]),
+  new Forum('RubberMan',"testOwner",["test"]),
+  new Forum('Dynama',"testOwner",["test"]),
+  new Forum('Dr IQ',"testOwner",["test"]),
+  new Forum('Magma',"testOwner",["test"]),
+  new Forum('Tornado',"testOwner",["test"])
 ];
-*/
 
+
+export const FORUMS = new ForumList(forums);

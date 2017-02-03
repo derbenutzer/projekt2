@@ -17,6 +17,12 @@ export class MockPostService {
       .then(postList => postList.findById(id));
   }
 
+  createNewPost(author:string, title: string, content: string, tags: string[]): void{
+    console.log("POST CREATED");
+    console.log(author, title, content, tags.toString());
+  }
+
+
 
 }
 /*

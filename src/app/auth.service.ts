@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { tokenNotExpired } from 'angular2-jwt';
+
 //import { Router } from '@angular/router';
 
 declare let Auth0Lock: any;

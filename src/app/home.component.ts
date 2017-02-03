@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Forum} from "./forum";
 import {ForumService} from "./forum.service";
 import {ForumList} from "./forum-list";
+import {AuthHttp} from "angular2-jwt";
 
 @Component({
   selector: 'home',
@@ -21,6 +22,7 @@ import {ForumList} from "./forum-list";
       </a>
     </div>
   `,
+  providers:[AuthHttp]
 })
 
 
