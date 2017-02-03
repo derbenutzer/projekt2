@@ -5,10 +5,14 @@ import {CreateForumComponent} from "./create-forum.component";
 import {ForumDetailComponent} from "./forum-detail.component";
 import {PostDetailComponent} from "./post-detail.component";
 import {CreatePostComponent} from "./create-post.component";
+import {ForumListComponent} from "./forum-list.component";
+import {RegisterOwnerComponent} from "./register-owner.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home',  component: HomeComponent },
+  { path: 'forum-list',  component: ForumListComponent },
+  { path: 'register-owner',  component: RegisterOwnerComponent },
   { path: 'forum/:id', component: ForumDetailComponent },
   { path: 'forum/:id/edit', component: CreateForumComponent},
   { path: 'create-forum',     component: CreateForumComponent},

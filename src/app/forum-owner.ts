@@ -1,12 +1,11 @@
 export class ForumOwner {
 
   constructor(
-    private id: number,
-    public name: string,
-    public email: string
+    public firstName?: string,
+    public lastName?: string,
+    public institution?: string,
+    public email?: string,
+    public phone?: number
   ) {};
 
-  getName(): string {
-    return this.name;
-  }
 }

@@ -6,17 +6,18 @@ import {AuthService} from "./auth.service";
   template: `
     <h1 class="visually-hidden">{{title}}</h1>
     <header>
+	
     <nav class="service-nav">
-      <div class="container">
-        <ul class="nav nav2">
+    <div class="container">
+      <div class="nav-wrapper">
+	      <a class="brand-logo" routerLink="/home">Benefitz</a>
+        <ul class="nav right">
           <li>
-            <a class="navHome" routerLink="/home"><span>P2-Home</span></a>
+            <a class="navHome" routerLink="/home"><span>Startseite</span></a>
           </li>
           <li>
             <a routerLink="/create-forum">Forum erstellen</a>
           </li>
-        </ul>
-        <ul class="nav login right">
           <li>
             <a (click)=authService.login() *ngIf="!authService.loggedIn()">Log In</a>
           </li>
@@ -24,6 +25,7 @@ import {AuthService} from "./auth.service";
             <a (click)=authService.logout() *ngIf="authService.loggedIn()">Log Out</a>
           </li>
         </ul>
+      </div>
       </div>
     </nav>
     </header>

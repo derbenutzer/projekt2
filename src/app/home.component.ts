@@ -7,36 +7,38 @@ import {AuthHttp} from "angular2-jwt";
 @Component({
   selector: 'home',
   template: `
-    <h2>{{title}}</h2>
-    <div class="forumList collection">
-      <a *ngFor="let forum of forumList.getSortedByDate()" class="collection-item" [routerLink]="['/forum', forum._id]">
-        <div class="categoriesContainer right">
-          <div class="categories right">
-            <div *ngFor="let category of forum.categories" class="chip">
-              {{category}}
-            </div>
-          </div>
-        </div>
-        <span class="forumLITitle">{{forum.title}}</span>
-        <span class="forumLICreateDate"><i class="fa fa-calendar" aria-hidden="true"></i>{{forum.createDate | amDateFormat:'LL'}}</span>
-      </a>
-    </div>
+    <h2 class="visually-hidden">{{title}}</h2>
+    	<!-- Titel und Bearbeiten-Felder -->
+	<div class="row section">
+		<div class="container">
+			<p class="flow-text">Kurzbeschreibung applikation, how to get started</p>
+		</div>
+	</div>
+	<!-- Inhalt beginnt hier -->
+	<div class="container">
+		<div class="row section">
+			<div class="col s6 valign-wrapper hoverable">
+				<div class="section center-align">
+					<i class="large material-icons">person_pin</i>
+					<h3>Privatnutzer</h3>
+					<p>Starten Sie mit der Suche nach einem Runden Tisch</p>
+					<a routerLink="/forum-list" class="waves-effect waves-light btn-large">Suche</a>
+				</div>
+			</div>
+			<div class="col s6 valign-wrapper hoverable">
+				<div class="section center-align">
+					<i class="large material-icons">business</i>
+					<h3>Institutionen</h3>
+					<p>Registrieren Sie sich als Institution und eröffnen Sie einen runden Tisch</p>
+					<a routerLink="/register-owner" class="waves-effect waves-light btn-large">Registrierung</a>
+				</div>
+			</div>
+		</div>
+	</div>
   `,
-  providers:[AuthHttp]
 })
 
 
-export class HomeComponent implements OnInit {
-
+export class HomeComponent {
   title="Startseite";
-
-  forumList: ForumList = new ForumList([]);
-
-  constructor(private forumService: ForumService) { }
-
-  ngOnInit(): void {
-    console.log("onInit Home");
-    this.forumService.getForums()
-      .then(forumList => this.forumList = forumList);
-  }
 }
