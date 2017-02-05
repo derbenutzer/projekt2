@@ -21,6 +21,7 @@ import {MockPostService} from "./mock-post.service";
 import { AuthHttp, AuthConfig, AUTH_PROVIDERS, provideAuth } from 'angular2-jwt';
 import {RegisterOwnerComponent} from "./register-owner.component";
 import {ForumFilterPipe} from "./forum-filter.pipe";
+import {CategoryFilterPipe} from "./forum-category-filter.pipe";
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import {ForumFilterPipe} from "./forum-filter.pipe";
     PostDetailComponent,
     CreatePostComponent,
     MaterializeDirective,
-    ForumFilterPipe
+    ForumFilterPipe,
+    CategoryFilterPipe
   ],
   providers: [ AuthService, ForumService, MockPostService ],
   bootstrap: [ AppComponent]

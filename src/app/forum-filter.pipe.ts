@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {ForumList} from "./forum-list";
+import {Forum} from "./forum";
 
 
 @Pipe({
@@ -7,13 +7,14 @@ import {ForumList} from "./forum-list";
 })
 export class ForumFilterPipe implements PipeTransform {
 
-  transform(forumList: ForumList, filterStrings: string): any {
+  transform(forumArray: Forum[], filterStrings: string): any {
+
     if(!filterStrings) {
-      return forumList.getSortedByDate();
+      return forumArray;
     }
 
     let filterStr = filterStrings.toLowerCase();
-    return forumList.forums.filter(forum => forum.title.toLowerCase().indexOf(filterStr) !== -1 || forum.categories.toString().toLowerCase().indexOf(filterStr) !== -1) ;
+    return forumArray.filter(forum => forum.title.toLowerCase().indexOf(filterStr) !== -1 || forum.categories.toString().toLowerCase().indexOf(filterStr) !== -1) ;
   }
 
 }

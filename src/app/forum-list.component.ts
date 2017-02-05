@@ -23,11 +23,11 @@ import {AuthHttp} from "angular2-jwt";
       </div>
 
       <div class="input-field col s4">
-        <select materialize="material_select" multiple>
+        <select materialize="material_select" multiple [(ngModel)]="categoryFilter">
           <option value="" disabled selected>Alle Kategorien</option>
-          <option value="1">Betreuung</option>
-          <option value="2">Gesellschaft</option>
-          <option value="3">Andere</option>
+          <option value="Betreuung">Betreuung</option>
+          <option value="Gesellschaft">Gesellschaft</option>
+          <option value="Andere">Andere</option>
         </select>
         <label>Filter nach Kategorie</label>
       </div>
@@ -37,9 +37,9 @@ import {AuthHttp} from "angular2-jwt";
           <div class="nav-wrapper red accent-1">
             <form>
             <div class="input-field">
-              <input name="searchInput" id="search" type="search" [(ngModel)]="filter">
+              <input name="searchInput" id="search" type="search" [(ngModel)]="searchFilter">
               <label for="search"><i class="material-icons">search</i></label>
-              <i class="material-icons">close</i>
+              <i (click)="resetSearchInput()" class="material-icons">close</i>
             </div>
             </form>
           </div>
@@ -52,7 +52,7 @@ import {AuthHttp} from "angular2-jwt";
 		<div class="col s4"><a href="rt-auswahl-karte.html" class="waves-effect waves-light btn"><i class="material-icons left">my_location</i>Karte</a></div>
 	</div>
     <ul class="collection">
-      <li *ngFor="let forum of forumList | forumFilter:filter" class="collection-item avatar">
+      <li *ngFor="let forum of forumList.getSortedByDate() | forumFilter:searchFilter | forumCategoryFilter:categoryFilter" class="collection-item avatar">
         <i class="material-icons circle blue">room</i>
         <h3 class="title">{{forum.title}}</h3>
         <p>Ort und Wirkungsgebiet<br>
@@ -85,7 +85,8 @@ import {AuthHttp} from "angular2-jwt";
 export class ForumListComponent implements OnInit {
 
   title="Runde Tische";
-  filter: string;
+  searchFilter: string;
+  categoryFilter: string;
 
   forumList: ForumList = new ForumList([]);
 
@@ -94,5 +95,9 @@ export class ForumListComponent implements OnInit {
   ngOnInit(): void {
     this.forumService.getForums()
       .then(forumList => this.forumList = forumList);
+  }
+
+  resetSearchInput(): void{
+    this.searchFilter="";
   }
 }
