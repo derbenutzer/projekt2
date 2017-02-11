@@ -12,6 +12,22 @@ export class MockPostService {
     return Promise.resolve(new PostList(POSTS));
   }
 
+  getDividedPostsArrays(divideBy:number): Promise<Post[][]> {
+    let postList = new PostList(POSTS);
+    let ArrayToDivide = postList.getSortedByDate();
+    let dividedArrays = [];
+
+    let i,j,temparray,chunk = divideBy;
+    for (i=0,j=ArrayToDivide.length; i<j; i+=chunk) {
+      temparray = ArrayToDivide.slice(i,i+chunk);
+      dividedArrays[((i+chunk)/chunk)-1]=temparray;
+    }
+    return Promise.resolve(dividedArrays);
+  }
+
+
+
+
   getPost(id: number): Promise<Post> {
     return this.getPostList()
       .then(postList => postList.findById(id));

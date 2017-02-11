@@ -6,7 +6,7 @@ import {ForumList} from "./forum-list";
 import {AuthHttp} from "angular2-jwt";
 
 @Component({
-  selector: 'forum-list',
+  selector: 'map-view',
   template: `
     <h2>{{title}}</h2>
     
@@ -47,44 +47,21 @@ import {AuthHttp} from "angular2-jwt";
       </div>
       
 	</div>
-	
-	<div class="row">
-		<div class="col s4"><a [routerLink]="['/map-view']" class="waves-effect waves-light btn"><i class="material-icons left">my_location</i>Karte</a></div>
-	</div>
-    <ul class="collection">
-      <li *ngFor="let forum of forumList.getSortedByDate() | forumFilter:searchFilter | forumCategoryFilter:categoryFilter" class="collection-item avatar">
-        <i class="material-icons circle blue">room</i>
-        <h3 class="title">{{forum.title}}</h3>
-        <p>Ort und Wirkungsgebiet<br>
-        <span *ngFor="let category of forum.categories" class="category">
-                {{category}}
-              </span>
-        </p>
-        <a [routerLink]="['/forum', forum._id]" class="secondary-content"><i class="material-icons">send</i></a>
-      </li>
-	  </ul>
-<!--    <div class="forumList collection">
-      <a *ngFor="let forum of forumList.getSortedByDate()" class="collection-item" [routerLink]="['/forum', forum._id]">
-        <div class="categoriesContainer right">
-          <div class="categories right">
-            <div *ngFor="let category of forum.categories" class="chip">
-              {{category}}
-            </div>
-          </div>
-        </div>
-        <span class="forumLITitle">{{forum.title}}</span>
-        <span class="forumLICreateDate"><i class="fa fa-calendar" aria-hidden="true"></i>{{forum.createDate | amDateFormat:'LL'}}</span>
-      </a>
-    </div> -->
+  <div class="row">
+    <div class="col s4"><a [routerLink]="['/forum-list']" class="waves-effect waves-light btn"><i class="material-icons left">view_list</i>Liste</a></div>
+  </div>
+  
+  <div>
+  <img class="responsive-img" src="assets/images/map-dummy.png">
+  </div>
   `,
-  styleUrls: ['./forum-list.component.scss'],
   providers:[AuthHttp]
 })
 
 
-export class ForumListComponent implements OnInit {
+export class MapViewComponent implements OnInit {
 
-  title="Runde Tische";
+  title="Kartenansicht";
   searchFilter: string;
   categoryFilter: string;
 

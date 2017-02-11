@@ -22,6 +22,7 @@ import { AuthHttp, AuthConfig, AUTH_PROVIDERS, provideAuth } from 'angular2-jwt'
 import {RegisterOwnerComponent} from "./register-owner.component";
 import {ForumFilterPipe} from "./forum-filter.pipe";
 import {CategoryFilterPipe} from "./forum-category-filter.pipe";
+import {MapViewComponent} from "./map-view.component";
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import {CategoryFilterPipe} from "./forum-category-filter.pipe";
     HomeComponent,
     RegisterOwnerComponent,
     ForumListComponent,
+    MapViewComponent,
     CreateForumComponent,
     ForumDetailComponent,
     ForumsComponent,

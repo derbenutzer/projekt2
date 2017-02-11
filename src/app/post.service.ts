@@ -26,6 +26,24 @@ export class PostService {
       .catch(this.handleError);
   }
 
+  getDividedPostsArrays(divideBy:number): Promise<Post[][]> {
+    return this.http.get(this.apiUrl)
+      .toPromise()
+      .then(response => {
+        let postList = new PostList(response.json() as Post[]);
+        let ArrayToDivide = postList.getSortedByDate();
+        let dividedArrays=[];
+
+        let i,j,temparray,chunk = divideBy;
+        for (i=0,j=ArrayToDivide.length; i<j; i+=chunk) {
+          temparray = ArrayToDivide.slice(i,i+chunk);
+          dividedArrays[((i+chunk)/chunk)-1]=temparray;
+        }
+        return dividedArrays;
+      })
+      .catch(this.handleError);
+  }
+
   getPost(id: string): Promise<Post> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get(url)

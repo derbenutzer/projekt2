@@ -30,7 +30,32 @@ import {PostList} from "./post-list";
       <div>
         <h3>Beiträge</h3>
         <button routerLink="/create-post" class="btn">Eintrag erstellen</button>
-        <ul class="postList collection">
+        
+        
+        <div *ngFor="let dividedPostList of dividedPostArrays" class="row section">
+          <div *ngFor="let post of dividedPostList" class="col sm12 m4">
+            <div class="card sticky-action medium hoverable">
+              <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="assets/images/einkauf.png">
+              </div>
+              <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">{{ post.title }}<i class="material-icons right">more_vert</i></span>
+                <p>{{ post.author.getName() }}</p>
+              </div>
+              <div class="card-action">
+                <a href="">Kontaktieren</a><a href="eintrag-bearbeiten.html">Bearbeiten</a>
+              </div>
+              <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">{{ post.title }}<i class="material-icons right">close</i></span>
+                <p>{{ post.content }}</p>
+                <p>Ort: ToDo</p>
+                <p>Datum: <time>{{ post.createDate | amDateFormat:'LL'}}</time></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+<!--        <ul class="postList collection">
           <li class="collection-item avatar" *ngFor="let post of postList.getSortedByDate()">
             <img src="assets/images/fake-user.jpg" alt="user image" class="circle">
             <div>
@@ -38,7 +63,8 @@ import {PostList} from "./post-list";
               <div>Posted by: {{ post.author.getName() }} on: <time>{{ post.createDate | amDateFormat:'LL'}}</time></div>
             </div>      
           </li>
-        </ul>
+        </ul>-->
+        
       </div>
     </div>
   `,
@@ -50,6 +76,7 @@ export class ForumDetailComponent implements OnInit {
 
   postList: PostList = new PostList([]);
   id: string;
+  dividedPostArrays: Post[][];
 
   constructor(
     private forumService: ForumService,
@@ -68,12 +95,18 @@ export class ForumDetailComponent implements OnInit {
       .switchMap((params: Params) => this.forumService.getForum(params['id']))
       .subscribe(forum => this.forum = forum);
 
-    console.log(this.forum);
+    //console.log(this.forum);
 
     this.postService.getPostList()
       .then(postList => this.postList = postList);
+
+    this.postService.getDividedPostsArrays(3)
+      .then(dividedPostArrays => this.dividedPostArrays = dividedPostArrays);
   }
 
+  getIndex(post: Post): number {
+    return this.postList.getSortedByDate().indexOf(post);
+  }
 
   goBack(): void {
     this.location.back();
