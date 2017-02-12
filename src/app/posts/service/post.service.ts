@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Post } from './post';
+import { Post } from '../model/post';
 import { Headers, Http, RequestOptions } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
-import {PostList} from "./post-list";
+import {PostList} from "../model/post-list";
 
 @Injectable()
 export class PostService {

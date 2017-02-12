@@ -3,11 +3,11 @@ import { ActivatedRoute, Params }   from '@angular/router';
 import { Location }                 from '@angular/common';
 import 'rxjs/add/operator/switchMap';
 
-import { Forum } from './forum';
-import { ForumService } from './forum.service';
-import {MockPostService} from "./mock-post.service";
-import {Post} from "./post";
-import {PostList} from "./post-list";
+import { Forum } from './model/forum';
+import { ForumService } from '../forum-list/service/forum.service';
+import {MockPostService} from "../posts/service/mock-post.service";
+import {Post} from "../posts/model/post";
+import {PostList} from "../posts/model/post-list";
 
 
 

@@ -1,5 +1,5 @@
 
-import { Forum } from './forum';
+import { Forum } from '../../forum-detail/model/forum';
 import {ForumList} from "./forum-list";
 
 

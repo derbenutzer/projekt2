@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { Forum } from './forum';
-import { ForumService } from './forum.service';
+import { Forum } from '../forum-detail/model/forum';
+import { ForumService } from './service/forum.service';
 
 import { OnInit } from '@angular/core';
 //import { RouterModule }   from '@angular/router';
 import { Router }   from '@angular/router';
-import {ForumList} from "./forum-list";
+import {ForumList} from "./model/forum-list";
 
 
 @Component({

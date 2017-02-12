@@ -3,9 +3,9 @@ import { ActivatedRoute, Params }   from '@angular/router';
 import { Location }                 from '@angular/common';
 import 'rxjs/add/operator/switchMap';
 
-import { Post } from './post';
-import { MockPostService } from "./mock-post.service";
-import { PostList } from "./post-list";
+import { Post } from './model/post';
+import { MockPostService } from "./service/mock-post.service";
+import { PostList } from "./model/post-list";
 
 
 

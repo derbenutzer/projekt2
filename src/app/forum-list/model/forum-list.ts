@@ -1,4 +1,4 @@
-import {Forum} from "./forum";
+import {Forum} from "../../forum-detail/model/forum";
 
 export class ForumList {
 

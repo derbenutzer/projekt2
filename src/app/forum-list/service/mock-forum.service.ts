@@ -1,9 +1,9 @@
 
 import { Injectable } from '@angular/core';
 
-import { Forum } from './forum';
-import { FORUMS } from './mock-forums';
-import {ForumList} from "./forum-list";
+import { Forum } from '../../forum-detail/model/forum';
+import { FORUMS } from '../model/mock-forums';
+import {ForumList} from "../model/forum-list";
 //import { Promise} from '@angular/core';
 
 @Injectable()

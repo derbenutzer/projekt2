@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import { Location } from '@angular/common';
-import {ForumOwner} from "./forum-owner";
+import {ForumOwner} from "./model/forum-owner";
 
 @Component({
   selector: 'register-owner',
@@ -40,6 +40,7 @@ export class RegisterOwnerComponent implements OnInit{
 
   ngOnInit(): void {
       this.forumOwner  = new ForumOwner();
+      console.log(this.forumOwner);
   }
 
 

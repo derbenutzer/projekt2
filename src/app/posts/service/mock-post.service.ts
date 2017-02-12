@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import { Post } from './post';
-import { POSTS } from './mock-posts';
-import {PostList} from "./post-list";
+import { Post } from '../model/post';
+import { POSTS } from '../model/mock-posts';
+import {PostList} from "../model/post-list";
 //import { Promise} from '@angular/core';
 
 @Injectable()

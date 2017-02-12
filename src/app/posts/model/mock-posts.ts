@@ -1,5 +1,5 @@
 import { Post } from './post';
-import { User } from './user';
+import { User } from '../../users/model/user';
 
 
 let testUser = new User('firstname','lastname','firstname.lastname@gmail.com');

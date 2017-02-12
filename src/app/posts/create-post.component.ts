@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 
-import {MockPostService} from "./mock-post.service";
+import {MockPostService} from "./service/mock-post.service";
 
 @Component({
   selector: 'create-post',

@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {Forum} from "./forum";
+import {Forum} from "../../forum-detail/model/forum";
 
 
 @Pipe({

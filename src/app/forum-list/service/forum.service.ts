@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Forum } from './forum';
+import { Forum } from '../../forum-detail/model/forum';
 import { Headers, Http, RequestOptions } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
-import {ForumList} from "./forum-list";
+import {ForumList} from "../model/forum-list";
 
 @Injectable()
 export class ForumService {

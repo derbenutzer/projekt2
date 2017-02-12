@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 //import {Forum} from "./forum";
-import {ForumService} from "./forum.service";
+import {ForumService} from "../forum-list/service/forum.service";
 import {ActivatedRoute, Params} from "@angular/router";
-import {Forum} from "./forum";
+import {Forum} from "./model/forum";
 //import {ForumOwner} from "./forum-owner";
 
 @Component({
