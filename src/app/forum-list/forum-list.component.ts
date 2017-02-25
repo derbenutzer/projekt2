@@ -13,6 +13,25 @@ import {AuthHttp} from "angular2-jwt";
     <div class="row section">
     
       <div class="input-field col s4">
+        <forum-list-filter 
+          [name]="filters[0].name" 
+          [choices]="filters[0].choices"
+          (onFilterChange)="filterByInstitution($event)">       
+        </forum-list-filter>
+      </div>
+      
+    
+      <div class="input-field col s4">
+        <forum-list-filter 
+          [name]="filters[1].name"
+          [choices]="filters[1].choices"
+          (onFilterChange)="filterByCategory($event)">    
+        </forum-list-filter>
+      </div>
+      
+
+    
+      <!--<div class="input-field col s4">
         <select materialize="material_select" multiple>
           <option value="" disabled selected>Alle Institutionen</option>
           <option value="1">Caritas</option>
@@ -31,7 +50,7 @@ import {AuthHttp} from "angular2-jwt";
         </select>
         <label>Filter nach Kategorie</label>
       </div>
-      
+      -->
       <div class="col s4">
         <nav>
           <div class="nav-wrapper blue">
@@ -86,7 +105,9 @@ export class ForumListComponent implements OnInit {
 
   title="Runde Tische";
   searchFilter: string;
-  categoryFilter: string;
+  categoryFilter: string[];
+
+  filters=[{name:"Institutionen",choices:["test","rest","best"]},{name:"Kategorien",choices:["Betreuung","Gesellschaft","Andere"]}];
 
   forumList: ForumList = new ForumList([]);
 
@@ -99,5 +120,17 @@ export class ForumListComponent implements OnInit {
 
   resetSearchInput(): void{
     this.searchFilter="";
+  }
+
+  filterByInstitution(filterStrings){
+    console.log("handleInstFilter");
+    this.categoryFilter=filterStrings;
+    console.log(this.categoryFilter);
+  }
+
+  filterByCategory(filterStrings){
+    console.log("handleCatFilter");
+    this.categoryFilter=filterStrings;
+    console.log(this.categoryFilter);
   }
 }

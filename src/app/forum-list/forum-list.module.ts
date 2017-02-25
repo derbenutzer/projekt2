@@ -9,10 +9,11 @@ import {CategoryFilterPipe} from "./service/forum-category-filter.pipe";
 import {MapViewComponent} from "./map-view.component";
 import {ForumService} from "./service/forum.service";
 import {MaterializeDirective} from "angular2-materialize";
+import {ListFilterComponent} from "./list-filter.component";
 
 @NgModule({
   imports: [ForumDetailModule, CommonModule, FormsModule, AppRoutingModule],
-  declarations: [ForumListComponent, ForumFilterPipe, CategoryFilterPipe, MapViewComponent, MaterializeDirective],
+  declarations: [ForumListComponent, ForumFilterPipe, CategoryFilterPipe, MapViewComponent, MaterializeDirective, ListFilterComponent],
   providers: [ForumService],
   exports: [ForumListComponent]
 })
