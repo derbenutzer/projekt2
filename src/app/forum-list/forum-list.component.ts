@@ -13,7 +13,7 @@ import {AuthHttp} from "angular2-jwt";
     <div class="row section">
     
       <div class="input-field col s4">
-        <forum-list-filter 
+        <forum-list-filter *ngIf="filters"
           [name]="filters[0].name" 
           [choices]="filters[0].choices"
           (onFilterChange)="filterByInstitution($event)">       
@@ -22,35 +22,13 @@ import {AuthHttp} from "angular2-jwt";
       
     
       <div class="input-field col s4">
-        <forum-list-filter 
+        <forum-list-filter *ngIf="filters"
           [name]="filters[1].name"
           [choices]="filters[1].choices"
           (onFilterChange)="filterByCategory($event)">    
         </forum-list-filter>
       </div>
       
-
-    
-      <!--<div class="input-field col s4">
-        <select materialize="material_select" multiple>
-          <option value="" disabled selected>Alle Institutionen</option>
-          <option value="1">Caritas</option>
-          <option value="2">Pro Infirmis</option>
-          <option value="3">Andere</option>
-        </select>
-        <label for="myselect">Filter nach Institution</label>
-      </div>
-
-      <div class="input-field col s4">
-        <select materialize="material_select" multiple [(ngModel)]="categoryFilter">
-          <option value="" disabled selected>Alle Kategorien</option>
-          <option value="Betreuung">Betreuung</option>
-          <option value="Gesellschaft">Gesellschaft</option>
-          <option value="Andere">Andere</option>
-        </select>
-        <label>Filter nach Kategorie</label>
-      </div>
-      -->
       <div class="col s4">
         <nav>
           <div class="nav-wrapper blue">
@@ -71,7 +49,7 @@ import {AuthHttp} from "angular2-jwt";
 		<div class="col s4"><a [routerLink]="['/map-view']" class="waves-effect waves-light btn"><i class="material-icons left">my_location</i>Karte</a></div>
 	</div>
     <ul class="collection">
-      <li *ngFor="let forum of forumList.getSortedByDate() | forumFilter:searchFilter | forumCategoryFilter:categoryFilter" class="collection-item avatar">
+      <li *ngFor="let forum of forumList.getSortedByDate() | forumFilter:searchFilter | myfilter:{categories: categoryFilter}" class="collection-item avatar">
         <i class="material-icons circle blue">room</i>
         <h3 class="title">{{forum.title}}</h3>
         <p>Ort und Wirkungsgebiet<br>
@@ -82,19 +60,6 @@ import {AuthHttp} from "angular2-jwt";
         <a [routerLink]="['/forum', forum._id]" class="secondary-content"><i class="material-icons">send</i></a>
       </li>
 	  </ul>
-<!--    <div class="forumList collection">
-      <a *ngFor="let forum of forumList.getSortedByDate()" class="collection-item" [routerLink]="['/forum', forum._id]">
-        <div class="categoriesContainer right">
-          <div class="categories right">
-            <div *ngFor="let category of forum.categories" class="chip">
-              {{category}}
-            </div>
-          </div>
-        </div>
-        <span class="forumLITitle">{{forum.title}}</span>
-        <span class="forumLICreateDate"><i class="fa fa-calendar" aria-hidden="true"></i>{{forum.createDate | amDateFormat:'LL'}}</span>
-      </a>
-    </div> -->
   `,
   styleUrls: ['forum-list.component.scss'],
   providers:[AuthHttp]
@@ -105,9 +70,13 @@ export class ForumListComponent implements OnInit {
 
   title="Runde Tische";
   searchFilter: string;
-  categoryFilter: string[];
+  categoryFilter = [];
+  institutionFilter = [];
 
-  filters=[{name:"Institutionen",choices:["test","rest","best"]},{name:"Kategorien",choices:["Betreuung","Gesellschaft","Andere"]}];
+  catChoices = [];
+  instChoices = ["test1","test2","test3"];
+
+  filters:{}[];
 
   forumList: ForumList = new ForumList([]);
 
@@ -115,7 +84,31 @@ export class ForumListComponent implements OnInit {
 
   ngOnInit(): void {
     this.forumService.getForums()
-      .then(forumList => this.forumList = forumList);
+      .then(forumList => {
+        this.forumList = forumList;
+        this.setFilters(forumList);
+      });
+  }
+
+
+  setFilters(forumList){
+    for (let forum of forumList.forums) {
+      for(let category of forum.categories){
+        console.log(category);
+        if(this.catChoices.indexOf(category) < 0){
+          this.catChoices.push(category);
+        }
+      }
+      //ToDo: filter attribute for Forum
+/*      for(let institution of forum.institutions){
+        console.log(institution);
+        if(this.instChoices.indexOf(institution) < 0){
+          this.instChoices.push(institution);
+        }
+      }*/
+    }
+    this.filters=[{name:"Institutionen",choices:this.instChoices},{name:"Kategorien",choices:this.catChoices}];
+    //this.filters=[{name:"Institutionen",choices:["test","rest","best"]},{name:"Kategorien",choices:this.catChoices}];
   }
 
   resetSearchInput(): void{
@@ -123,14 +116,10 @@ export class ForumListComponent implements OnInit {
   }
 
   filterByInstitution(filterStrings){
-    console.log("handleInstFilter");
     this.categoryFilter=filterStrings;
-    console.log(this.categoryFilter);
   }
 
   filterByCategory(filterStrings){
-    console.log("handleCatFilter");
     this.categoryFilter=filterStrings;
-    console.log(this.categoryFilter);
   }
 }
