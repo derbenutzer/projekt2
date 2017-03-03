@@ -49,9 +49,9 @@ import {AuthHttp} from "angular2-jwt";
 		<div class="col s4"><a [routerLink]="['/map-view']" class="waves-effect waves-light btn"><i class="material-icons left">my_location</i>Karte</a></div>
 	</div>
     <ul class="collection">
-      <li *ngFor="let forum of forumList.getSortedByDate() | forumFilter:searchFilter | myfilter:{categories: categoryFilter}" class="collection-item avatar">
+      <li *ngFor="let forum of forumList.getSortedByDate() | forumSearch:searchFilter | forumFilter:{categories: categoryFilter} | forumFilter:{institutions: institutionFilter}" class="collection-item avatar">
         <i class="material-icons circle blue">room</i>
-        <h3 class="title">{{forum.title}}</h3>
+        <h3 class="title">{{forum.title}} - <span *ngFor="let institution of forum.institutions">{{institution}}</span></h3>
         <p>Ort und Wirkungsgebiet<br>
         <span *ngFor="let category of forum.categories" class="category">
                 {{category}}
@@ -74,7 +74,8 @@ export class ForumListComponent implements OnInit {
   institutionFilter = [];
 
   catChoices = [];
-  instChoices = ["test1","test2","test3"];
+  //instChoices = ["test1","test2","test3"];
+  instChoices = [];
 
   filters:{}[];
 
@@ -99,13 +100,12 @@ export class ForumListComponent implements OnInit {
           this.catChoices.push(category);
         }
       }
-      //ToDo: filter attribute for Forum
-/*      for(let institution of forum.institutions){
+      for(let institution of forum.institutions){
         console.log(institution);
         if(this.instChoices.indexOf(institution) < 0){
           this.instChoices.push(institution);
         }
-      }*/
+      }
     }
     this.filters=[{name:"Institutionen",choices:this.instChoices},{name:"Kategorien",choices:this.catChoices}];
     //this.filters=[{name:"Institutionen",choices:["test","rest","best"]},{name:"Kategorien",choices:this.catChoices}];
@@ -116,7 +116,7 @@ export class ForumListComponent implements OnInit {
   }
 
   filterByInstitution(filterStrings){
-    this.categoryFilter=filterStrings;
+    this.institutionFilter=filterStrings;
   }
 
   filterByCategory(filterStrings){

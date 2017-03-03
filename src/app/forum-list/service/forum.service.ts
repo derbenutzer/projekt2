@@ -38,9 +38,9 @@ export class ForumService {
       .catch(this.handleError);
   }
 
-  createNewForum(title: string, owner: string, categories: string[]): void{
+  createNewForum(title: string, owner: string, categories: string[], institutions: string[]): void{
     this.initializeForum()
-      .then(id => this.updateForum(id, title, owner, categories));
+      .then(id => this.updateForum(id, title, owner, categories, institutions ));
   }
 
   initializeForum(): Promise<string> {
@@ -50,13 +50,13 @@ export class ForumService {
       .catch(this.handleError);
   }
 
-  updateForum(id: string, title: string, owner: string, categories: string[] ): Promise<Forum> {
+  updateForum(id: string, title: string, owner: string, categories: string[], institutions: string[] ): Promise<Forum> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     console.log("id: "+ id);
     const url = `${this.apiUrl}/${id}`;
 
-    return this.http.put(url,{"title":title,"owner":owner, "categories":categories},options)
+    return this.http.put(url,{"title":title,"owner":owner, "categories":categories, "institutions":institutions},options)
       .toPromise()
       .then(response => response.json())
       .catch(this.handleError);

@@ -7,7 +7,7 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
   template: `
 
   <select materialize="material_select" (change)="updateFilter()" multiple [(ngModel)]="filterString">
-    <option value="" disabled selected>Alle {{name}}</option>
+    <option disabled selected>Alle {{name}}</option>
     <option *ngFor="let choice of choices" value="{{choice}}">{{choice}}</option>
   </select>
   <label for="myselect">Filtern nach {{name}}</label>

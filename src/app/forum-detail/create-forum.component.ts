@@ -24,6 +24,10 @@ import {Forum} from "./model/forum";
         <label for="categories">Kategorien</label>
         <input name="categoriesInput" type="text" class="form-control" [(ngModel)]="categoriesInput" placeholder="Kategorie1, Kategorie2, Kategorie3, etc." >
       </div>
+      <div class="form-group">
+        <label for="institutions">Institutionen</label>
+        <input name="institutionsInput" type="text" class="form-control" [(ngModel)]="institutionsInput" placeholder="Institution1, Institution2, Institution3, etc." >
+      </div>
       <button class="btn waves-effect waves-light" type="submit" name="action">Senden
         <i class="material-icons right">send</i>
       </button>
@@ -39,6 +43,7 @@ export class CreateForumComponent {
 
   pageTitle: string;
   categoriesInput: string;
+  institutionsInput: string;
   forum: Forum;
 
   constructor(private forumService: ForumService,
@@ -60,7 +65,7 @@ export class CreateForumComponent {
         })
     }
     else {
-      this.forum  = new Forum('', '', ['']);
+      this.forum  = new Forum('', '', [''], ['']);
       this.categoriesInput="";
       this.pageTitle="Forum erstellen";
     }
@@ -75,9 +80,19 @@ export class CreateForumComponent {
     }
   }
 
+  handleInstitutionsInput(): void {
+    if(this.institutionsInput){
+      this.forum.institutions = this.institutionsInput.split(",");
+    }
+    else{
+      this.forum.institutions = ["noch keine Institution"]
+    }
+  }
+
   sendForm(): void {
 
     this.handleCategoriesInput();
+    this.handleInstitutionsInput();
 
     if(this.isEdit){
       this.updateForum();
@@ -91,11 +106,11 @@ export class CreateForumComponent {
   };
 
   createNewForum(): void {
-    this.forumService.createNewForum(this.forum.title, this.forum.owner, this.forum.categories);
+    this.forumService.createNewForum(this.forum.title, this.forum.owner, this.forum.categories, this.forum.institutions);
   }
 
   updateForum(): void {
-    this.forumService.updateForum(this.forum._id, this.forum.title, this.forum.owner, this.forum.categories);
+    this.forumService.updateForum(this.forum._id, this.forum.title, this.forum.owner, this.forum.categories, this.forum.institutions);
   }
 
   goBack(): void {
