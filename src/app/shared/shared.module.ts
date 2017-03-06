@@ -8,8 +8,18 @@ import { AuthService } from './auth.service';
 import { ErrorHandlerService } from './error-handler.service';
 import { ErrorLoggerService } from './error-logger.service';
 import { ConfigurationService } from './configuration.service';
+import {provideAuth, AuthHttp, AuthConfig} from "angular2-jwt";
+import {Http, RequestOptions} from "@angular/http";
+
+export function authHttpServiceFactory(http: Http, options: RequestOptions) {
+  return new AuthHttp( new AuthConfig({}), http, options);
+}
 
 @NgModule({
-  providers: [ConfigurationService, CanDeactivateGuard, DialogService, ErrorLoggerService, {provide: ErrorHandler, useClass: ErrorHandlerService}, AuthService]
+  providers: [ConfigurationService, CanDeactivateGuard, DialogService, ErrorLoggerService, {provide: ErrorHandler, useClass: ErrorHandlerService}, AuthService, {
+    provide: AuthHttp,
+    useFactory: authHttpServiceFactory,
+    deps: [Http, RequestOptions]
+  }]
 })
 export class SharedModule { }

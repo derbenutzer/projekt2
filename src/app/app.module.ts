@@ -1,12 +1,13 @@
-import { NgModule }      from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule }    from '@angular/forms';
+import {NgModule}      from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {FormsModule}    from '@angular/forms';
 import {HttpModule}    from '@angular/http';
 import {MomentModule} from 'angular2-moment/moment.module';
 
-import { AppComponent }  from './app.component';
+import {AppComponent}  from './app.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {HomeModule} from "./home/home.module";
+import {UserModule} from "./users/user.module";
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import {HomeModule} from "./home/home.module";
     HttpModule,
     MomentModule,
     AppRoutingModule,
-    HomeModule
+    HomeModule,
+    UserModule
   ],
   declarations: [
     AppComponent

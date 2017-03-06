@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { tokenNotExpired } from 'angular2-jwt';
+import {AuthHttp} from 'angular2-jwt';
 
 //import { Router } from '@angular/router';
 
@@ -8,9 +9,18 @@ declare let Auth0Lock: any;
 @Injectable()
 export class AuthService {
   // We'll use the Auth0 Lock widget for capturing user credentials
-  lock = new Auth0Lock('duxxII3mXfqfAnFbzbq3KAtF6TGgiWSl', 'scl2.eu.auth0.com', {});
+  lock = new Auth0Lock('duxxII3mXfqfAnFbzbq3KAtF6TGgiWSl', 'scl2.eu.auth0.com', {
+    auth:{
+      redirect: false},
+    }
+  );
 
-  constructor() {
+  userProfile: Object;
+
+  constructor(public authHttp: AuthHttp) {
+
+    this.userProfile = JSON.parse(localStorage.getItem("profile"));
+
     // We'll listen for an authentication event to be raised and if successful will log the user in.
     this.lock.on('authenticated', (authResult: any) => {
       localStorage.setItem('id_token', authResult.idToken);
@@ -19,8 +29,8 @@ export class AuthService {
         if (error) {
           console.log(error);
         }
-
         localStorage.setItem('profile', JSON.stringify(profile));
+        this.userProfile=profile;
       });
 
       this.lock.hide();
@@ -32,19 +42,50 @@ export class AuthService {
     this.lock.show();
   }
 
-  // This method will log the use out
   logout() {
     // To log out, just remove the token and profile
     // from local storage
     localStorage.removeItem('profile');
     localStorage.removeItem('id_token');
-
-    // Send the user back to the public deals page after logout
-    //this.router.navigateByUrl('/deals');
+    this.userProfile = {};
   }
 
-  // Finally, this method will check to see if the user is logged in. We'll be able to tell by checking to see if they have a token and whether that token is valid or not.
   loggedIn() {
     return tokenNotExpired();
   }
+
+  getUserImage() {
+    let profileJSON = localStorage.getItem('profile');
+    if(profileJSON){
+      return JSON.parse(profileJSON).picture;
+    }
+    return "";
+  }
+
+  editProfile(keyValuePair) {
+    var headers: any = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+
+    let user_metadata= keyValuePair;
+    //user_metadata[key]=value;
+
+    var data: any = JSON.stringify({user_metadata});
+
+    this.authHttp
+      .patch('https://' + 'scl2.eu.auth0.com' + '/api/v2/users/' + this.userProfile['user_id'], data, {headers: headers})
+      .map(response => response.json())
+      .subscribe(
+        response => {
+          //Update profile
+          this.userProfile = response;
+          localStorage.setItem('profile', JSON.stringify(response));
+          //this.router.navigate(['/profile']);
+        },
+        error => alert(error.json().message)
+      );
+  }
+
+
 }

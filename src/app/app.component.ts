@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from "./shared/auth.service";
 
 @Component({
@@ -20,10 +20,15 @@ import {AuthService} from "./shared/auth.service";
           </li>
           <li>
             <a (click)=authService.login() *ngIf="!authService.loggedIn()">Log In</a>
-          </li>
-          <li>
             <a (click)=authService.logout() *ngIf="authService.loggedIn()">Log Out</a>
           </li>
+          <li *ngIf="authService.loggedIn() && authService.userProfile">
+             <a routerLink="/profile"><img  class="userImage" [src]="authService.userProfile.picture"></a>
+          </li>
+          <li *ngIf="authService.loggedIn()">
+            <a routerLink="/profile" >Profil</a>
+          </li>
+          
         </ul>
       </div>
       </div>
@@ -43,10 +48,9 @@ import {AuthService} from "./shared/auth.service";
   styleUrls: ['./app.component.scss'],
 })
 
-export class AppComponent  {
+export class AppComponent{
 
   title = 'FEE - Project 2';
-
   constructor(private authService: AuthService) {};
 
 }

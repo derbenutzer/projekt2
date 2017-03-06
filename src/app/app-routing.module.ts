@@ -8,6 +8,9 @@ import {CreatePostComponent} from "./posts/create-post.component";
 import {ForumListComponent} from "./forum-list/forum-list.component";
 import {RegisterOwnerComponent} from "./users/register-owner.component";
 import {MapViewComponent} from "./forum-list/map-view.component";
+//import {EditProfileComponent} from "./users/edit-profile.component";
+import {ProfileComponent} from "./users/profile.component";
+import {SubmitOKComponent} from "./users/submit-ok.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -19,7 +22,11 @@ const routes: Routes = [
   { path: 'forum/:id/edit', component: CreateForumComponent},
   { path: 'create-forum',     component: CreateForumComponent},
   { path: 'post/:id', component: PostDetailComponent },
-  { path: 'create-post',     component: CreatePostComponent}
+  { path: 'create-post',     component: CreatePostComponent},
+  //{ path: 'edit-profile',     component: EditProfileComponent},
+  { path: 'profile',     component: ProfileComponent},
+  { path: 'submit-ok',     component: SubmitOKComponent},
+
 ];
 @NgModule({
   imports: [ RouterModule.forRoot(routes) ],
