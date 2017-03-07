@@ -4,6 +4,8 @@ import {ForumService} from "./service/forum.service";
 import {ForumList} from "./model/forum-list";
 
 import {AuthHttp} from "angular2-jwt";
+import {AuthService} from "../shared/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'forum-list',
@@ -57,7 +59,7 @@ import {AuthHttp} from "angular2-jwt";
                 {{category}}
               </span>
         </p>
-        <a [routerLink]="['/forum', forum._id]" class="secondary-content"><i class="material-icons">send</i></a>
+        <a (click)="openForum(forum._id)" class="jsLink secondary-content"><i class="material-icons">send</i></a>
       </li>
 	  </ul>
   `,
@@ -81,7 +83,7 @@ export class ForumListComponent implements OnInit {
 
   forumList: ForumList = new ForumList([]);
 
-  constructor(private forumService: ForumService) { }
+  constructor(private authService: AuthService,private forumService: ForumService, private router: Router) { }
 
   ngOnInit(): void {
     this.forumService.getForums()
@@ -119,5 +121,16 @@ export class ForumListComponent implements OnInit {
 
   filterByCategory(filterStrings){
     this.categoryFilter=filterStrings;
+  }
+
+  openForum(forumId:string){
+    if(this.isRegistered()){
+      this.router.navigate(['/forum', forumId]);
+
+    }
+  }
+
+  isRegistered(){
+    return true;
   }
 }

@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import {PostDetailComponent} from "./post-detail.component";
 import {CreatePostComponent} from "./create-post.component";
 import {SharedModule} from "../shared/shared.module";
 import {MomentModule} from 'angular2-moment/moment.module';
@@ -14,7 +13,7 @@ import {PostService} from "./service/post.service";
 
 @NgModule({
   imports: [SharedModule,MomentModule,FormsModule,CommonModule],
-  declarations: [PostDetailComponent,CreatePostComponent],
+  declarations: [CreatePostComponent],
   providers: [PostService],
 })
 export class PostsModule { }

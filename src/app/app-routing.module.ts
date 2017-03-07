@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import {HomeComponent} from "./home/home.component";
 import {CreateForumComponent} from "./forum-detail/create-forum.component";
 import {ForumDetailComponent} from "./forum-detail/forum-detail.component";
-import {PostDetailComponent} from "./posts/post-detail.component";
 import {CreatePostComponent} from "./posts/create-post.component";
 import {ForumListComponent} from "./forum-list/forum-list.component";
 import {RegisterOwnerComponent} from "./users/register-owner.component";
@@ -21,7 +20,7 @@ const routes: Routes = [
   { path: 'forum/:id', component: ForumDetailComponent },
   { path: 'forum/:id/edit', component: CreateForumComponent},
   { path: 'create-forum',     component: CreateForumComponent},
-  { path: 'post/:id', component: PostDetailComponent },
+  //{ path: 'post/:id', component: PostDetailComponent },
   { path: 'create-post', component: CreatePostComponent},
   //{ path: 'edit-profile',     component: EditProfileComponent},
   { path: 'profile',     component: ProfileComponent},
