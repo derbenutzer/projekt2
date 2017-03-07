@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Params }   from '@angular/router';
+import {ActivatedRoute, Params, Router}   from '@angular/router';
 import { Location }                 from '@angular/common';
 import 'rxjs/add/operator/switchMap';
 
@@ -45,7 +45,7 @@ import {ForumDetailService} from "./service/forum-detail.service";
                 <p>{{ post.author }}</p>
               </div>
               <div class="card-action">
-                <a href="">Kontaktieren</a><a href="eintrag-bearbeiten.html">Bearbeiten</a>
+                <a href="">Kontaktieren</a><a (click)="modifyPost(post._id)" >Bearbeiten</a>
               </div>
               <div class="card-reveal">
                 <span class="card-title grey-text text-darken-4">{{ post.title }}<i class="material-icons right">close</i></span>
@@ -82,7 +82,8 @@ export class ForumDetailComponent implements OnInit {
     private forumDetailService: ForumDetailService,
     private postService: PostService,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private router: Router
   ) {}
 
 
@@ -113,6 +114,11 @@ export class ForumDetailComponent implements OnInit {
     //this.forumService.getPostsById(forumId);
     this.postService.getDividedPostsArrays(forumId,3)
       .then(dividedPostArrays => this.dividedPostArrays = dividedPostArrays);
+  }
+
+  modifyPost(postId) {
+    this.router.navigate(['/create-post']);
+    this.postService.idOfPostToModify = postId;
   }
 }
 

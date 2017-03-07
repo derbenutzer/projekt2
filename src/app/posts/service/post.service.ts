@@ -12,6 +12,8 @@ export class PostService {
   private apiUrl = 'http://localhost:8180/api/post';  // URL to web api
   private apiUrl2 = 'http://localhost:8180/api/posts';  // URL to web api
 
+  public idOfPostToModify:string;
+
   constructor (private http: Http){};
 
 /*  getPosts(): Promise<Post[]> {
@@ -48,8 +50,20 @@ export class PostService {
       .catch(this.handleError);
   }
 
-  getPost(id: string): Promise<Post> {
+/*  getPost(id: string): Promise<Post> {
     const url = `${this.apiUrl}/${id}`;
+    return this.http.get(url)
+      .toPromise()
+      .then(response => response.json() as Post)
+      .catch(this.handleError);
+  }*/
+
+  getPost(): Promise<Post> {
+    if(!this.idOfPostToModify){
+      return Promise.resolve(new Post());
+    }
+
+    const url = `${this.apiUrl}/${this.idOfPostToModify}`;
     return this.http.get(url)
       .toPromise()
       .then(response => response.json() as Post)
@@ -70,18 +84,6 @@ export class PostService {
       .catch(this.handleError);
   }
 
-/*  updatePost2(id: string, author:string, title: string, content: string, tags: string[] ): Promise<Post> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
-    //console.log("id: "+ id);
-    const url = `${this.apiUrl}/${id}`;
-
-    return this.http.put(url,{"title":title,"author":author, "content":content, "tags":tags},options)
-      .toPromise()
-      .then(response => response.json())
-      .catch(this.handleError);
-  }*/
-
   updatePost(id:string, keyValuePairs: Object): Promise<Post> {
 
     let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -93,7 +95,15 @@ export class PostService {
       .toPromise()
       .then(response => response.json())
       .catch(this.handleError);
+  }
 
+  handlePostFormSubmit(postId:string, keyValuePairs:Object){
+    if(postId){
+      this.updatePost(postId,keyValuePairs);
+    }
+    else{
+      this.createNewPost(keyValuePairs);
+    }
   }
 
 
