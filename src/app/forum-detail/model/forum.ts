@@ -1,5 +1,6 @@
 //import {ForumOwner} from "./forum-owner";
 
+import {Post} from "../../posts/model/post";
 export class Forum {
 
   _id:string;
@@ -10,6 +11,8 @@ export class Forum {
   owner:string;
   categories:string[];
   institutions:string[];
+
+  posts:Post[];
 
   constructor(
     title: string,

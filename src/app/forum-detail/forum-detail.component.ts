@@ -5,9 +5,11 @@ import 'rxjs/add/operator/switchMap';
 
 import { Forum } from './model/forum';
 import { ForumService } from '../forum-list/service/forum.service';
-import {MockPostService} from "../posts/service/mock-post.service";
+//import {MockPostService} from "../posts/service/mock-post.service";
 import {Post} from "../posts/model/post";
 import {PostList} from "../posts/model/post-list";
+import {PostService} from "../posts/service/post.service";
+import {ForumDetailService} from "./service/forum-detail.service";
 
 
 
@@ -40,7 +42,7 @@ import {PostList} from "../posts/model/post-list";
               </div>
               <div class="card-content">
                 <span class="card-title activator grey-text text-darken-4">{{ post.title }}<i class="material-icons right">more_vert</i></span>
-                <p>{{ post.author.getName() }}</p>
+                <p>{{ post.author }}</p>
               </div>
               <div class="card-action">
                 <a href="">Kontaktieren</a><a href="eintrag-bearbeiten.html">Bearbeiten</a>
@@ -73,14 +75,12 @@ import {PostList} from "../posts/model/post-list";
 export class ForumDetailComponent implements OnInit {
 
   @Input() forum: Forum;
-
-  postList: PostList = new PostList([]);
-  id: string;
   dividedPostArrays: Post[][];
 
   constructor(
     private forumService: ForumService,
-    private postService: MockPostService,
+    private forumDetailService: ForumDetailService,
+    private postService: PostService,
     private route: ActivatedRoute,
     private location: Location
   ) {}
@@ -89,23 +89,16 @@ export class ForumDetailComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log(this.route.params);
-
     this.route.params
       .switchMap((params: Params) => this.forumService.getForum(params['id']))
-      .subscribe(forum => this.forum = forum);
+      .subscribe(forum => {
+        this.forum = forum;
+        this.getPosts(this.forum._id);
+        this.forumDetailService.openForumId = this.forum._id;
+      });
 
-    //console.log(this.forum);
 
-    this.postService.getPostList()
-      .then(postList => this.postList = postList);
 
-    this.postService.getDividedPostsArrays(3)
-      .then(dividedPostArrays => this.dividedPostArrays = dividedPostArrays);
-  }
-
-  getIndex(post: Post): number {
-    return this.postList.getSortedByDate().indexOf(post);
   }
 
   goBack(): void {
@@ -115,5 +108,13 @@ export class ForumDetailComponent implements OnInit {
   deleteForum(): void {
     this.forumService.deleteForum(this.forum._id);
   }
+
+  getPosts(forumId:string){
+    //this.forumService.getPostsById(forumId);
+    this.postService.getDividedPostsArrays(forumId,3)
+      .then(dividedPostArrays => this.dividedPostArrays = dividedPostArrays);
+  }
 }
+
+
 

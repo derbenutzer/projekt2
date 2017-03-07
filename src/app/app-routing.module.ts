@@ -22,7 +22,7 @@ const routes: Routes = [
   { path: 'forum/:id/edit', component: CreateForumComponent},
   { path: 'create-forum',     component: CreateForumComponent},
   { path: 'post/:id', component: PostDetailComponent },
-  { path: 'create-post',     component: CreatePostComponent},
+  { path: 'create-post', component: CreatePostComponent},
   //{ path: 'edit-profile',     component: EditProfileComponent},
   { path: 'profile',     component: ProfileComponent},
   { path: 'submit-ok',     component: SubmitOKComponent},

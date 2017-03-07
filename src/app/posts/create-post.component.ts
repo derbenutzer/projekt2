@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { Location } from '@angular/common';
+import {PostService} from "./service/post.service";
+import {ForumService} from "../forum-list/service/forum.service";
+import {ForumDetailService} from "../forum-detail/service/forum-detail.service";
 
-import {MockPostService} from "./service/mock-post.service";
+//Zimport {MockPostService} from "./service/mock-post.service";
 
 @Component({
   selector: 'create-post',
@@ -20,14 +23,10 @@ import {MockPostService} from "./service/mock-post.service";
         <label for="owner">Eintrag</label>
         <input name="content" type="text" class="form-control"  [(ngModel)]="content" required>
       </div>
-      <div class="form-group">
-        <label for="categories">Tags</label>
-        <input name="tagInput" type="text" class="form-control" [(ngModel)]="tagInput">
-      </div>
       <button class="btn waves-effect waves-light" type="submit" name="action">Senden
         <i class="material-icons right">send</i>
       </button>
-      <button class="waves-effect waves-light btn" (click)="goBack()">Back</button>
+      <button type="button" class="waves-effect waves-light btn" (click)="goBack()">Back</button>
     </form>
   `,
 })
@@ -41,23 +40,15 @@ export class CreatePostComponent {
   author: string;
   content: string;
   tagInput:string;
-  tags: string[];
 
   constructor(
-    private postService: MockPostService,
+    private postService: PostService,
+    private forumDetailService: ForumDetailService,
     private location: Location
   ) { };
 
   sendForm(): void {
-
-    if(this.tagInput){
-      this.tags = this.tagInput.split(",");
-    }
-    else{
-      this.tags = ["noch keine Tags"]
-    }
-
-    this.postService.createNewPost(this.author, this.title, this.content, this.tags);
+    this.postService.createNewPost({"author":this.author,"title": this.title, "content": this.content, "postedIn":this.forumDetailService.openForumId});
     this.submitted = true;
   };
 

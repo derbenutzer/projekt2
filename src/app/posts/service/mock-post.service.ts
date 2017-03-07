@@ -25,9 +25,6 @@ export class MockPostService {
     return Promise.resolve(dividedArrays);
   }
 
-
-
-
   getPost(id: number): Promise<Post> {
     return this.getPostList()
       .then(postList => postList.findById(id));
@@ -37,8 +34,6 @@ export class MockPostService {
     console.log("POST CREATED");
     console.log(author, title, content, tags.toString());
   }
-
-
 
 }
 /*

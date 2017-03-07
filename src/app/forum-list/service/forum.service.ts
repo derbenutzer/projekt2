@@ -4,25 +4,18 @@ import { Headers, Http, RequestOptions } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 import {ForumList} from "../model/forum-list";
+import {Post} from "../../posts/model/post";
 
 @Injectable()
 export class ForumService {
 
-  private apiUrl = 'http://localhost:8180/api/rt';  // URL to web api
+  private apiUrl = 'http://localhost:8180/api/roundtable';  // URL to web api
 
   constructor (private http: Http){};
-
-/*  getForums(): Promise<Forum[]> {
-    return this.http.get(this.apiUrl)
-      .toPromise()
-      .then(response => response.json() as Forum[])
-      .catch(this.handleError);
-  }*/
 
   getForums(): Promise<ForumList> {
     let headers = new Headers({ 'Authorization': 'Bearer '+ localStorage.getItem('id_token')});
     let options = new RequestOptions({ headers: headers });
-
 
     return this.http.get(this.apiUrl,options)
       .toPromise()
@@ -38,9 +31,33 @@ export class ForumService {
       .catch(this.handleError);
   }
 
+  getPostsById(id: string): Promise<Post[]> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.get(url)
+      .toPromise()
+      .then(forum => {
+        let myForum = forum.json() as Forum;
+
+        console.log("myForum.posts");
+        console.log(myForum.posts);
+
+        return myForum.posts;
+      })
+      .catch(this.handleError);
+  }
+
+/*  addPostToForum(forumId:string, post:Post){
+    this.getPostsById(forumId)
+      .then(posts => {
+        posts.push(post);
+        console.log(posts);
+        this.updateForum(forumId, {"posts":posts});
+      })
+  }*/
+
   createNewForum(title: string, owner: string, categories: string[], institutions: string[]): void{
     this.initializeForum()
-      .then(id => this.updateForum(id, title, owner, categories, institutions ));
+      .then(id => this.updateForum(id, {"title":title, "owner":owner, "categories": categories, "institutions": institutions}));
   }
 
   initializeForum(): Promise<string> {
@@ -50,23 +67,40 @@ export class ForumService {
       .catch(this.handleError);
   }
 
-  updateForum(id: string, title: string, owner: string, categories: string[], institutions: string[] ): Promise<Forum> {
+
+  updateForum(id:string, keyValuePairs: Object): Promise<Forum> {
+
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    console.log("id: "+ id);
+
+    const url = `${this.apiUrl}/${id}`;
+
+      return this.http.put(url,keyValuePairs,options)
+        .toPromise()
+        .then(response => response.json())
+        .catch(this.handleError);
+
+  }
+
+
+/*  updateForum2(id: string, title: string, owner: string, categories: string[], institutions: string[] ): Promise<Forum> {
+
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
     const url = `${this.apiUrl}/${id}`;
 
     return this.http.put(url,{"title":title,"owner":owner, "categories":categories, "institutions":institutions},options)
       .toPromise()
       .then(response => response.json())
       .catch(this.handleError);
-  }
+  }*/
+
 
   deleteForum(id: string): Promise<string> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.delete(url)
       .toPromise()
-      //.then(response => console.log(response))
       .then(response => response.json())
       .catch(this.handleError);
   }

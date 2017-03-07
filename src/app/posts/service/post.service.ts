@@ -4,11 +4,13 @@ import { Headers, Http, RequestOptions } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 import {PostList} from "../model/post-list";
+import {ForumDetailService} from "../../forum-detail/service/forum-detail.service";
 
 @Injectable()
 export class PostService {
 
-  private apiUrl = 'http://localhost:8180/api/rt';  // URL to web api
+  private apiUrl = 'http://localhost:8180/api/post';  // URL to web api
+  private apiUrl2 = 'http://localhost:8180/api/posts';  // URL to web api
 
   constructor (private http: Http){};
 
@@ -19,15 +21,17 @@ export class PostService {
       .catch(this.handleError);
   }*/
 
-  getPosts(): Promise<PostList> {
+  getPostList(): Promise<PostList> {
     return this.http.get(this.apiUrl)
       .toPromise()
       .then(response => new PostList(response.json() as Post[]))
       .catch(this.handleError);
   }
 
-  getDividedPostsArrays(divideBy:number): Promise<Post[][]> {
-    return this.http.get(this.apiUrl)
+  getDividedPostsArrays(forumId,divideBy:number): Promise<Post[][]> {
+
+    const url = `${this.apiUrl2}/${forumId}`;
+    return this.http.get(url)
       .toPromise()
       .then(response => {
         let postList = new PostList(response.json() as Post[]);
@@ -52,10 +56,12 @@ export class PostService {
       .catch(this.handleError);
   }
 
-  createNewPost(author:string, title: string, content: string, tags: string[]): void{
-    this.initializePost()
-      .then(id => this.updatePost(id, author, title, content, tags));
-  }
+  createNewPost(keyValuePairs:Object): void{
+  this.initializePost()
+    .then(id => {
+      this.updatePost(id, keyValuePairs);
+    });
+}
 
   initializePost(): Promise<string> {
     return this.http.post(this.apiUrl,"test")
@@ -64,16 +70,30 @@ export class PostService {
       .catch(this.handleError);
   }
 
-  updatePost(id: string, author:string, title: string, content: string, tags: string[] ): Promise<Post> {
+/*  updatePost2(id: string, author:string, title: string, content: string, tags: string[] ): Promise<Post> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    console.log("id: "+ id);
+    //console.log("id: "+ id);
     const url = `${this.apiUrl}/${id}`;
 
-    return this.http.put(url,{"title":title,"author":author, "tags":tags},options)
+    return this.http.put(url,{"title":title,"author":author, "content":content, "tags":tags},options)
       .toPromise()
       .then(response => response.json())
       .catch(this.handleError);
+  }*/
+
+  updatePost(id:string, keyValuePairs: Object): Promise<Post> {
+
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    const url = `${this.apiUrl}/${id}`;
+
+    return this.http.put(url,keyValuePairs,options)
+      .toPromise()
+      .then(response => response.json())
+      .catch(this.handleError);
+
   }
 
 

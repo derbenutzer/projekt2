@@ -4,8 +4,9 @@ import { Location }                 from '@angular/common';
 import 'rxjs/add/operator/switchMap';
 
 import { Post } from './model/post';
-import { MockPostService } from "./service/mock-post.service";
+//import { MockPostService } from "./service/mock-post.service";
 import { PostList } from "./model/post-list";
+import {PostService} from "./service/post.service";
 
 
 
@@ -31,7 +32,7 @@ export class PostDetailComponent implements OnInit {
   @Input() post: Post;
 
   constructor(
-    private postService: MockPostService,
+    private postService: PostService,
     private route: ActivatedRoute,
     private location: Location
   ) {}

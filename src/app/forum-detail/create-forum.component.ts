@@ -110,7 +110,7 @@ export class CreateForumComponent {
   }
 
   updateForum(): void {
-    this.forumService.updateForum(this.forum._id, this.forum.title, this.forum.owner, this.forum.categories, this.forum.institutions);
+    this.forumService.updateForum(this.forum._id, {"title": this.forum.title, "owner": this.forum.owner, "categories": this.forum.categories, "institutions": this.forum.institutions});
   }
 
   goBack(): void {

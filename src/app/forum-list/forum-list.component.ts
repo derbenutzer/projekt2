@@ -95,13 +95,11 @@ export class ForumListComponent implements OnInit {
   setFilters(forumList){
     for (let forum of forumList.forums) {
       for(let category of forum.categories){
-        console.log(category);
         if(this.catChoices.indexOf(category) < 0){
           this.catChoices.push(category);
         }
       }
       for(let institution of forum.institutions){
-        console.log(institution);
         if(this.instChoices.indexOf(institution) < 0){
           this.instChoices.push(institution);
         }
