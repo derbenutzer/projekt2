@@ -6,4 +6,5 @@ export class Post {
   content: string;
   author: User;
   createDate: string;
+  postedIn: string;
 }

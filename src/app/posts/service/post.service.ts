@@ -16,13 +16,6 @@ export class PostService {
 
   constructor (private http: Http){};
 
-/*  getPosts(): Promise<Post[]> {
-    return this.http.get(this.apiUrl)
-      .toPromise()
-      .then(response => response.json() as Post[])
-      .catch(this.handleError);
-  }*/
-
   getPostList(): Promise<PostList> {
     return this.http.get(this.apiUrl)
       .toPromise()
@@ -30,7 +23,35 @@ export class PostService {
       .catch(this.handleError);
   }
 
+  getPostsByForumId(forumId): Promise<Post[]> {
+    const url = `${this.apiUrl2}/${forumId}`;
+    return this.http.get(url)
+      .toPromise()
+      .then(response => response.json() as Post[])
+      .catch(this.handleError);
+  }
+
   getDividedPostsArrays(forumId,divideBy:number): Promise<Post[][]> {
+
+    return this.getPostsByForumId(forumId)
+      .then(postArray => {
+        let postList = new PostList(postArray);
+        let ArrayToDivide = postList.getSortedByDate();
+        let dividedArrays=[];
+
+        let i,j,temparray,chunk = divideBy;
+        for (i=0,j=ArrayToDivide.length; i<j; i+=chunk) {
+          temparray = ArrayToDivide.slice(i,i+chunk);
+          dividedArrays[((i+chunk)/chunk)-1]=temparray;
+        }
+        return dividedArrays;
+      })
+      .catch(this.handleError);
+  }
+
+
+
+  getDividedPostsArrays2(forumId,divideBy:number): Promise<Post[][]> {
 
     const url = `${this.apiUrl2}/${forumId}`;
     return this.http.get(url)
@@ -70,6 +91,13 @@ export class PostService {
       .catch(this.handleError);
   }
 
+  getAllPosts(): Promise<Post[]> {
+    return this.http.get(this.apiUrl)
+      .toPromise()
+      .then(response => response.json() as Post[])
+      .catch(this.handleError);
+  }
+
   createNewPost(keyValuePairs:Object): void{
   this.initializePost()
     .then(id => {
@@ -95,6 +123,23 @@ export class PostService {
       .toPromise()
       .then(response => response.json())
       .catch(this.handleError);
+  }
+
+  deletePost(postId: string): Promise<string> {
+    const url = `${this.apiUrl}/${postId}`;
+    return this.http.delete(url)
+      .toPromise()
+      .then(response => response.json())
+      .catch(this.handleError);
+  }
+
+  deletePostsAfterForumDelete(forumId){
+    this.getPostsByForumId(forumId)
+      .then(postList =>{
+        for (let post of postList){
+          this.deletePost(post._id);
+        }
+      })
   }
 
   handlePostFormSubmit(postId:string, keyValuePairs:Object){

@@ -5,13 +5,14 @@ import { Headers, Http, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {ForumList} from "../model/forum-list";
 import {Post} from "../../posts/model/post";
+import {PostService} from "../../posts/service/post.service";
 
 @Injectable()
 export class ForumService {
 
   private apiUrl = 'http://localhost:8180/api/roundtable';  // URL to web api
 
-  constructor (private http: Http){};
+  constructor (private http: Http, private postService: PostService){};
 
   getForums(): Promise<ForumList> {
     let headers = new Headers({ 'Authorization': 'Bearer '+ localStorage.getItem('id_token')});
@@ -102,12 +103,13 @@ export class ForumService {
     return this.http.delete(url)
       .toPromise()
       .then(response => response.json())
+      .then(response => this.postService.deletePostsAfterForumDelete(id))
       .catch(this.handleError);
   }
 
 
   private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error); // for demo purposes only
+    console.error('An error occurred', error);
     return Promise.reject(error.message || error);
   }
 
