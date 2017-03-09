@@ -6,6 +6,7 @@ import {ForumList} from "./model/forum-list";
 import {AuthHttp} from "angular2-jwt";
 import {AuthService} from "../shared/auth.service";
 import {Router} from "@angular/router";
+import {UserService} from "../users/service/user.service";
 
 @Component({
   selector: 'forum-list',
@@ -83,7 +84,10 @@ export class ForumListComponent implements OnInit {
 
   forumList: ForumList = new ForumList([]);
 
-  constructor(private authService: AuthService,private forumService: ForumService, private router: Router) { }
+  constructor(private authService: AuthService,
+              private forumService: ForumService,
+              private userService: UserService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.forumService.getForums()
@@ -124,13 +128,20 @@ export class ForumListComponent implements OnInit {
   }
 
   openForum(forumId:string){
-    if(this.isRegistered()){
-      this.router.navigate(['/forum', forumId]);
 
+    if(!this.authService.loggedIn()){
+      this.authService.login();
+      return;
     }
-  }
 
-  isRegistered(){
-    return true;
+    this.userService.isRegistered(this.authService.userProfile['user_metadata']['databaseId'], forumId)
+      .then(isRegistered => {
+        if(isRegistered){
+          this.router.navigate(['/forum', forumId]);
+        }
+        else{
+          this.router.navigate(['/register-for-forum', forumId]);
+        }
+      });
   }
 }

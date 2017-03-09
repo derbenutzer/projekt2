@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { tokenNotExpired } from 'angular2-jwt';
 import {AuthHttp} from 'angular2-jwt';
+import {UserService} from "../users/service/user.service";
 
 //import { Router } from '@angular/router';
 
@@ -12,12 +13,15 @@ export class AuthService {
   lock = new Auth0Lock('duxxII3mXfqfAnFbzbq3KAtF6TGgiWSl', 'scl2.eu.auth0.com', {
     auth:{
       redirect: false},
-    }
+    },
   );
 
   userProfile: Object;
 
-  constructor(public authHttp: AuthHttp) {
+  constructor(
+    public authHttp: AuthHttp,
+    private userService: UserService
+  ) {
 
     this.userProfile = JSON.parse(localStorage.getItem("profile"));
 
@@ -31,6 +35,17 @@ export class AuthService {
         }
         localStorage.setItem('profile', JSON.stringify(profile));
         this.userProfile=profile;
+
+        let metaData=this.userProfile["user_metadata"];
+
+        if(!metaData.databaseId){
+          console.log("createNewUser");
+          this.userService.createNewUser({"authId":this.userProfile['user_id']})
+            .then(userId => {
+              console.log(userId);
+              this.editProfile({"databaseId":userId});
+            });
+        }
       });
 
       this.lock.hide();

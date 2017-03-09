@@ -2,16 +2,12 @@ import {Post} from "../../posts/model/post";
 
 export class User {
 
-  posts: Post[];
+  private authId:string;
+  registeredFor:string[];
 
-  constructor(
-    public firstname:string,
-    public lastname: string,
-    public email: string
-  ) {};
 
-  getName(): string {
-    return this.firstname;
+  public getAuthId(): string {
+    return this.authId;
   }
 
 }
