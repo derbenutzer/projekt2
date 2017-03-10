@@ -14,17 +14,19 @@ declare var $: any;
 	      <a class="brand-logo" routerLink="/home">Benefitz</a>
 	      <a materialize="sideNav" data-activates="mobile-nav" class="jsLink button-collapse"><i class="material-icons">menu</i></a>
 	      
-	      
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
+	      <ul class="right">
+          <li>
+            <a (click)=authService.login() *ngIf="!authService.loggedIn()">Log In</a>
+            <a (click)=authService.logout() *ngIf="authService.loggedIn()">Log Out</a>
+          </li>
+        </ul>
+	     
+        <ul class="right hide-on-med-and-down">
           <li>
             <a class="navHome" routerLink="/home"><span>Startseite</span></a>
           </li>
           <li>
             <a routerLink="/create-forum">Forum erstellen</a>
-          </li>
-          <li>
-            <a (click)=authService.login() *ngIf="!authService.loggedIn()">Log In</a>
-            <a (click)=authService.logout() *ngIf="authService.loggedIn()">Log Out</a>
           </li>
           <li *ngIf="authService.loggedIn() && authService.userProfile">
              <a routerLink="/profile"><img  class="userImage" [src]="authService.userProfile.picture"></a>
@@ -33,7 +35,7 @@ declare var $: any;
             <a routerLink="/profile" >Profil</a>
           </li>
         </ul>
-        
+
         <ul (click)="hideSideNav()" id="mobile-nav" class="side-nav">
           <li>
             <a class="navHome" routerLink="/home"><span>Startseite</span></a>
