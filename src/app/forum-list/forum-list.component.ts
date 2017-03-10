@@ -160,18 +160,20 @@ export class ForumListComponent implements OnInit {
     }
   }
 
-  setIdFilter(){
+  setIdFilter() {
     console.log("setIdFilter");
-    this.userService.getUser(this.authService.userProfile['user_metadata']['databaseId'])
-      .then(user => {
-        console.log(user.registeredFor.length>0);
-        if (user.registeredFor.length>0){
-          if(this.idFilterIsSet){
-            this.idFilter = user.registeredFor;
+    if (this.authService.userProfile['user_metadata']) {
+      this.userService.getUser(this.authService.userProfile['user_metadata']['databaseId'])
+        .then(user => {
+          console.log(user.registeredFor.length > 0);
+          if (user.registeredFor.length > 0) {
+            if (this.idFilterIsSet) {
+              this.idFilter = user.registeredFor;
+            }
+            this.isRegisteredForAForum = true;
           }
-          this.isRegisteredForAForum = true;
-        }
-      });
+        });
+    }
   }
 
   openForum(forumId:string){

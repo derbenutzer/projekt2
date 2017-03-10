@@ -58,17 +58,16 @@ import {AuthService} from "../shared/auth.service";
             </div>
           </div>
         </div>
-        
-<!--        <ul class="postList collection">
-          <li class="collection-item avatar" *ngFor="let post of postList.getSortedByDate()">
-            <img src="assets/images/fake-user.jpg" alt="user image" class="circle">
-            <div>
-              <a [routerLink]="['/post', post.id]"  class="linkToPost">{{ post.title }}</a>
-              <div>Posted by: {{ post.author.getName() }} on: <time>{{ post.createDate | amDateFormat:'LL'}}</time></div>
-            </div>      
-          </li>
-        </ul>-->
-        
+      </div>
+    </div>
+    
+    <div *ngIf="!forum">
+      <div class="row">
+        <p>Sie sind nicht eingeloggt! Bitte loggen Sie sich ein!</p>
+      </div>
+      <div class="row">
+        <button type="button" (click)="authService.login()" class="btn">Login</button>
+        <button type="button" routerLink="/forum-list" class="btn">Zurück</button>
       </div>
     </div>
   `,
@@ -78,7 +77,6 @@ export class ForumDetailComponent implements OnInit {
 
   @Input() forum: Forum;
   dividedPostArrays: Post[][];
-  userIsRegistered: boolean;
   forumId:string;
 
   constructor(
@@ -97,7 +95,7 @@ export class ForumDetailComponent implements OnInit {
   ngOnInit(): void {
 
     if(this.authService.userProfile){
-      if(this.authService.userProfile['user_metadata']['databaseId']) {
+      if(this.authService.userProfile['user_metadata']) {
         this.openForum(this.authService.userProfile['user_metadata']['databaseId']);
         return;
       }
@@ -118,8 +116,8 @@ export class ForumDetailComponent implements OnInit {
 
         let metaData=profile["user_metadata"];
 
-        if(!metaData.databaseId){
-          this.router.navigate(['/home']);
+        if(!metaData){
+          this.router.navigate(['/forum-list']);
         }
         else{
           this.openForum(metaData.databaseId);
