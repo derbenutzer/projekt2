@@ -7,14 +7,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule }   from '@angular/forms';
 import {AppRoutingModule} from "../app-routing.module";
 import {ForumDetailService} from "./service/forum-detail.service";
+import {SharedModule} from "../shared/shared.module";
 
 
 
 
 @NgModule({
-  imports: [PostsModule, MomentModule,FormsModule,CommonModule,AppRoutingModule],
+  imports: [PostsModule, MomentModule,FormsModule,CommonModule,AppRoutingModule, SharedModule],
   declarations: [ForumDetailComponent,CreateForumComponent, ],
   providers: [ForumDetailService],
-  exports: []
 })
 export class ForumDetailModule { }

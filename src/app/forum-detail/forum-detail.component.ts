@@ -61,14 +61,8 @@ import {AuthService} from "../shared/auth.service";
       </div>
     </div>
     
-    <div *ngIf="!forum">
-      <div class="row">
-        <p>Sie sind nicht eingeloggt! Bitte loggen Sie sich ein!</p>
-      </div>
-      <div class="row">
-        <button type="button" (click)="authService.login()" class="btn">Login</button>
-        <button type="button" routerLink="/forum-list" class="btn">Zurück</button>
-      </div>
+    <div *ngIf="!authService.loggedIn()">
+       <login-to-continue [backUrl]="backUrl"></login-to-continue>
     </div>
   `,
 })
@@ -78,6 +72,7 @@ export class ForumDetailComponent implements OnInit {
   @Input() forum: Forum;
   dividedPostArrays: Post[][];
   forumId:string;
+  backUrl="forum-list";
 
   constructor(
     private forumService: ForumService,
@@ -104,7 +99,7 @@ export class ForumDetailComponent implements OnInit {
       }
     }
 
-    this.authService.checkLoginAndOpenLogin();
+    //this.authService.checkLoginAndOpenLogin();
 
     this.authService.lock.on('authenticated', (authResult: any) => {
       //localStorage.setItem('id_token', authResult.idToken);

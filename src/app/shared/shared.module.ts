@@ -10,6 +10,7 @@ import { ErrorLoggerService } from './error-logger.service';
 import { ConfigurationService } from './configuration.service';
 import {provideAuth, AuthHttp, AuthConfig} from "angular2-jwt";
 import {Http, RequestOptions} from "@angular/http";
+import {LoginToContinueComponent} from "./login-to-continue.component";
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({}), http, options);
@@ -20,6 +21,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     provide: AuthHttp,
     useFactory: authHttpServiceFactory,
     deps: [Http, RequestOptions]
-  }]
+  }],
+  declarations: [LoginToContinueComponent],
+  exports:[LoginToContinueComponent]
 })
 export class SharedModule { }
