@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {Forum} from "../forum-detail/model/forum";
 import {ForumService} from "./service/forum.service";
 import {ForumList} from "./model/forum-list";
 
@@ -50,9 +49,13 @@ import {UserService} from "../users/service/user.service";
 	
 	<div class="row">
 		<div class="col s4"><a [routerLink]="['/map-view']" class="waves-effect waves-light btn"><i class="material-icons left">my_location</i>Karte</a></div>
+		<div *ngIf="authService.loggedIn() && isRegisteredForAForum" class="col s4">
+		  <input type="checkbox" (change)="filterById()" [(ngModel)]="idFilterIsSet" class="filled-in" id="filled-in-box" [checked]="idFilterIsSet && this.authService.loggedIn()"/>
+      <label for="filled-in-box">Nur Meine</label>
+    </div>
 	</div>
     <ul class="collection">
-      <li *ngFor="let forum of forumList.getSortedByDate() | forumSearch:searchFilter | forumFilter:{categories: categoryFilter} | forumFilter:{institutions: institutionFilter}" class="collection-item avatar">
+      <li *ngFor="let forum of forumList.getSortedByDate() | forumSearch:searchFilter | forumFilter:{categories: categoryFilter} | forumFilter:{institutions: institutionFilter} | forumFilter:{_id: idFilter}" class="collection-item avatar">
         <i class="material-icons circle blue">room</i>
         <h3 class="title">{{forum.title}} - <span *ngFor="let institution of forum.institutions">{{institution}}</span></h3>
         <p>Ort und Wirkungsgebiet<br>
@@ -75,6 +78,9 @@ export class ForumListComponent implements OnInit {
   searchFilter: string;
   categoryFilter = [];
   institutionFilter = [];
+  idFilter=[];
+  idFilterIsSet=false;
+  isRegisteredForAForum=false;
 
   catChoices = [];
   //instChoices = ["test1","test2","test3"];
@@ -95,6 +101,24 @@ export class ForumListComponent implements OnInit {
         this.forumList = forumList;
         this.setFilters(forumList);
       });
+
+    this.idFilterIsSet=false;
+
+    if(this.authService.loggedIn()){
+      console.log("setIdFilter on init");
+      this.setIdFilter();
+    }
+    else{
+      this.authService.lock.on('authenticated', (authResult: any) => {
+        this.authService.lock.getProfile(authResult.idToken, (error: any, profile: any) => {
+          if (error) {
+            console.log(error);
+          }
+          this.idFilterIsSet=false;
+          this.setIdFilter();
+        });
+      });
+    }
   }
 
 
@@ -127,21 +151,30 @@ export class ForumListComponent implements OnInit {
     this.categoryFilter=filterStrings;
   }
 
-  openForum(forumId:string){
-
-    if(!this.authService.loggedIn()){
-      this.authService.login();
-      return;
+  filterById(){
+    if(!this.idFilterIsSet){
+      this.idFilter=[];
     }
+    else {
+      this.setIdFilter();
+    }
+  }
 
-    this.userService.isRegistered(this.authService.userProfile['user_metadata']['databaseId'], forumId)
-      .then(isRegistered => {
-        if(isRegistered){
-          this.router.navigate(['/forum', forumId]);
-        }
-        else{
-          this.router.navigate(['/register-for-forum', forumId]);
+  setIdFilter(){
+    console.log("setIdFilter");
+    this.userService.getUser(this.authService.userProfile['user_metadata']['databaseId'])
+      .then(user => {
+        console.log(user.registeredFor.length>0);
+        if (user.registeredFor.length>0){
+          if(this.idFilterIsSet){
+            this.idFilter = user.registeredFor;
+          }
+          this.isRegisteredForAForum = true;
         }
       });
+  }
+
+  openForum(forumId:string){
+    this.router.navigate(['/forum', forumId]);
   }
 }

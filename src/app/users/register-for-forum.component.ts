@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import { Location } from '@angular/common';
 import {AuthService} from "../shared/auth.service";
 import {UserService} from "./service/user.service";
-import {ActivatedRoute, Params} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 
 @Component({
   selector: 'register-owner',
@@ -23,10 +23,10 @@ export class RegisterForForumComponent implements OnInit{
   pageTitle="Für Forum registrieren"
 
   constructor(
-    private location: Location,
     private authService: AuthService,
     private userService: UserService,
     private route: ActivatedRoute,
+    private router: Router
   ) {};
 
   ngOnInit(): void {
@@ -47,7 +47,7 @@ export class RegisterForForumComponent implements OnInit{
 
 
   goBack(): void {
-    this.location.back();
+    this.router.navigate(['/forum-list']);
   }
 
 }

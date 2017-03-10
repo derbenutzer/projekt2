@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import {RegisterOwnerComponent} from "./register-owner.component";
 import { CommonModule } from '@angular/common';
 import { FormsModule }   from '@angular/forms';
 import {FormInputComponent} from "./form-input.component";
@@ -11,8 +10,7 @@ import {UserService} from "./service/user.service";
 
 @NgModule({
   imports: [FormsModule, CommonModule],
-  declarations: [RegisterOwnerComponent, ProfileComponent, FormInputComponent, SubmitOKComponent, RegisterForForumComponent],
+  declarations: [ProfileComponent, FormInputComponent, SubmitOKComponent, RegisterForForumComponent],
   providers: [UserService],
-  exports: [RegisterOwnerComponent]
 })
 export class UserModule { }

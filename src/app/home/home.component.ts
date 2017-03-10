@@ -1,8 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import {Forum} from "../forum-detail/model/forum";
-import {ForumService} from "../forum-list/service/forum.service";
-import {ForumList} from "../forum-list/model/forum-list";
-import {AuthHttp} from "angular2-jwt";
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'home',
@@ -29,8 +25,8 @@ import {AuthHttp} from "angular2-jwt";
 				<div class="section center-align">
 					<i class="large material-icons">business</i>
 					<h3>Institutionen</h3>
-					<p>Registrieren Sie sich als Institution und eröffnen Sie einen runden Tisch</p>
-					<a routerLink="/register-owner" class="waves-effect waves-light btn-large">Registrierung</a>
+					<p>Registrieren Sie sich als Institution oder verwalten Sie ihre runden Tische</p>
+					<a routerLink="/institutions-start" class="waves-effect waves-light btn-large">Start</a>
 				</div>
 			</div>
 		</div>

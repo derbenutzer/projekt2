@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "./shared/auth.service";
+declare var $: any;
 
 @Component({
   selector: 'my-app',
@@ -11,7 +12,10 @@ import {AuthService} from "./shared/auth.service";
     <div class="container">
       <div class="nav-wrapper">
 	      <a class="brand-logo" routerLink="/home">Benefitz</a>
-        <ul class="nav right">
+	      <a materialize="sideNav" data-activates="mobile-nav" class="jsLink button-collapse"><i class="material-icons">menu</i></a>
+	      
+	      
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
           <li>
             <a class="navHome" routerLink="/home"><span>Startseite</span></a>
           </li>
@@ -28,7 +32,25 @@ import {AuthService} from "./shared/auth.service";
           <li *ngIf="authService.loggedIn()">
             <a routerLink="/profile" >Profil</a>
           </li>
-          
+        </ul>
+        
+        <ul (click)="hideSideNav()" id="mobile-nav" class="side-nav">
+          <li>
+            <a class="navHome" routerLink="/home"><span>Startseite</span></a>
+          </li>
+          <li>
+            <a routerLink="/create-forum">Forum erstellen</a>
+          </li>
+          <li>
+            <a (click)=authService.login() *ngIf="!authService.loggedIn()">Log In</a>
+            <a (click)=authService.logout() *ngIf="authService.loggedIn()">Log Out</a>
+          </li>
+          <li *ngIf="authService.loggedIn() && authService.userProfile">
+             <a routerLink="/profile"><img  class="userImage" [src]="authService.userProfile.picture"></a>
+          </li>
+          <li *ngIf="authService.loggedIn()">
+            <a routerLink="/profile" >Profil</a>
+          </li>
         </ul>
       </div>
       </div>
@@ -51,6 +73,13 @@ import {AuthService} from "./shared/auth.service";
 export class AppComponent{
 
   title = 'FEE - Project 2';
+  sideNavIsVisible = true;
+
   constructor(private authService: AuthService) {};
+
+  hideSideNav(){
+    $('.button-collapse').sideNav('hide');
+  }
+
 
 }

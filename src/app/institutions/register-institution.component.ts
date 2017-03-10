@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import { Location } from '@angular/common';
-import {ForumOwner} from "./model/forum-owner";
+import {ForumOwner} from "../users/model/forum-owner";
 
 @Component({
   selector: 'register-owner',
@@ -28,9 +28,9 @@ import {ForumOwner} from "./model/forum-owner";
     </div>
   `,
 })
-export class RegisterOwnerComponent implements OnInit{
+export class RegisterInstitutionComponent implements OnInit{
 
-  pageTitle="Moderator Registrieren"
+  pageTitle="Institution Registrieren";
   submitted = false;
   forumOwner;
 

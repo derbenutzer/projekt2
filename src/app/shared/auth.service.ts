@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { tokenNotExpired } from 'angular2-jwt';
 import {AuthHttp} from 'angular2-jwt';
 import {UserService} from "../users/service/user.service";
+import {Router} from "@angular/router";
 
 //import { Router } from '@angular/router';
 
@@ -20,7 +21,8 @@ export class AuthService {
 
   constructor(
     public authHttp: AuthHttp,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) {
 
     this.userProfile = JSON.parse(localStorage.getItem("profile"));
@@ -38,11 +40,12 @@ export class AuthService {
 
         let metaData=this.userProfile["user_metadata"];
 
-        if(!metaData.databaseId){
-          console.log("createNewUser");
+        console.log(metaData);
+
+        if(!metaData){
+          console.log("create new user");
           this.userService.createNewUser({"authId":this.userProfile['user_id']})
             .then(userId => {
-              console.log(userId);
               this.editProfile({"databaseId":userId});
             });
         }
@@ -57,12 +60,21 @@ export class AuthService {
     this.lock.show();
   }
 
+  checkLoginAndOpenLogin(){
+    if(!this.loggedIn()){
+      this.login();
+      return false;
+    }
+    return true;
+  }
+
   logout() {
     // To log out, just remove the token and profile
     // from local storage
     localStorage.removeItem('profile');
     localStorage.removeItem('id_token');
-    this.userProfile = {};
+    this.userProfile = null;
+    this.router.navigate(['/home']);
   }
 
   loggedIn() {
@@ -74,7 +86,7 @@ export class AuthService {
     if(profileJSON){
       return JSON.parse(profileJSON).picture;
     }
-    return "";
+    return "no image";
   }
 
   editProfile(keyValuePair) {
@@ -96,7 +108,6 @@ export class AuthService {
           //Update profile
           this.userProfile = response;
           localStorage.setItem('profile', JSON.stringify(response));
-          //this.router.navigate(['/profile']);
         },
         error => alert(error.json().message)
       );

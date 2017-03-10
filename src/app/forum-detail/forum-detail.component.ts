@@ -10,6 +10,8 @@ import {Post} from "../posts/model/post";
 import {PostList} from "../posts/model/post-list";
 import {PostService} from "../posts/service/post.service";
 import {ForumDetailService} from "./service/forum-detail.service";
+import {UserService} from "../users/service/user.service";
+import {AuthService} from "../shared/auth.service";
 
 
 
@@ -76,10 +78,14 @@ export class ForumDetailComponent implements OnInit {
 
   @Input() forum: Forum;
   dividedPostArrays: Post[][];
+  userIsRegistered: boolean;
+  forumId:string;
 
   constructor(
     private forumService: ForumService,
     private forumDetailService: ForumDetailService,
+    private userService:UserService,
+    private authService:AuthService,
     private postService: PostService,
     private route: ActivatedRoute,
     private location: Location,
@@ -90,16 +96,56 @@ export class ForumDetailComponent implements OnInit {
 
   ngOnInit(): void {
 
+    if(this.authService.userProfile){
+      if(this.authService.userProfile['user_metadata']['databaseId']) {
+        this.openForum(this.authService.userProfile['user_metadata']['databaseId']);
+        return;
+      }
+      else{
+        this.router.navigate(['/home']);
+      }
+    }
+
+    this.authService.checkLoginAndOpenLogin();
+
+    this.authService.lock.on('authenticated', (authResult: any) => {
+      //localStorage.setItem('id_token', authResult.idToken);
+
+      this.authService.lock.getProfile(authResult.idToken, (error: any, profile: any) => {
+        if (error) {
+          console.log(error);
+        }
+
+        let metaData=profile["user_metadata"];
+
+        if(!metaData.databaseId){
+          this.router.navigate(['/home']);
+        }
+        else{
+          this.openForum(metaData.databaseId);
+        }
+      });
+    });
+  }
+
+  openForum(userId){
     this.route.params
-      .switchMap((params: Params) => this.forumService.getForum(params['id']))
+      .switchMap((params: Params) => {
+        this.forumId = params['id'];
+        return this.forumService.getForum(this.forumId)
+      })
       .subscribe(forum => {
         this.forum = forum;
         this.getPosts(this.forum._id);
         this.forumDetailService.openForumId = this.forum._id;
+      })
+
+    this.userService.isRegistered(userId, this.forumId)
+      .then(isRegistered =>  {
+        if(!isRegistered){
+          this.router.navigate(['/register-for-forum', this.forumId]);
+        }
       });
-
-
-
   }
 
   goBack(): void {
