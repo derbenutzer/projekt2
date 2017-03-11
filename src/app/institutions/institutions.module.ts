@@ -5,10 +5,14 @@ import {InstitutionsStartComponent} from "./institutions-start.component";
 import {RegisterInstitutionComponent} from "./register-institution.component";
 import {AppRoutingModule} from "../app-routing.module";
 import {SharedModule} from "../shared/shared.module";
+import {DashboardComponent} from "./dashboard.component";
+import {ForumListModule} from "../forum-list/forum-list.module";
+import {MomentModule} from "angular2-moment";
+import { MaterialModule } from '@angular/material';
 
 
 @NgModule({
-  imports: [FormsModule, CommonModule, AppRoutingModule,SharedModule],
-  declarations: [InstitutionsStartComponent, RegisterInstitutionComponent],
+  imports: [FormsModule, MomentModule, CommonModule, AppRoutingModule, SharedModule, ForumListModule, MaterialModule],
+  declarations: [InstitutionsStartComponent, RegisterInstitutionComponent, DashboardComponent],
 })
 export class InstitutionsModule { }

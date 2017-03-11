@@ -4,7 +4,6 @@ import { Headers, Http, RequestOptions } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 import {PostList} from "../model/post-list";
-import {ForumDetailService} from "../../forum-detail/service/forum-detail.service";
 
 @Injectable()
 export class PostService {
@@ -98,12 +97,10 @@ export class PostService {
       .catch(this.handleError);
   }
 
-  createNewPost(keyValuePairs:Object): void{
-  this.initializePost()
-    .then(id => {
-      this.updatePost(id, keyValuePairs);
-    });
-}
+  createNewPost(keyValuePairs:Object): Promise<Post>{
+    return this.initializePost()
+      .then(id => this.updatePost(id, keyValuePairs));
+  }
 
   initializePost(): Promise<string> {
     return this.http.post(this.apiUrl,"test")
@@ -142,12 +139,12 @@ export class PostService {
       })
   }
 
-  handlePostFormSubmit(postId:string, keyValuePairs:Object){
+  handlePostFormSubmit(postId:string, keyValuePairs:Object): Promise<Post>{
     if(postId){
-      this.updatePost(postId,keyValuePairs);
+      return this.updatePost(postId,keyValuePairs);
     }
     else{
-      this.createNewPost(keyValuePairs);
+      return this.createNewPost(keyValuePairs);
     }
   }
 

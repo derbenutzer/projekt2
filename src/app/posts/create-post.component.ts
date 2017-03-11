@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { Location } from '@angular/common';
 import {PostService} from "./service/post.service";
-import {ForumService} from "../forum-list/service/forum.service";
-import {ForumDetailService} from "../forum-detail/service/forum-detail.service";
 import {Post} from "./model/post";
+import {ForumDetailService} from "../forum-detail/service/forum-detail.service";
+import {ForumService} from "../forum-list/service/forum.service";
+import {Router} from "@angular/router";
 
-//Zimport {MockPostService} from "./service/mock-post.service";
+//import {MockPostService} from "./service/mock-post.service";
 
 @Component({
   selector: 'create-post',
@@ -34,14 +34,14 @@ import {Post} from "./model/post";
 export class CreatePostComponent {
 
   pageTitle="Eintrag erstellen";
-  submitted = false;
-
   post:Post;
+  backUrl = "/forum"
 
   constructor(
     private postService: PostService,
     private forumDetailService: ForumDetailService,
-    private location: Location
+    private forumService: ForumService,
+    private router: Router
   ) {
     this.postService.getPost()
       .then(post => this.post = post);
@@ -49,15 +49,17 @@ export class CreatePostComponent {
 
   onDestroy(){
     this.postService.idOfPostToModify = null;
+    this.forumDetailService.openForumId = null;
   }
 
   sendForm(): void {
-    this.postService.handlePostFormSubmit(this.post._id,{"author":this.post.author,"title": this.post.title, "content": this.post.content, "postedIn":this.forumDetailService.openForumId});
-    this.submitted = true;
+    let forumId = this.forumDetailService.openForumId;
+    this.postService.handlePostFormSubmit(this.post._id,{"author":this.post.author,"title": this.post.title, "content": this.post.content, "postedIn":forumId})
+      .then(post => this.forumService.addPost(forumId));
   };
 
   goBack(): void {
-    this.location.back();
+    this.router.navigate([this.backUrl+"/"+this.forumDetailService.openForumId])
   }
 
 }

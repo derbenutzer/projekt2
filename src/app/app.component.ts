@@ -25,9 +25,6 @@ declare var $: any;
           <li>
             <a class="navHome" routerLink="/home"><span>Startseite</span></a>
           </li>
-          <li>
-            <a routerLink="/create-forum">Forum erstellen</a>
-          </li>
           <li *ngIf="authService.loggedIn() && authService.userProfile">
              <a routerLink="/profile"><img  class="userImage" [src]="authService.userProfile.picture"></a>
           </li>
@@ -39,13 +36,6 @@ declare var $: any;
         <ul (click)="hideSideNav()" id="mobile-nav" class="side-nav">
           <li>
             <a class="navHome" routerLink="/home"><span>Startseite</span></a>
-          </li>
-          <li>
-            <a routerLink="/create-forum">Forum erstellen</a>
-          </li>
-          <li>
-            <a (click)=authService.login() *ngIf="!authService.loggedIn()">Log In</a>
-            <a (click)=authService.logout() *ngIf="authService.loggedIn()">Log Out</a>
           </li>
           <li *ngIf="authService.loggedIn() && authService.userProfile">
              <a routerLink="/profile"><img  class="userImage" [src]="authService.userProfile.picture"></a>

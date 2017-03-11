@@ -2,73 +2,73 @@ import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 //import {Forum} from "./forum";
 import {ForumService} from "../forum-list/service/forum.service";
-import {ActivatedRoute, Params} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Forum} from "./model/forum";
+import {AuthService} from "../shared/auth.service";
+import {Institution} from "../institutions/model/Institution";
+import {UserService} from "../users/service/user.service";
 //import {ForumOwner} from "./forum-owner";
 
 @Component({
   selector: 'create-forum',
   template: `    
     <h2>{{pageTitle}}</h2>
+    <button type="button" class="waves-effect waves-light btn" (click)="goBack()">Zurück</button>
+    <br>
+    <br>
     <div *ngIf="forum">
-    <form (submit)="sendForm()">
-      <div class="form-group">
-        <label for="title">Titel</label>
-        <input name="title" type="text" class="form-control" [(ngModel)]="forum.title" placeholder="Titel" required>
-      </div>
-      <div class="form-group">
-        <label for="owner">Erstellt von:</label>
-        <input name="owner" type="text" class="form-control" [(ngModel)]="forum.owner" placeholder="Name des Erstellers" required>
-      </div>
-      <div class="form-group">
-        <label for="categories">Kategorien</label>
-        <input name="categoriesInput" type="text" class="form-control" [(ngModel)]="categoriesInput" placeholder="Kategorie1, Kategorie2, Kategorie3, etc." >
-      </div>
-      <div class="form-group">
-        <label for="institutions">Institutionen</label>
-        <input name="institutionsInput" type="text" class="form-control" [(ngModel)]="institutionsInput" placeholder="Institution1, Institution2, Institution3, etc." >
-      </div>
-      <button class="btn waves-effect waves-light" type="submit" name="action">Senden
-        <i class="material-icons right">send</i>
-      </button>
-      <button type="button" class="waves-effect waves-light btn" (click)="goBack()">Zurück</button>
-    </form>
+      <form (submit)="sendForm()">
+        <div class="form-group">
+          <label for="title">Titel</label>
+          <input name="title" type="text" class="form-control" [(ngModel)]="forum.title" placeholder="Titel" required>
+        </div>
+        <div class="form-group">
+          <label for="categories">Kategorien</label>
+          <input name="categoriesInput" type="text" class="form-control" [(ngModel)]="categoriesInput" placeholder="Kategorie1, Kategorie2, Kategorie3, etc." >
+        </div>
+      <!--  <div class="form-group">
+          <label for="institutions">Institutionen</label>
+          <input name="institutionsInput" type="text" class="form-control" [(ngModel)]="institutionsInput" placeholder="Institution1, Institution2, Institution3, etc." >
+        </div>-->
+        <button class="btn waves-effect waves-light" type="submit" name="action">Senden
+          <i class="material-icons right">send</i>
+        </button>
+      </form>
+      <br>
     </div>
   `,
 })
 export class CreateForumComponent {
 
-  submitted = false;
-  isEdit = false;
-
   pageTitle: string;
-  categoriesInput: string;
-  institutionsInput: string;
+  backUrl= "/dashboard";
+
+  categoriesInput: string="";
   forum: Forum;
+  institution: Institution;
 
   constructor(private forumService: ForumService,
-              private route: ActivatedRoute,
-              private location: Location) {
+              private authService: AuthService,
+              private userService: UserService,
+              private router: Router,
+              private location: Location)
+  {
+
+    this.forumService.getForum()
+      .then(forum => {
+        this.forum = forum;
+        this.fillCategories();
+      });
+
+    this.userService.getInstitution(this.authService.userProfile['user_metadata']['databaseId'])
+      .then(institution => this.institution = institution);
+
+
+
   };
 
-  ngOnInit(): void {
-
-    if (window.location.href.indexOf("edit") > -1) {
-
-      this.route.params
-        .switchMap((params: Params) => this.forumService.getForum(params['id']))
-        .subscribe(forum => {
-          this.forum = forum;
-          this.categoriesInput = forum.categories.join(",");
-          this.isEdit = true;
-          this.pageTitle="Forum editieren";
-        })
-    }
-    else {
-      this.forum  = new Forum('', '', [''], ['']);
-      this.categoriesInput="";
-      this.pageTitle="Forum erstellen";
-    }
+  onDestroy(){
+    this.forumService.idOfForumToModify = null;
   }
 
   handleCategoriesInput(): void {
@@ -80,41 +80,32 @@ export class CreateForumComponent {
     }
   }
 
-  handleInstitutionsInput(): void {
-    if(this.institutionsInput){
-      this.forum.institutions = this.institutionsInput.split(",");
+  fillCategories(): void {
+
+    if(!this.forum.categories){
+      return;
     }
-    else{
-      this.forum.institutions = ["noch keine Institution"]
+
+    for (let category of this.forum.categories){
+      this.categoriesInput += category +",";
     }
+    this.categoriesInput = this.categoriesInput.slice(0, -1);
   }
 
   sendForm(): void {
-
     this.handleCategoriesInput();
-    this.handleInstitutionsInput();
+    //this.handleInstitutionsInput();
 
-    if(this.isEdit){
-      this.updateForum();
-    }
-    else{
-      this.createNewForum();
-    }
-
-    this.submitted = true;
-
+    let institution = this.institution.institutionName;
+    this.forumService.handleForumFormSubmit(this.forum._id,{"title": this.forum.title, "owner":this.institution._id ,"institution": institution,"categories": this.forum.categories})
+      .then(forum => {
+        console.log(forum);
+        this.userService.updateUser(this.institution._id,{"ownerOf":forum._id})
+      });
   };
 
-  createNewForum(): void {
-    this.forumService.createNewForum(this.forum.title, this.forum.owner, this.forum.categories, this.forum.institutions);
-  }
-
-  updateForum(): void {
-    this.forumService.updateForum(this.forum._id, {"title": this.forum.title, "owner": this.forum.owner, "categories": this.forum.categories, "institutions": this.forum.institutions});
-  }
-
   goBack(): void {
-    this.location.back();
+    this.router.navigate([this.backUrl]);
   }
 
 }

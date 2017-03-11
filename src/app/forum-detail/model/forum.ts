@@ -1,28 +1,12 @@
-//import {ForumOwner} from "./forum-owner";
-
-import {Post} from "../../posts/model/post";
 export class Forum {
 
-  _id:string;
-  __v:number;
-  createDate:string;
-
-  title:string;
+  _id: string;
+  createDate: Date;
+  title: string;
+  institution: string;
   owner:string;
-  categories:string[];
-  institutions:string[];
+  categories: string[];
 
-  posts:Post[];
 
-  constructor(
-    title: string,
-    owner: string,
-    categories: string[],
-    institutions: string[]
-  ) {
-    this.title=title;
-    this.owner=owner;
-    this.categories=categories;
-    this.institutions=institutions;
-  }
+  constructor() {};
 }

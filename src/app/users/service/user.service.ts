@@ -3,6 +3,7 @@ import { Headers, Http, RequestOptions } from '@angular/http';
 import {User} from "../model/user";
 
 import 'rxjs/add/operator/toPromise';
+import {Institution} from "../../institutions/model/Institution";
 
 
 @Injectable()
@@ -28,6 +29,10 @@ export class UserService {
     let options = new RequestOptions({ headers: headers });
 
     const url = `${this.apiUrl}/${userId}`;
+
+    console.log("updateUser");
+    console.log(userId);
+    console.log(keyValuePairs);
 
     return this.http.put(url,keyValuePairs,options)
       .toPromise()
@@ -61,6 +66,10 @@ export class UserService {
       .catch(this.handleError);
   }
 
+  getInstitution(id:string): Promise<Institution>{
+    return this.getUser(id);
+  }
+
   getUser(id: string): Promise<User> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get(url)
@@ -77,6 +86,16 @@ export class UserService {
     return this.getUser(userId)
       .then(user => !(user.registeredFor.indexOf(forumId)==-1))
       .catch(this.handleError);
+  }
+
+  registerUserAsInstitution(userId:string, keyValuePairs:Object){
+    console.log(keyValuePairs);
+    this.updateUser(userId, keyValuePairs)
+  }
+
+  checkIfUserIsInstitution(userId:string) :Promise<boolean>{
+    return this.getUser(userId)
+      .then(user => user.isInstitution);
   }
 
   private handleError(error: any): Promise<any> {

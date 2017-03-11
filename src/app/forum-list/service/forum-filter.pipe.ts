@@ -19,8 +19,8 @@ export class CategoryFilterPipe implements PipeTransform {
   name: 'forumFilter'
 })
 export class ForumFilterPipe implements PipeTransform {
-  transform(forumArray: any, filter: any): any {
 
+  transform(forumArray: any, filter: any): any {
     if (filter && Array.isArray(forumArray)) {
 
       let filterKeys = Object.keys(filter);

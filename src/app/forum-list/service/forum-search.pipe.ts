@@ -14,7 +14,7 @@ export class ForumSearchPipe implements PipeTransform {
     }
 
     let filterStr = filterStrings.toLowerCase();
-    return forumArray.filter(forum => forum.title.toLowerCase().indexOf(filterStr) !== -1 || forum.categories.toString().toLowerCase().indexOf(filterStr) !== -1 || forum.institutions.toString().toLowerCase().indexOf(filterStr) !== -1) ;
+    return forumArray.filter(forum => forum.title.toLowerCase().indexOf(filterStr) !== -1 || forum.categories.toString().toLowerCase().indexOf(filterStr) !== -1 || forum.institution.toString().toLowerCase().indexOf(filterStr) !== -1) ;
   }
 
 }

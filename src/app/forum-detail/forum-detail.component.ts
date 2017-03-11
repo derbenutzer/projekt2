@@ -1,13 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {ActivatedRoute, Params, Router}   from '@angular/router';
-import { Location }                 from '@angular/common';
 import 'rxjs/add/operator/switchMap';
 
 import { Forum } from './model/forum';
 import { ForumService } from '../forum-list/service/forum.service';
-//import {MockPostService} from "../posts/service/mock-post.service";
 import {Post} from "../posts/model/post";
-import {PostList} from "../posts/model/post-list";
 import {PostService} from "../posts/service/post.service";
 import {ForumDetailService} from "./service/forum-detail.service";
 import {UserService} from "../users/service/user.service";
@@ -53,7 +50,7 @@ import {AuthService} from "../shared/auth.service";
                 <span class="card-title grey-text text-darken-4">{{ post.title }}<i class="material-icons right">close</i></span>
                 <p>{{ post.content }}</p>
                 <p>Ort: ToDo</p>
-                <p>Datum: <time>{{ post.createDate | amDateFormat:'LL'}}</time></p>
+                <p>Datum: <time>{{ post.createDate | amDateFormat: 'DD-MM-YYYY'}}</time></p>
               </div>
             </div>
           </div>
@@ -72,7 +69,7 @@ export class ForumDetailComponent implements OnInit {
   @Input() forum: Forum;
   dividedPostArrays: Post[][];
   forumId:string;
-  backUrl="forum-list";
+  backUrl="/forum-list";
 
   constructor(
     private forumService: ForumService,
@@ -81,7 +78,6 @@ export class ForumDetailComponent implements OnInit {
     private authService:AuthService,
     private postService: PostService,
     private route: ActivatedRoute,
-    private location: Location,
     private router: Router
   ) {}
 
@@ -125,7 +121,7 @@ export class ForumDetailComponent implements OnInit {
     this.route.params
       .switchMap((params: Params) => {
         this.forumId = params['id'];
-        return this.forumService.getForum(this.forumId)
+        return this.forumService.getForumById(this.forumId)
       })
       .subscribe(forum => {
         this.forum = forum;
@@ -142,7 +138,7 @@ export class ForumDetailComponent implements OnInit {
   }
 
   goBack(): void {
-    this.location.back();
+    this.router.navigate([this.backUrl]);
   }
 
   deleteForum(): void {

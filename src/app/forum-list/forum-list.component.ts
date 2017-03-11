@@ -55,9 +55,9 @@ import {UserService} from "../users/service/user.service";
     </div>
 	</div>
     <ul class="collection">
-      <li *ngFor="let forum of forumList.getSortedByDate() | forumSearch:searchFilter | forumFilter:{categories: categoryFilter} | forumFilter:{institutions: institutionFilter} | forumFilter:{_id: idFilter}" class="collection-item avatar">
+      <li *ngFor="let forum of forumList.getSortedByDate() | forumSearch:searchFilter | forumFilter:{categories: categoryFilter} | forumFilter:{institution: institutionFilter} | forumFilter:{_id: idFilter}" class="collection-item avatar">
         <i class="material-icons circle blue">room</i>
-        <h3 class="title">{{forum.title}} - <span *ngFor="let institution of forum.institutions">{{institution}}</span></h3>
+        <h3 class="title">{{forum.title}} - <span> {{forum.institution}}</span></h3>
         <p>Ort und Wirkungsgebiet<br>
         <span *ngFor="let category of forum.categories" class="category">
                 {{category}}
@@ -76,14 +76,13 @@ export class ForumListComponent implements OnInit {
 
   title="Runde Tische";
   searchFilter: string;
-  categoryFilter = [];
-  institutionFilter = [];
+  categoryFilter: string[] = [];
+  institutionFilter:string[] = [];
   idFilter=[];
   idFilterIsSet=false;
   isRegisteredForAForum=false;
 
   catChoices = [];
-  //instChoices = ["test1","test2","test3"];
   instChoices = [];
 
   filters:{}[];
@@ -105,8 +104,7 @@ export class ForumListComponent implements OnInit {
     this.idFilterIsSet=false;
 
     if(this.authService.loggedIn()){
-      console.log("setIdFilter on init");
-      this.setIdFilter();
+      this.setIdFilter(this.authService.userProfile);
     }
     else{
       this.authService.lock.on('authenticated', (authResult: any) => {
@@ -115,7 +113,9 @@ export class ForumListComponent implements OnInit {
             console.log(error);
           }
           this.idFilterIsSet=false;
-          this.setIdFilter();
+          if(profile['user_metadata']) {
+            this.setIdFilter(profile);
+          }
         });
       });
     }
@@ -129,10 +129,8 @@ export class ForumListComponent implements OnInit {
           this.catChoices.push(category);
         }
       }
-      for(let institution of forum.institutions){
-        if(this.instChoices.indexOf(institution) < 0){
-          this.instChoices.push(institution);
-        }
+      if(this.instChoices.indexOf(forum.institution) < 0){
+        this.instChoices.push(forum.institution);
       }
     }
     this.filters=[{name:"Institutionen",choices:this.instChoices},{name:"Kategorien",choices:this.catChoices}];
@@ -156,24 +154,20 @@ export class ForumListComponent implements OnInit {
       this.idFilter=[];
     }
     else {
-      this.setIdFilter();
+      this.setIdFilter(this.authService.userProfile);
     }
   }
 
-  setIdFilter() {
-    console.log("setIdFilter");
-    if (this.authService.userProfile['user_metadata']) {
-      this.userService.getUser(this.authService.userProfile['user_metadata']['databaseId'])
-        .then(user => {
-          console.log(user.registeredFor.length > 0);
-          if (user.registeredFor.length > 0) {
-            if (this.idFilterIsSet) {
-              this.idFilter = user.registeredFor;
-            }
-            this.isRegisteredForAForum = true;
+  setIdFilter(profile: Object){
+    this.userService.getUser(profile['user_metadata']['databaseId'])
+      .then(user => {
+        if (user.registeredFor.length>0){
+          if(this.idFilterIsSet){
+            this.idFilter = user.registeredFor;
           }
-        });
-    }
+          this.isRegisteredForAForum = true;
+        }
+      });
   }
 
   openForum(forumId:string){

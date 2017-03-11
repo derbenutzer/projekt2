@@ -11,6 +11,7 @@ import {ProfileComponent} from "./users/profile.component";
 import {SubmitOKComponent} from "./users/submit-ok.component";
 import {RegisterForForumComponent} from "./users/register-for-forum.component";
 import {InstitutionsStartComponent} from "./institutions/institutions-start.component";
+import {DashboardComponent} from "./institutions/dashboard.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -18,14 +19,14 @@ const routes: Routes = [
   { path: 'forum-list',  component: ForumListComponent },
   { path: 'map-view',  component: MapViewComponent },
   { path: 'forum/:id', component: ForumDetailComponent },
-  { path: 'forum/:id/edit', component: CreateForumComponent},
-  { path: 'create-forum',     component: CreateForumComponent},
+  { path: 'forum', component: CreateForumComponent},
   { path: 'create-post', component: CreatePostComponent},
   { path: 'profile',     component: ProfileComponent},
   { path: 'submit-ok',     component: SubmitOKComponent},
   { path: 'register-for-forum/:id',     component: RegisterForForumComponent},
   { path: 'institutions-start',     component: InstitutionsStartComponent},
-  { path: 'register-institution',     component: RegisterInstitutionComponent}
+  { path: 'register-institution',     component: RegisterInstitutionComponent},
+  { path: 'dashboard',     component: DashboardComponent}
 
 ];
 @NgModule({

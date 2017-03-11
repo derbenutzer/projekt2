@@ -16,6 +16,6 @@ import {ForumFilterPipe} from "./service/forum-filter.pipe";
   imports: [ForumDetailModule, CommonModule, FormsModule, AppRoutingModule, MaterializeModule],
   declarations: [ForumListComponent, ForumSearchPipe, ForumFilterPipe, MapViewComponent, ListFilterComponent],
   providers: [ForumService],
-  exports: [ForumListComponent]
+  exports: [ForumListComponent, ForumFilterPipe]
 })
 export class ForumListModule { }
