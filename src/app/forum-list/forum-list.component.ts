@@ -119,6 +119,8 @@ export class ForumListComponent implements OnInit {
         });
       });
     }
+    console.log('list of stuff:');
+    console.log(this.forumList);
   }
 
 

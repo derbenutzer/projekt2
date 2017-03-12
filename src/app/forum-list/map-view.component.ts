@@ -45,14 +45,20 @@ import {AuthHttp} from "angular2-jwt";
           </div>
         </nav>
       </div>
-      
+
 	</div>
   <div class="row">
     <div class="col s4"><a [routerLink]="['/forum-list']" class="waves-effect waves-light btn"><i class="material-icons left">view_list</i>Liste</a></div>
   </div>
   
   <div>
-  <img class="responsive-img" src="assets/images/map-dummy.png">
+    <ng2-map 
+      zoom="7" 
+      center="Switzerland"
+      (mapReady$)="onMapReady($event)"
+      (mapClick)="onMapClick($event)"
+      (idle)="onIdle($event)">
+    </ng2-map>
   </div>
   `,
   providers:[AuthHttp]
@@ -72,9 +78,25 @@ export class MapViewComponent implements OnInit {
   ngOnInit(): void {
     this.forumService.getForums()
       .then(forumList => this.forumList = forumList);
+    console.log('list of stuff:');
+    console.log(this.forumService.getForums());
   }
 
   resetSearchInput(): void{
     this.searchFilter="";
+  }
+
+  onMapReady(map) {
+    console.log('map', map);
+    console.log('markers', map.markers);  // to get all markers as an array
+  }
+  onIdle(event) {
+    console.log('map', event.target);
+  }
+  onMarkerInit(marker) {
+    console.log('marker', marker);
+  }
+  onMapClick(event) {
+    console.log('click');
   }
 }
