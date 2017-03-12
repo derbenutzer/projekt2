@@ -9,10 +9,11 @@ import {DashboardComponent} from "./dashboard.component";
 import {ForumListModule} from "../forum-list/forum-list.module";
 import {MomentModule} from "angular2-moment";
 import { MaterialModule } from '@angular/material';
+import {CreateForumComponent} from "./create-forum.component";
 
 
 @NgModule({
   imports: [FormsModule, MomentModule, CommonModule, AppRoutingModule, SharedModule, ForumListModule, MaterialModule],
-  declarations: [InstitutionsStartComponent, RegisterInstitutionComponent, DashboardComponent],
+  declarations: [InstitutionsStartComponent, RegisterInstitutionComponent, DashboardComponent, CreateForumComponent],
 })
 export class InstitutionsModule { }

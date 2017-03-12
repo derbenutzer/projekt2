@@ -45,7 +45,8 @@ export class RegisterForForumComponent implements OnInit{
         return this.userService.registerUserForForum(this.authService.userProfile['user_metadata']['databaseId'], forumId);
       })
       .subscribe(response => {
-        this.forumService.addUser(forumId);
+        this.forumService.addUser(forumId)
+          .then(res => this.goBack());
       });
   };
 

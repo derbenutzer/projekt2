@@ -3,9 +3,9 @@ import { Location } from '@angular/common';
 //import {Forum} from "./forum";
 import {ForumService} from "../forum-list/service/forum.service";
 import {ActivatedRoute, Params, Router} from "@angular/router";
-import {Forum} from "./model/forum";
+import {Forum} from "../forum-detail/model/forum";
 import {AuthService} from "../shared/auth.service";
-import {Institution} from "../institutions/model/Institution";
+import {Institution} from "./model/Institution";
 import {UserService} from "../users/service/user.service";
 //import {ForumOwner} from "./forum-owner";
 
@@ -101,6 +101,7 @@ export class CreateForumComponent {
       .then(forum => {
         console.log(forum);
         this.userService.updateUser(this.institution._id,{"ownerOf":forum._id})
+          .then(res => this.goBack());
       });
   };
 
