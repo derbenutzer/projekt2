@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import {Forum} from "../forum-detail/model/forum";
 import {ForumService} from "./service/forum.service";
 import {ForumList} from "./model/forum-list";
+import {Router} from "@angular/router";
 
 import {AuthHttp} from "angular2-jwt";
 
 @Component({
   selector: 'map-view',
+  styles: ['.mapView { height: 50vh; }'],
   template: `
     <h2>{{title}}</h2>
     
@@ -53,11 +55,15 @@ import {AuthHttp} from "angular2-jwt";
   
   <div>
     <ng2-map 
-      zoom="7" 
+      class="mapView"
+      zoom="8" 
       center="Switzerland"
       (mapReady$)="onMapReady($event)"
       (mapClick)="onMapClick($event)"
       (idle)="onIdle($event)">
+        <marker *ngFor="let pos of positions" 
+        [position]="pos"
+        (initialized$)="onMarkerInit($event)"></marker>
     </ng2-map>
   </div>
   `,
@@ -70,10 +76,13 @@ export class MapViewComponent implements OnInit {
   title="Kartenansicht";
   searchFilter: string;
   categoryFilter: string;
+  forumStash = [];
+  markerStash = [];
 
   forumList: ForumList = new ForumList([]);
 
-  constructor(private forumService: ForumService) { }
+  constructor(private forumService: ForumService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.forumService.getForums()
@@ -85,18 +94,49 @@ export class MapViewComponent implements OnInit {
   resetSearchInput(): void{
     this.searchFilter="";
   }
-
+/*todo: make a marker for each forum and place on map via lat and lon. */
   onMapReady(map) {
-    console.log('map', map);
-    console.log('markers', map.markers);  // to get all markers as an array
+    // filling forum stash
+    for (let entry of this.forumList.forums) {
+      this.forumStash.push(entry);
+    }
+
+    // filling marker stash
+    for (let latlon of this.forumStash) {
+      // prepare marker content:
+      let contentString = '<div class="markerContent">'+
+        '<h4>'+latlon.title+'</h4>'+
+        '<h5>'+latlon.institution+'</h5>'+
+        '<a href="/forum/'+latlon._id+'" class="jsLink secondary-content"><i class="material-icons">send</i></a>'+
+        '</div>';
+      let infoWindow = new google.maps.InfoWindow({
+        content: contentString
+      });
+      // get coordinates to put marker
+      let coords = { lat: latlon.lat, lng: latlon.lon};
+      // create marker
+      let marker = new google.maps.Marker({
+        map: map,
+        position: coords
+      });
+      // add content to marker
+      marker.addListener('click', function() {
+        infoWindow.open(map, marker);
+      });
+      // store marker in stash
+      this.markerStash.push(marker);
+    }
+    console.log(this.markerStash);
   }
+
+  // map events, not used at the time
   onIdle(event) {
-    console.log('map', event.target);
+    /*console.log('map', event.target);*/
   }
   onMarkerInit(marker) {
-    console.log('marker', marker);
+    /*console.log('marker', marker);*/
   }
   onMapClick(event) {
-    console.log('click');
+    /*console.log('click');*/
   }
 }
