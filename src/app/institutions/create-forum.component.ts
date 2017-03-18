@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
-import { Location } from '@angular/common';
-//import {Forum} from "./forum";
 import {ForumService} from "../forum-list/service/forum.service";
-import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Forum} from "../forum-detail/model/forum";
 import {AuthService} from "../shared/auth.service";
 import {Institution} from "./model/Institution";
 import {UserService} from "../users/service/user.service";
-//import {ForumOwner} from "./forum-owner";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'create-forum',
@@ -23,8 +20,12 @@ import {UserService} from "../users/service/user.service";
           <input name="title" type="text" class="form-control" [(ngModel)]="forum.title" placeholder="Titel" required>
         </div>
         <div class="form-group">
+          <label for="description">Beschreibung</label>
+          <input name="description" type="text" class="form-control" [(ngModel)]="forum.description" placeholder="Beschreiben sie den runden Tisch" >
+        </div>
+        <div class="form-group">
           <label for="categories">Kategorien</label>
-          <input name="categoriesInput" type="text" class="form-control" [(ngModel)]="categoriesInput" placeholder="Kategorie1, Kategorie2, Kategorie3, etc." >
+          <input name="categoriesInput" type="text" class="form-control" [(ngModel)]="categoriesInput" placeholder="Kategorie1, Kategorie2, etc." >
         </div>
       <!--  <div class="form-group">
           <label for="institutions">Institutionen</label>
@@ -50,8 +51,7 @@ export class CreateForumComponent {
   constructor(private forumService: ForumService,
               private authService: AuthService,
               private userService: UserService,
-              private router: Router,
-              private location: Location)
+              private router: Router)
   {
 
     this.forumService.getForum()
@@ -62,12 +62,9 @@ export class CreateForumComponent {
 
     this.userService.getInstitution(this.authService.userProfile['user_metadata']['databaseId'])
       .then(institution => this.institution = institution);
-
-
-
   };
 
-  onDestroy(){
+  ngOnDestroy(){
     this.forumService.idOfForumToModify = null;
   }
 
@@ -97,10 +94,10 @@ export class CreateForumComponent {
     //this.handleInstitutionsInput();
 
     let institution = this.institution.institutionName;
-    this.forumService.handleForumFormSubmit(this.forum._id,{"title": this.forum.title, "owner":this.institution._id ,"institution": institution,"categories": this.forum.categories})
+    this.forumService.handleForumFormSubmit(this.forum._id,{"title": this.forum.title, "description":this.forum.description, "owner":this.institution._id ,"institution": institution,"categories": this.forum.categories})
       .then(forum => {
         console.log(forum);
-        this.userService.updateUser(this.institution._id,{"ownerOf":forum._id})
+        this.userService.updateUser(this.institution._id,{"ownerOf":forum._id, "registeredFor":forum._id})
           .then(res => this.goBack());
       });
   };

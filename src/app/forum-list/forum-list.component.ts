@@ -113,9 +113,8 @@ export class ForumListComponent implements OnInit {
             console.log(error);
           }
           this.idFilterIsSet=false;
-          if(profile['user_metadata']) {
-            this.setIdFilter(profile);
-          }
+          this.setIdFilter(profile);
+
         });
       });
     }
@@ -159,6 +158,11 @@ export class ForumListComponent implements OnInit {
   }
 
   setIdFilter(profile: Object){
+
+    if(!profile['user_metadata']){
+      return;
+    }
+
     this.userService.getUser(profile['user_metadata']['databaseId'])
       .then(user => {
         if (user.registeredFor.length>0){

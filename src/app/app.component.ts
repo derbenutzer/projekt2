@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {AuthService} from "./shared/auth.service";
-declare var $: any;
+declare let $: any;
 
 @Component({
   selector: 'my-app',
@@ -65,13 +65,11 @@ declare var $: any;
 export class AppComponent{
 
   title = 'FEE - Project 2';
-  sideNavIsVisible = true;
 
   constructor(private authService: AuthService) {};
 
   hideSideNav(){
     $('.button-collapse').sideNav('hide');
   }
-
 
 }

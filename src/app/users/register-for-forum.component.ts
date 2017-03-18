@@ -20,7 +20,7 @@ import {ForumService} from "../forum-list/service/forum.service";
 })
 export class RegisterForForumComponent implements OnInit{
 
-  pageTitle="Für Forum registrieren"
+  pageTitle="Für Forum registrieren";
 
   constructor(
     private authService: AuthService,
@@ -34,9 +34,7 @@ export class RegisterForForumComponent implements OnInit{
       console.log("oninit");
   }
 
-
   sendRequest(): void {
-
     let forumId:string;
 
     this.route.params

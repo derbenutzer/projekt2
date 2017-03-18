@@ -11,16 +11,16 @@ import { Component} from '@angular/core';
 	</div>
 	<div class="container">
 		<div class="row section">
-			<div class="col s6 valign-wrapper hoverable">
-				<div class="section center-align">
+			<div class="col s6 valign-wrapper">
+				<div class="icon-block section center-align">
 					<i class="large material-icons">business</i>
 					<h3>Registrierung</h3>
 					<p>Registrieren Sie sich als Institution</p>
 					<a routerLink="/register-institution" class="waves-effect waves-light btn-large">Registrierung</a>
 				</div>
 			</div>
-			<div class="col s6 valign-wrapper hoverable">
-				<div class="section center-align">
+			<div class="col s6 valign-wrapper">
+				<div class="icon-block section center-align">
 					<i class="large material-icons">dashboard</i>
 					<h3>Verwaltung</h3>
 					<p>Verwalten Sie ihre runden Tische</p>
@@ -29,7 +29,25 @@ import { Component} from '@angular/core';
 			</div>
 		</div>
 	</div>
+
   `,
+  styles:[`
+
+    @media only screen and (max-width: 650px){
+          .row .col.s6 {
+              width: 100%;
+              margin-left: auto;
+              left: auto;
+              right: auto;
+          }
+    }
+    
+    .icon-block {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+`]
 })
 
 
