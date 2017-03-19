@@ -6,7 +6,6 @@ import {ForumDetailComponent} from "./forum-detail/forum-detail.component";
 import {CreatePostComponent} from "./posts/create-post.component";
 import {ForumListComponent} from "./forum-list/forum-list.component";
 import {RegisterInstitutionComponent} from "./institutions/register-institution.component";
-import {MapViewComponent} from "./forum-list/map-view.component";
 import {ProfileComponent} from "./users/profile.component";
 import {SubmitOKComponent} from "./users/submit-ok.component";
 import {RegisterForForumComponent} from "./users/register-for-forum.component";
@@ -18,7 +17,6 @@ const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home',  component: HomeComponent },
   { path: 'forum-list',  component: ForumListComponent },
-  { path: 'map-view',  component: MapViewComponent },
   { path: 'forum/:id', component: ForumDetailComponent },
   { path: 'forum', component: CreateForumComponent},
   { path: 'create-post', component: CreatePostComponent},
