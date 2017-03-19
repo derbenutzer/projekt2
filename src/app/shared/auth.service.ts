@@ -43,10 +43,10 @@ export class AuthService {
         console.log(metaData);
 
         if(!metaData){
-          console.log("create new user");
-          this.userService.createNewUser({"authId":this.userProfile['user_id']})
+          this.userService.createNewUser({"authId":this.userProfile['user_id'], "userName": this.userProfile['nickname'], "email": this.userProfile['email'], "userImageUrl": this.userProfile['picture']})
             .then(userId => {
               this.editProfile({"databaseId":userId});
+              this.router.navigate(["/profile"]);
             });
         }
       });
@@ -89,13 +89,30 @@ export class AuthService {
     return "no image";
   }
 
+  getDatabaseId(){
+    if(this.userProfile['user_metadata']) {
+      return this.userProfile['user_metadata']['databaseId'];
+    }
+    else{
+      return false;
+    }
+  }
+
+  updateUserOnDatabase(keyValuePair){
+    if(this.getDatabaseId()) {
+      this.userService.updateUser(this.getDatabaseId(), keyValuePair);
+    }
+  }
+
   editProfile(keyValuePair) {
     var headers: any = {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     }
 
-    let user_metadata= keyValuePair;
+
+
+    let user_metadata = keyValuePair;
     //user_metadata[key]=value;
 
     var data: any = JSON.stringify({user_metadata});
@@ -108,6 +125,9 @@ export class AuthService {
           //Update profile
           this.userProfile = response;
           localStorage.setItem('profile', JSON.stringify(response));
+
+          this.updateUserOnDatabase(keyValuePair);
+
         },
         error => alert(error.json().message)
       );

@@ -12,7 +12,7 @@ export class UserService {
   userId:string;
 
   private apiUrl = 'http://localhost:8180/api/user';  // URL to web api
-  //private apiUrl2 = 'http://localhost:8180/api/users';  // URL to web api
+  private apiUrl2 = 'http://localhost:8180/api/users';  // URL to web api
 
   constructor (private http: Http){};
 
@@ -47,7 +47,7 @@ export class UserService {
   }
 
   getUsersByForumId(forumId): Promise<User[]> {
-    const url = `${this.apiUrl}/${forumId}`;
+    const url = `${this.apiUrl2}/${forumId}`;
     return this.http.get(url)
       .toPromise()
       .then(response => response.json() as User[])

@@ -6,10 +6,11 @@ import {ProfileComponent} from "./profile.component";
 import {SubmitOKComponent} from "./submit-ok.component";
 import {RegisterForForumComponent} from "./register-for-forum.component";
 import {UserService} from "./service/user.service";
+import {SharedModule} from "../shared/shared.module";
 
 
 @NgModule({
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, SharedModule],
   declarations: [ProfileComponent, FormInputComponent, SubmitOKComponent, RegisterForForumComponent],
   providers: [UserService],
 })

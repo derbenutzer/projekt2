@@ -8,37 +8,7 @@ import {FormInputComponent} from "./form-input.component";
 @Component({
   selector: 'profile',
   template: `
-<!--    <div *ngIf="authService.loggedIn() && authService.userProfile">
-      <div class="row">
-        <div class="col-md-6">
-          <h3>Profile</h3>
-          <img [src]="authService.userProfile.picture" alt="" class="profile-img">
-          <form (ngSubmit)="onSubmit()">
-          
-&lt;!&ndash;            <div class="form-group">
-              <label for="name">Address</label>
-              <input type="text" class="form-control" [(ngModel)]="address" name="address" placeholder="Enter address">
-            </div>&ndash;&gt;
-   
-            <form-input text="Benutzername" placeholder="Benutzernamen eingeben" name="nickname" (onInputChange)="updateTempProfile($event)"></form-input>
-            
-            <form-input text="Email" placeholder="Email Adresse eingeben" name="email" (onInputChange)="updateTempProfile($event)"></form-input>
-            
-            <form-input text="Vorname" placeholder="Vornamen eingeben" name="firstname" (onInputChange)="updateTempProfile($event)"></form-input>
-            
-            <form-input text="Nachname" placeholder="Nachnamen eingeben" name="lastname" (onInputChange)="updateTempProfile($event)"></form-input>
-            
-            <form-input text="Adresse" placeholder="Adresse eingeben" name="address" (onInputChange)="updateTempProfile($event)"></form-input>
-            
-            <form-input text="Telefon" placeholder="Telefonnummer eingeben" name="phone" (onInputChange)="updateTempProfile($event)"></form-input>
-            
-            <button type="submit" class="btn btn-default">Submit</button>
-          </form>
-        </div>
-      </div>
-    </div>
-    <h4 *ngIf="!authService.loggedIn()">You are not logged in, please click 'Log in' button to login</h4>-->
-    
+
     <div *ngIf="authService.loggedIn() && authService.userProfile">
       <div class="row section">
         <div class="col s6">
@@ -52,11 +22,11 @@ import {FormInputComponent} from "./form-input.component";
           
             <div class="row">
               <div class="input-field col s6">
-                <form-input text="Vorname" placeholder="Vornamen eingeben" name="firstname" (onInputChange)="updateTempProfile($event)"></form-input>
+                <form-input text="Vorname" placeholder="Vornamen eingeben" name="firstName" (onInputChange)="updateTempProfile($event)"></form-input>
               </div>
               
               <div class="input-field col s6">
-                <form-input text="Nachname" placeholder="Nachnamen eingeben" name="lastname" (onInputChange)="updateTempProfile($event)"></form-input>
+                <form-input text="Nachname" placeholder="Nachnamen eingeben" name="lastName" (onInputChange)="updateTempProfile($event)"></form-input>
               </div>
             </div>
             
@@ -86,7 +56,7 @@ import {FormInputComponent} from "./form-input.component";
 			  
             <div class="row radioInput">
               <div class="input-field col s12">
-              <p>Wie möchten sie kontaktiert werden?</p>
+              <p>Wie möchten Sie kontaktiert werden?</p>
                 <p>
                   <input [(ngModel)]="preferredContact" [checked]="preferredContact=='email'" name="preferredContact" type="radio" value="email" id="emailRadio"/>
                   <label for="emailRadio">Per Email</label>
@@ -111,7 +81,9 @@ import {FormInputComponent} from "./form-input.component";
         </div>
       </div>
     </div>
-    <h3 *ngIf="!authService.loggedIn()">Sie sind nicht eingeloggt. Bitte klicken sie auf "Anmelden"</h3>
+    <div *ngIf="!authService.loggedIn()">
+       <login-to-continue [backUrl]="backUrl"></login-to-continue>
+    </div>
   `,
   styles:[`
 
@@ -128,6 +100,7 @@ export class ProfileComponent {
 
   tempProfile: Object[]=[];
   preferredContact = "email";
+  backUrl="/home";
 
   @ViewChildren(FormInputComponent)
   private inputs:  QueryList<FormInputComponent>;
@@ -152,8 +125,7 @@ export class ProfileComponent {
   }
 
   onSubmit() {
-    console.log(this.preferredContact);
-    this.updateTempProfile({"contactMethod":this.preferredContact});
+    this.updateTempProfile({"preferredContact":this.preferredContact});
 
     for(let index in this.tempProfile) {
       this.authService.editProfile(this.tempProfile[index]);

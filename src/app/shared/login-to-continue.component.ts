@@ -16,7 +16,6 @@ import {AuthService} from "./auth.service";
 })
 export class LoginToContinueComponent {
 
-  @Input() title: string;
   @Input() backUrl: string;
 
   constructor(

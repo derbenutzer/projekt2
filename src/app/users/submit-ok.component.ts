@@ -8,7 +8,7 @@ import {FormInputComponent} from "./form-input.component";
 @Component({
   selector: 'submit-ok',
   template: `
-    <h3>Vielen Dank. Ihre Änderungen wurden übernommen.</h3>
+    <p class="flow-text">Vielen Dank. Ihre Änderungen wurden übernommen.</p>
   `,
 })
 

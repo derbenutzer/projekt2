@@ -42,7 +42,9 @@ declare let $: any;
                     <div class="buttonPanel">
                       <a (click)="openDialog(forum)" class="jsLink secondary-content clear"><i class="material-icons">clear</i></a>
                       <a (click)="editForum(forum)" class="jsLink secondary-content edit"><i class="material-icons">mode_edit</i></a>
-                      <a (click)="openForum(forum._id)" class="jsLink secondary-content expand"><i class="material-icons">launch</i></a>
+                      <a (click)="openForum(forum)" class="jsLink secondary-content expand"><i class="material-icons">launch</i></a>
+                      <a (click)="openUserList(forum)" class="jsLink secondary-content userList"><i class="material-icons">supervisor_account</i></a>
+                      
                     </div>
                   </div>
                 </div>
@@ -106,12 +108,16 @@ declare let $: any;
       font-weight:bold;
     }
     
+    .buttonPanel .userList{
+      right: 130px;
+    }
+    
     .buttonPanel .expand{
-      right: 176px;
+      right: 88px;
     }
     
     .buttonPanel .edit{
-      right: 92px;
+      right: 48px;
     }
     
     .collection .collection-item.active {
@@ -160,8 +166,6 @@ export class DashboardComponent {
 
   ngOnInit(): void {
 
-    console.log("on init");
-
     this.isInstitution=true;
 
     if (this.authService.loggedIn() && this.authService.userProfile['user_metadata']) {
@@ -203,8 +207,9 @@ export class DashboardComponent {
       });
   }
 
-  openForum(forumId: string) {
-    this.router.navigate(['/forum', forumId]);
+  openForum(forum: Forum) {
+    let id = forum._id;
+    this.router.navigate(['/forum', forum._id]);
   }
 
   createNewForum() {
@@ -219,6 +224,11 @@ export class DashboardComponent {
 
   }
 
+  openUserList(forum){
+    this.forumService.idOfForumToModify = forum._id;
+    this.router.navigate(['/user-list',forum._id]);
+  }
+
   deleteForum() {
     this.forumService.deleteForum(this.forumToDelete._id)
       .then(res => {
@@ -227,7 +237,6 @@ export class DashboardComponent {
   }
 
   openDialog(forum) {
-    console.log("delete");
     this.forumToDelete = forum;
     $('#confirmDialog').modal('open');
   }

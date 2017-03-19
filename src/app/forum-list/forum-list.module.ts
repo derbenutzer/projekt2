@@ -11,9 +11,19 @@ import {ForumService} from "./service/forum.service";
 import {ListFilterComponent} from "./list-filter.component";
 import {ForumSearchPipe} from "./service/forum-search.pipe";
 import {ForumFilterPipe} from "./service/forum-filter.pipe";
+import {Ng2MapModule} from 'ng2-map';
 
 @NgModule({
-  imports: [ForumDetailModule, CommonModule, FormsModule, AppRoutingModule, MaterializeModule],
+  imports: [
+    ForumDetailModule,
+    CommonModule,
+    FormsModule,
+    AppRoutingModule,
+    MaterializeModule,
+    Ng2MapModule.forRoot({
+      apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyDMUu2F4YnhV2GW-XK3gT0Bla1QhPpIU1w'
+    })
+  ],
   declarations: [ForumListComponent, ForumSearchPipe, ForumFilterPipe, MapViewComponent, ListFilterComponent],
   providers: [ForumService],
   exports: [ForumListComponent, ForumFilterPipe]
