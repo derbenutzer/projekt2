@@ -23,11 +23,7 @@ import {Ng2MapModule} from 'ng2-map';
       apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyDMUu2F4YnhV2GW-XK3gT0Bla1QhPpIU1w'
     })
   ],
-<<<<<<< HEAD
-  declarations: [ForumListComponent, ForumSearchPipe, ForumFilterPipe, MapViewComponent, ListFilterComponent],
-=======
   declarations: [ForumListComponent, ForumSearchPipe, ForumFilterPipe, ListFilterComponent],
->>>>>>> feat/mapview
   providers: [ForumService],
   exports: [ForumListComponent, ForumFilterPipe]
 })
