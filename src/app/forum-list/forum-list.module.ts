@@ -6,7 +6,6 @@ import { FormsModule }   from '@angular/forms';
 import {AppRoutingModule} from "../app-routing.module";
 import  {MaterializeModule} from 'angular2-materialize';
 
-import {MapViewComponent} from "./map-view.component";
 import {ForumService} from "./service/forum.service";
 import {ListFilterComponent} from "./list-filter.component";
 import {ForumSearchPipe} from "./service/forum-search.pipe";
@@ -24,7 +23,7 @@ import {Ng2MapModule} from 'ng2-map';
       apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyDMUu2F4YnhV2GW-XK3gT0Bla1QhPpIU1w'
     })
   ],
-  declarations: [ForumListComponent, ForumSearchPipe, ForumFilterPipe, MapViewComponent, ListFilterComponent],
+  declarations: [ForumListComponent, ForumSearchPipe, ForumFilterPipe, ListFilterComponent],
   providers: [ForumService],
   exports: [ForumListComponent, ForumFilterPipe]
 })

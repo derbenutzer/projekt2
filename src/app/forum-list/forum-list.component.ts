@@ -48,13 +48,14 @@ import {UserService} from "../users/service/user.service";
 	</div>
 	
 	<div class="row">
-		<div class="col s4"><a [routerLink]="['/map-view']" class="waves-effect waves-light btn"><i class="material-icons left">my_location</i>Karte</a></div>
+		<div class="col s4" *ngIf="listViewActive"><a (click)=toggleListView(false) class="waves-effect waves-light btn"><i class="material-icons left">my_location</i>Karte</a></div>
+		<div class="col s4" *ngIf="!listViewActive"><a (click)=toggleListView(true) class="waves-effect waves-light btn"><i class="material-icons left">view_list</i>Liste</a></div>
 		<div *ngIf="authService.loggedIn() && isRegisteredForAForum" class="col s4">
 		  <input type="checkbox" (change)="filterById()" [(ngModel)]="idFilterIsSet" class="filled-in" id="filled-in-box" [checked]="idFilterIsSet && this.authService.loggedIn()"/>
       <label for="filled-in-box">Nur Meine</label>
     </div>
 	</div>
-    <ul class="collection">
+    <ul class="collection" *ngIf="listViewActive">
       <li *ngFor="let forum of forumList.getSortedByDate() | forumSearch:searchFilter | forumFilter:{categories: categoryFilter} | forumFilter:{institution: institutionFilter} | forumFilter:{_id: idFilter}" class="collection-item avatar">
         <i class="material-icons circle blue">room</i>
         <h3 class="title">{{forum.title}} - <span> {{forum.institution}}</span></h3>
@@ -66,11 +67,23 @@ import {UserService} from "../users/service/user.service";
         <a (click)="openForum(forum._id)" class="jsLink secondary-content"><i class="material-icons">send</i></a>
       </li>
 	  </ul>
+	  <div *ngIf="!listViewActive">
+    <ng2-map 
+      class="mapView"
+      zoom="8" 
+      center="Switzerland"
+      (mapReady$)="onMapReady($event)"
+      (mapClick)="onMapClick($event)"
+      (idle)="onIdle($event)">
+        <marker *ngFor="let pos of positions" 
+        [position]="pos"
+        (initialized$)="onMarkerInit($event)"></marker>
+    </ng2-map>
+  </div>
   `,
   styleUrls: ['forum-list.component.scss'],
   providers:[AuthHttp]
 })
-
 
 export class ForumListComponent implements OnInit {
 
@@ -82,10 +95,15 @@ export class ForumListComponent implements OnInit {
   idFilterIsSet=false;
   isRegisteredForAForum=false;
 
+  listViewActive=true;
+
   catChoices = [];
   instChoices = [];
 
   filters:{}[];
+
+  forumStash = [];
+  markerStash = [];
 
   forumList: ForumList = new ForumList([]);
 
@@ -145,10 +163,14 @@ export class ForumListComponent implements OnInit {
 
   filterByInstitution(filterStrings){
     this.institutionFilter=filterStrings;
+
+    this.mapMarkerFilter('institution', filterStrings);
   }
 
   filterByCategory(filterStrings){
     this.categoryFilter=filterStrings;
+
+    this.mapMarkerFilter('category', filterStrings);
   }
 
   filterById(){
@@ -174,5 +196,71 @@ export class ForumListComponent implements OnInit {
 
   openForum(forumId:string){
     this.router.navigate(['/forum', forumId]);
+  }
+
+  toggleListView(status){
+    this.listViewActive = status;
+  }
+
+  mapMarkerFilter(type, filterStrings) {
+    for (var i = 0; i < this.markerStash.length; i++) {
+      var marker = this.markerStash[i];
+      if(marker[type] == filterStrings || filterStrings == "") {
+        marker.setVisible(true);
+      } else {
+        marker.setVisible(false);
+      }
+    }
+  }
+
+  // todo: hide/show markers on multiple filters. link search field to map search (not entry search..). hide one marker overlay on click of another and on map click.
+  // todo: move parts of this into init function so it does not initialize the markers every time the map is built
+  onMapReady(map) {
+    // filling forum stash
+    for (let entry of this.forumList.forums) {
+      this.forumStash.push(entry);
+    }
+
+    // filling marker stash
+    for (let latlon of this.forumStash) {
+      // prepare marker content:
+      let contentString = '<div class="markerContent">'+
+        '<h5>'+latlon.title+'</h5>'+
+        '<h6>'+latlon.institution+'</h6>'+
+        '<p>'+latlon.categories[0]+'</p>'+
+        '<a href="/forum/'+latlon._id+'" class="jsLink secondary-content"><i class="material-icons">send</i></a>'+
+        '</div>';
+      let infoWindow = new google.maps.InfoWindow({
+        content: contentString
+      });
+      // get coordinates to put marker
+      let coords = { lat: latlon.lat, lng: latlon.lon};
+      let category = latlon.categories[0];
+      let institution = latlon.institution;
+      // create marker
+      let marker = new google.maps.Marker({
+        map: map,
+        position: coords,
+        category: category,
+        institution: institution
+      });
+      // add content to marker
+      marker.addListener('click', function() {
+        infoWindow.open(map, marker);
+      });
+      // store marker in stash
+      this.markerStash.push(marker);
+    }
+  }
+
+  // map events, not used at this time
+  onIdle(event) {
+    /*console.log('map', event.target);*/
+  }
+  onMarkerInit(marker) {
+    /*console.log('marker', marker);*/
+  }
+  onMapClick(event) {
+    /*console.log('click');*/
   }
 }
