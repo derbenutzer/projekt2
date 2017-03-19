@@ -20,15 +20,9 @@
     "@angular/forms": "^2.4.10",
     "@angular/http": "^2.4.10",
     "@angular/material": "^2.0.0-beta.2",
-<<<<<<< HEAD
     "@angular/platform-browser": "^2.4.10",
     "@angular/platform-browser-dynamic": "^2.4.10",
     "@angular/router": "^3.4.10",
-=======
-    "@angular/platform-browser": "^2.4.9",
-    "@angular/platform-browser-dynamic": "^2.4.9",
-    "@angular/router": "^3.4.9",
->>>>>>> feat/mapview
     "@types/google-maps": "^3.2.0",
     "@types/node": "^7.0.8",
     "angular2-jwt": "^0.1.28",
