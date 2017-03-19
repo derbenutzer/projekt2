@@ -113,12 +113,12 @@ export class ForumService {
     }
   }
 
-  addUser(forumId: string){
-    this.updateForum(forumId, {"numberOfUsers":1});
+  addUser(forumId: string):Promise<Forum>{
+    return this.updateForum(forumId, {"numberOfUsers":1});
   }
 
-  addPost(forumId: string){
-    this.updateForum(forumId, {"numberOfPosts":1});
+  addPost(forumId: string) :Promise<Forum>{
+    return this.updateForum(forumId, {"numberOfPosts":1});
   }
 
 

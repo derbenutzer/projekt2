@@ -1,7 +1,7 @@
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {HomeComponent} from "./home/home.component";
-import {CreateForumComponent} from "./forum-detail/create-forum.component";
+import {CreateForumComponent} from "./institutions/create-forum.component";
 import {ForumDetailComponent} from "./forum-detail/forum-detail.component";
 import {CreatePostComponent} from "./posts/create-post.component";
 import {ForumListComponent} from "./forum-list/forum-list.component";

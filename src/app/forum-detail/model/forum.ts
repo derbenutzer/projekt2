@@ -5,6 +5,7 @@ export class Forum {
   title: string;
   institution: string;
   owner:string;
+  description:string;
   categories: string[];
 
 

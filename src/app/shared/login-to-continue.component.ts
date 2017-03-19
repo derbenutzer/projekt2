@@ -1,12 +1,12 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {AuthService} from "../shared/auth.service";
+import {Component, Input} from '@angular/core';
 import {Router} from "@angular/router";
+import {AuthService} from "./auth.service";
 
 @Component({
   selector: 'login-to-continue',
   template: `        
     <div>
-      <p>Loggen Sie sich ein oder registrieren Sie sich um fortzufahren.</p>
+      <p class="flow-text">Loggen Sie sich ein oder registrieren Sie sich um fortzufahren.</p>
     </div>
     <div>
       <button type="button" (click)="login()" class="btn">Login</button>

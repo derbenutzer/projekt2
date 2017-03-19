@@ -15,27 +15,16 @@ import {AuthService} from "../shared/auth.service";
 @Component({
   selector: 'my-forum-detail',
   template: `
-    <div *ngIf="forum">
+    <div *ngIf="authService.loggedIn() && forum">
       <h2>{{forum.title}}</h2>
       <div>
-        <label>Id: </label><span>{{forum._id}}</span></div>
-      <div>
-        <label>Owner: </label><span>{{forum.owner}}</span></div>
-      <div>
-        <label>Category: </label><span>{{forum.categories}}</span></div>
-      <div>
-        <label>Location: </label><span>{{forum.location}}</span></div>
-      <button class="waves-effect waves-light btn" (click)="goBack()">Back</button>
-      <button class="waves-effect waves-light btn" (click)="deleteForum()"><i class="material-icons left">delete</i>Löschen</button>
-      <button [routerLink]="['/forum',forum._id,'edit']" class="waves-effect waves-light btn"><i class="material-icons left">edit</i>Editieren</button>
-      <div>
+      <p class="flow-text">{{forum.description}}</p>
         <h3>Beiträge</h3>
         <button routerLink="/create-post" class="btn">Eintrag erstellen</button>
         
-        
         <div *ngFor="let dividedPostList of dividedPostArrays" class="row section">
           <div *ngFor="let post of dividedPostList" class="col sm12 m4">
-            <div class="card sticky-action medium hoverable">
+            <div class="card sticky-action large hoverable">
               <div class="card-image waves-effect waves-block waves-light">
                 <img class="activator" src="assets/images/einkauf.png">
               </div>
@@ -44,7 +33,7 @@ import {AuthService} from "../shared/auth.service";
                 <p>{{ post.author }}</p>
               </div>
               <div class="card-action">
-                <a href="">Kontaktieren</a><a (click)="modifyPost(post._id)" >Bearbeiten</a>
+                <a class="jsLink" (click)="contactPostAuthor()">Kontaktieren</a><a class="jsLink" *ngIf="userIsOwner" (click)="modifyPost(post._id)">Bearbeiten</a>
               </div>
               <div class="card-reveal">
                 <span class="card-title grey-text text-darken-4">{{ post.title }}<i class="material-icons right">close</i></span>
@@ -69,6 +58,7 @@ export class ForumDetailComponent implements OnInit {
   @Input() forum: Forum;
   dividedPostArrays: Post[][];
   forumId:string;
+  userIsOwner:boolean;
   backUrl="/forum-list";
 
   constructor(
@@ -86,6 +76,7 @@ export class ForumDetailComponent implements OnInit {
   ngOnInit(): void {
 
     if(this.authService.userProfile){
+
       if(this.authService.userProfile['user_metadata']) {
         this.openForum(this.authService.userProfile['user_metadata']['databaseId']);
         return;
@@ -127,13 +118,18 @@ export class ForumDetailComponent implements OnInit {
         this.forum = forum;
         this.getPosts(this.forum._id);
         this.forumDetailService.openForumId = this.forum._id;
-      })
+      });
 
     this.userService.isRegistered(userId, this.forumId)
       .then(isRegistered =>  {
         if(!isRegistered){
           this.router.navigate(['/register-for-forum', this.forumId]);
         }
+      });
+
+    this.userService.isOwner(userId, this.forumId)
+      .then(isOwner=>  {
+        this.userIsOwner = isOwner;
       });
   }
 
@@ -154,6 +150,10 @@ export class ForumDetailComponent implements OnInit {
   modifyPost(postId) {
     this.router.navigate(['/create-post']);
     this.postService.idOfPostToModify = postId;
+  }
+
+  contactPostAuthor(){
+    console.log("contact");
   }
 }
 

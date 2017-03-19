@@ -55,11 +55,16 @@ export class CreatePostComponent {
   sendForm(): void {
     let forumId = this.forumDetailService.openForumId;
     this.postService.handlePostFormSubmit(this.post._id,{"author":this.post.author,"title": this.post.title, "content": this.post.content, "postedIn":forumId})
-      .then(post => this.forumService.addPost(forumId));
+      .then(post => {
+        console.log("sendForm");
+        this.forumService.addPost(forumId);
+        this.goBack();
+      });
+
   };
 
   goBack(): void {
-    this.router.navigate([this.backUrl+"/"+this.forumDetailService.openForumId])
+    this.router.navigate([this.backUrl+"/"+this.forumDetailService.openForumId]);
   }
 
 }

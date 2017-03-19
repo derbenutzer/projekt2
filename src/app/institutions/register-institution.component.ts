@@ -9,8 +9,8 @@ import {UserService} from "../users/service/user.service";
     <h2>{{pageTitle}}</h2>
     <div *ngIf="isInstitution">
       <div>
-        <p>Sie sind bereits als Institution registriert.</p>
-         <p>Gehen sie zum <a routerLink="/dashboard">Dashboard</a> um runde Tische zu erstellen und zu verwalten.</p>
+        <p class="flow-text">Sie sind bereits als Institution registriert.</p>
+         <p class="flow-text">Gehen sie zur <a routerLink="/dashboard">Verwaltung</a> um runde Tische zu erstellen und zu verwalten.</p>
       </div>   
     </div>
     
@@ -18,8 +18,8 @@ import {UserService} from "../users/service/user.service";
     <div *ngIf="authService.loggedIn() && !isInstitution">
     
       <div>
-        <p>Institutionen müssen sich verifizieren. Entweder wir rufen Sie an oder wir kontaktieren sie per Email.</p>
-         <p>Geben sie unbedingt die Telefonnummer oder Emailadresse der Institution an, die sie repräsentieren möchten.</p>
+        <p class="flow-text">Institutionen müssen sich verifizieren. Entweder wir rufen Sie an oder wir kontaktieren sie per Email.</p>
+         <p class="flow-text">Geben sie die Telefonnummer und die Emailadresse der Institution an, die sie repräsentieren möchten.</p>
       </div>
       
       <form (ngSubmit)="sendRequest()">
@@ -39,7 +39,7 @@ import {UserService} from "../users/service/user.service";
           <button class="btn waves-effect waves-light" type="submit" name="action">Senden
             <i class="material-icons right">send</i>
           </button>
-          <button (click)="goBack()" type="button" class="waves-effect waves-light btn" (click)="goBack()">Zurück</button>
+          <button type="button" class="waves-effect waves-light btn" (click)="goBack()">Zurück</button>
         </div>
       </form>
       
@@ -67,15 +67,28 @@ export class RegisterInstitutionComponent implements OnInit{
   ) {};
 
   ngOnInit(){
-    if(this.authService.userProfile['user_metadata']) {
-      let userId = this.authService.userProfile['user_metadata']['databaseId'];
-      this.userService.checkIfUserIsInstitution(userId)
-        .then(res => this.isInstitution = res);
+
+    if (this.authService.loggedIn() && this.authService.userProfile['user_metadata']) {
+      this.checkIfIsInstitution(this.authService.userProfile['user_metadata']['databaseId']);
+    }
+    else {
+      this.authService.lock.on('authenticated', (authResult: any) => {
+        this.authService.lock.getProfile(authResult.idToken, (error: any, profile: any) => {
+          if (error) {
+            console.log(error);
+          }
+          if (profile['user_metadata']) {
+            this.checkIfIsInstitution(profile['user_metadata']['databaseId']);
+          }
+          else {
+            this.isInstitution=false;
+          }
+        });
+      });
     }
 
-
-
   }
+
 
   sendRequest(): void {
     let userId = this.authService.userProfile['user_metadata']['databaseId'];
@@ -86,6 +99,12 @@ export class RegisterInstitutionComponent implements OnInit{
 
   goBack(): void {
     this.router.navigate([this.backUrl]);
+  }
+
+  checkIfIsInstitution(userId) :Promise<boolean>{
+      return this.userService.checkIfUserIsInstitution(userId)
+        .then(res => this.isInstitution = res);
+
   }
 
 }
