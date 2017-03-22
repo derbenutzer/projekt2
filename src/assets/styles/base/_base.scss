@@ -55,16 +55,6 @@ main {
   flex: 1 0 auto;
 }
 
-span.forumLICreateDate {
-  float: right;
-  color: grey;
-  font-size:$small-text;
-}
-
-span.forumLICreateDate i {
-  padding-right: 0.5rem;
-}
-
-.categoriesContainer {
-  width: 100%;
+body {
+  background-color: #fcfbfb;
 }

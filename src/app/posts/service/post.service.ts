@@ -49,27 +49,6 @@ export class PostService {
   }
 
 
-
-  getDividedPostsArrays2(forumId,divideBy:number): Promise<Post[][]> {
-
-    const url = `${this.apiUrl2}/${forumId}`;
-    return this.http.get(url)
-      .toPromise()
-      .then(response => {
-        let postList = new PostList(response.json() as Post[]);
-        let ArrayToDivide = postList.getSortedByDate();
-        let dividedArrays=[];
-
-        let i,j,temparray,chunk = divideBy;
-        for (i=0,j=ArrayToDivide.length; i<j; i+=chunk) {
-          temparray = ArrayToDivide.slice(i,i+chunk);
-          dividedArrays[((i+chunk)/chunk)-1]=temparray;
-        }
-        return dividedArrays;
-      })
-      .catch(this.handleError);
-  }
-
 /*  getPost(id: string): Promise<Post> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get(url)
@@ -98,14 +77,16 @@ export class PostService {
   }
 
   createNewPost(keyValuePairs:Object): Promise<Post>{
-    return this.initializePost()
-      .then(id => this.updatePost(id, keyValuePairs));
+    return this.initializePost(keyValuePairs);
   }
 
-  initializePost(): Promise<string> {
+  initializePost(keyValuePairs: Object): Promise<Post> {
     return this.http.post(this.apiUrl,"test")
       .toPromise()
-      .then(response => response.json().id)
+      .then(response => {
+        let id = response.json().id;
+        return this.updatePost(id,keyValuePairs);
+      })
       .catch(this.handleError);
   }
 
@@ -115,11 +96,16 @@ export class PostService {
     let options = new RequestOptions({ headers: headers });
 
     const url = `${this.apiUrl}/${id}`;
-
     return this.http.put(url,keyValuePairs,options)
       .toPromise()
       .then(response => response.json())
       .catch(this.handleError);
+  }
+
+  updatePostWithoutAuthorChange(id:string, keyValuePairs: Object): Promise<Post> {
+    delete keyValuePairs['author'];
+    delete keyValuePairs['authorId'];
+    return this.updatePost(id,keyValuePairs);
   }
 
   deletePost(postId: string): Promise<string> {
@@ -141,7 +127,7 @@ export class PostService {
 
   handlePostFormSubmit(postId:string, keyValuePairs:Object): Promise<Post>{
     if(postId){
-      return this.updatePost(postId,keyValuePairs);
+      return this.updatePostWithoutAuthorChange(postId,keyValuePairs);
     }
     else{
       return this.createNewPost(keyValuePairs);

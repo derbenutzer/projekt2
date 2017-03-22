@@ -10,39 +10,37 @@ import {Router} from "@angular/router";
   selector: 'create-forum',
   template: `    
     <h2>{{pageTitle}}</h2>
-    <button type="button" class="waves-effect waves-light btn" (click)="goBack()">Zurück</button>
-    <br>
-    <br>
-    <div *ngIf="forum">
+    <div *ngIf="authService.loggedIn() && forum">
       <form (submit)="sendForm()">
         <div class="form-group">
           <label for="title">Titel</label>
           <input name="title" type="text" class="form-control" [(ngModel)]="forum.title" placeholder="Titel" required>
         </div>
         <div class="form-group">
-          <label for="description">Beschreibung</label>
-          <input name="description" type="text" class="form-control" [(ngModel)]="forum.description" placeholder="Beschreiben sie den runden Tisch" >
+          <div class="input-field">
+            <label class="active" for="description">Beschreibung</label>
+            <textarea name="description" [(ngModel)]="forum.description" id="description" class="form-control materialize-textarea"></textarea>
+          </div>
         </div>
         <div class="form-group">
           <label for="categories">Kategorien</label>
           <input name="categoriesInput" type="text" class="form-control" [(ngModel)]="categoriesInput" placeholder="Kategorie1, Kategorie2, etc." >
         </div>
-      <!--  <div class="form-group">
-          <label for="institutions">Institutionen</label>
-          <input name="institutionsInput" type="text" class="form-control" [(ngModel)]="institutionsInput" placeholder="Institution1, Institution2, Institution3, etc." >
-        </div>-->
         <button class="btn waves-effect waves-light" type="submit" name="action">Senden
           <i class="material-icons right">send</i>
         </button>
       </form>
       <br>
     </div>
+     <div *ngIf="!authService.loggedIn()">
+      <login-to-continue [backUrl]="backUrl"></login-to-continue>
+    </div>
   `,
 })
 export class CreateForumComponent {
 
   pageTitle: string;
-  backUrl= "/dashboard";
+  backUrl= "/home";
 
   categoriesInput: string="";
   forum: Forum;
@@ -53,6 +51,12 @@ export class CreateForumComponent {
               private userService: UserService,
               private router: Router)
   {
+    this.userService.checkIfUserIsInstitution(this.authService.getDatabaseId())
+      .then(isInstitution => {
+        if(!isInstitution){
+          this.router.navigate(["/home"]);
+        }
+      });
 
     this.forumService.getForum()
       .then(forum => {
@@ -60,7 +64,7 @@ export class CreateForumComponent {
         this.fillCategories();
       });
 
-    this.userService.getInstitution(this.authService.userProfile['user_metadata']['databaseId'])
+    this.userService.getInstitution(this.authService.getDatabaseId())
       .then(institution => this.institution = institution);
   };
 

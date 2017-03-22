@@ -7,7 +7,7 @@ import {AuthService} from "../shared/auth.service";
   template: `
     <div class="form-group">
       <label class="active" for="{{name}}">{{text}}</label>
-      <input (change)="sendContent()" id="{{name}}" type="text" class="form-control" [(ngModel)]="content" name="{{name}}" placeholder="{{placeholder}}">
+      <input (change)="sendContent()" id="{{name}}" type="text" class="form-control" [(ngModel)]="content" name="{{name}}" placeholder="{{placeholder}}" required>
     </div>
 `,
 })

@@ -89,12 +89,34 @@ export class AuthService {
     return "no image";
   }
 
-  getDatabaseId(){
-    if(this.userProfile['user_metadata']) {
-      return this.userProfile['user_metadata']['databaseId'];
+  getMetaData(){
+    if(this.userProfile){
+      return this.userProfile['user_metadata']
     }
     else{
       return false;
+    }
+  }
+
+  getUserName(): string {
+    let metaData = this.getMetaData();
+    if(metaData) {
+      let name = metaData['firstName'] + " " + metaData['lastName'];
+      return name;
+    }
+  }
+
+  getDatabaseId(): string{
+    let metaData= this.getMetaData();
+    if(metaData) {
+      return metaData['databaseId'];
+    }
+  }
+
+  getPreferredContact(): string{
+    let metaData= this.getMetaData();
+    if(metaData) {
+      return metaData['preferredContact'];
     }
   }
 
@@ -102,6 +124,18 @@ export class AuthService {
     if(this.getDatabaseId()) {
       this.userService.updateUser(this.getDatabaseId(), keyValuePair);
     }
+  }
+
+  hasCompletedProfile() {
+    //address is enough for confirmation because form can only be submitted if it is filled completely.
+    let metaData= this.getMetaData();
+    if(metaData) {
+      return metaData['address'];
+    }
+    else{
+      return false;
+    }
+
   }
 
   editProfile(keyValuePair) {

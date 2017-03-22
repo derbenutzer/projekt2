@@ -25,11 +25,11 @@ declare let $: any;
           <li>
             <a class="navHome" routerLink="/home"><span>Startseite</span></a>
           </li>
-          <li *ngIf="authService.loggedIn() && authService.userProfile">
-             <a routerLink="/profile"><img  class="userImage" [src]="authService.userProfile.picture"></a>
-          </li>
           <li *ngIf="authService.loggedIn()">
             <a routerLink="/profile" >Profil</a>
+          </li>
+          <li *ngIf="authService.loggedIn() && authService.userProfile">
+             <a routerLink="/profile"><img  class="userImage" [src]="authService.userProfile.picture"></a>
           </li>
         </ul>
 
@@ -64,7 +64,7 @@ declare let $: any;
 
 export class AppComponent{
 
-  title = 'FEE - Project 2';
+  title = 'Benefitz';
 
   constructor(private authService: AuthService) {};
 

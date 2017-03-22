@@ -21,7 +21,7 @@ declare let $: any;
             <div class="collapsible-header">
               <i class="material-icons circle blue">room</i>
               <h3 class="title">{{forum.title}} - <span>{{forum.institution}}</span></h3>
-              <p>
+              <p class="categories">
                 <span class="label">Kategorie(n):</span><span *ngFor="let category of forum.categories" class="category"> {{category}}</span>
               </p>
               </div>
@@ -30,9 +30,9 @@ declare let $: any;
                   <div class="additional">                    
                     <div class="additionalInfo">
                       <span class="label">Erstellt am:</span><span> {{forum.createDate | amDateFormat: 'DD-MM-YYYY'}}</span><br>
-                      <span class="label">Letzte Aktivität am:</span><span> {{forum.lastModified | amDateFormat: 'DD-MM-YYYY'}}</span><br>
-                      <span class="label">Anzahl Nutzer:</span><span> {{forum.numberOfUsers}}</span><br>
-                      <span class="label">Anzahl Beiträge:</span><span> {{forum.numberOfPosts}}</span><br>
+                      <span class="label">Letzte Aktivität:</span><span> {{forum.lastModified | amDateFormat: 'DD-MM-YYYY'}}</span><br>
+                      <span class="label">Nutzer:</span><span> {{forum.numberOfUsers}}</span><br>
+                      <span class="label">Beiträge:</span><span> {{forum.numberOfPosts}}</span><br>
                     </div>
                     
                     <div class="additionalDescription">
@@ -40,11 +40,10 @@ declare let $: any;
                     </div>
                     
                     <div class="buttonPanel">
-                      <a (click)="openDialog(forum)" class="jsLink secondary-content clear"><i class="material-icons">clear</i></a>
-                      <a (click)="editForum(forum)" class="jsLink secondary-content edit"><i class="material-icons">mode_edit</i></a>
-                      <a (click)="openForum(forum)" class="jsLink secondary-content expand"><i class="material-icons">launch</i></a>
-                      <a (click)="openUserList(forum)" class="jsLink secondary-content userList"><i class="material-icons">supervisor_account</i></a>
-                      
+                      <a (click)="openUserList(forum)" class="jsLink userList"><i class="material-icons">supervisor_account</i></a>
+                      <a (click)="openForum(forum)" class="jsLink expand"><i class="material-icons">launch</i></a>
+                      <a (click)="editForum(forum)" class="jsLink edit"><i class="material-icons">mode_edit</i></a>
+                      <a (click)="openDialog(forum)" class="jsLink clear"><i class="material-icons">clear</i></a>
                     </div>
                   </div>
                 </div>
@@ -78,15 +77,15 @@ declare let $: any;
   </div>
   
   <div id="confirmDialog" class="modal">
-  <div class="modal-content">
-    <h4>Runden Tisch löschen</h4>
-    <p class="flow-text">Möchten sie diesen Runden Tisch wirklich löschen?</p>
+    <div class="modal-content">
+      <h4>Runden Tisch löschen</h4>
+      <p class="flow-text">Möchten sie diesen Runden Tisch wirklich löschen?</p>
+    </div>
+    <div class="modal-footer">
+      <a (click)="deleteForum()" class=" modal-action modal-close waves-effect waves-light btn-flat">Löschen</a>
+      <a (click)="closeDialog()" class=" modal-action modal-close waves-effect waves-light btn-flat">Abbrechen</a>
+    </div>
   </div>
-  <div class="modal-footer">
-    <a (click)="deleteForum()" class=" modal-action modal-close waves-effect waves-light btn-flat">Löschen</a>
-    <a (click)="closeDialog()" class=" modal-action modal-close waves-effect waves-light btn-flat">Abbrechen</a>
-  </div>
-</div>
   
   `,
   styles:[`
@@ -100,24 +99,82 @@ declare let $: any;
       top: 32px;
     }
     
+    .categories{
+        line-height: normal;
+        padding-bottom:2rem;
+    }
+    
     .listContainer{
       margin-top:4rem;    
     }
     
-    .label {
+    .additionalInfo {
       font-weight:bold;
     }
     
-    .buttonPanel .userList{
-      right: 130px;
+    .additionalInfo .label {
+      font-weight:normal;
     }
     
-    .buttonPanel .expand{
-      right: 88px;
+    .buttonPanel a{
+      margin-left:3rem;
     }
     
-    .buttonPanel .edit{
-      right: 48px;
+    .buttonPanel {
+        position: absolute;
+        top: 32px;
+        right: 3rem;
+    }
+    
+    @media(max-width:960px){
+      .buttonPanel a{
+        margin-left:1.5rem;
+      }
+      
+      .buttonPanel {
+          right: 2rem;
+      }
+    }
+    
+    @media(max-width:760px){
+      .buttonPanel a{
+        margin-left:1rem;
+      }
+      
+      .buttonPanel {
+          right: 1rem;
+      }
+    }
+    
+    @media(max-width:560px){
+      .buttonPanel a{
+          margin-left: 0rem;
+          margin-right: 2rem;
+      }
+
+      .buttonPanel {
+          position:initial;
+          margin-top: 1rem;
+      }
+      
+      .additionalDescription{
+        display:none;
+      }
+      
+      .categories{
+          line-height: normal;
+          padding-bottom:1rem;
+      }
+      
+      .collapsible-header .material-icons {
+        display:none;
+      }
+      .collection .collection-item.avatar {
+          padding-left: 1rem;
+      }
+      .collapsible-header {
+       padding: 0rem;
+      }
     }
     
     .collection .collection-item.active {
@@ -157,6 +214,9 @@ export class DashboardComponent {
   backUrl="/institutions-start";
   forumListIsLoaded = false;
   init = false;
+
+  confirmTitle = "Runden Tisch löschen";
+  confirmQuestion = "Möchten sie diesen Runden Tisch wirklich löschen?";
 
   constructor(private authService: AuthService,
               private forumService: ForumService,
@@ -234,6 +294,17 @@ export class DashboardComponent {
       .then(res => {
         this.ngOnInit();
       })
+  }
+
+  confirmDelete(choice:string){
+
+    if(choice=="delete"){
+      this.deleteForum();
+    }
+    else{
+      this.closeDialog();
+    }
+
   }
 
   openDialog(forum) {

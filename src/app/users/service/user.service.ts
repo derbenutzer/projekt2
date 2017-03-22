@@ -95,8 +95,8 @@ export class UserService {
     this.updateUser(userId, keyValuePairs)
   }
 
-  checkIfUserIsInstitution(institutionId:string) :Promise<boolean>{
-    return this.getInstitution(institutionId)
+  checkIfUserIsInstitution(userId:string) :Promise<boolean>{
+    return this.getInstitution(userId)
       .then(institution => institution.isInstitution && institution.isVerified);
   }
 
@@ -104,5 +104,7 @@ export class UserService {
     console.error('An error occurred', error); // for demo purposes only
     return Promise.reject(error.message || error);
   }
+
+
 
 }

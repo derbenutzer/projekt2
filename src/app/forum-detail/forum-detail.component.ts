@@ -9,6 +9,10 @@ import {PostService} from "../posts/service/post.service";
 import {ForumDetailService} from "./service/forum-detail.service";
 import {UserService} from "../users/service/user.service";
 import {AuthService} from "../shared/auth.service";
+import {PostList} from "../posts/model/post-list";
+import {ImageService} from "../shared/image.service";
+import {User} from "../users/model/user";
+declare let $: any;
 
 
 
@@ -22,23 +26,24 @@ import {AuthService} from "../shared/auth.service";
         <h3>Beiträge</h3>
         <button routerLink="/create-post" class="btn">Eintrag erstellen</button>
         
-        <div *ngFor="let dividedPostList of dividedPostArrays" class="row section">
-          <div *ngFor="let post of dividedPostList" class="col sm12 m4">
-            <div class="card sticky-action large hoverable">
+        <div *ngIf="postList" class="row section">
+          <div *ngFor="let post of postList.getSortedByDate()" class="col sm12 m6">
+            <div class="card sticky-action medium hoverable">
               <div class="card-image waves-effect waves-block waves-light">
-                <img class="activator" src="assets/images/einkauf.png">
+                <img class="activator" src="{{getImage(post.title)}}" />
               </div>
               <div class="card-content">
                 <span class="card-title activator grey-text text-darken-4">{{ post.title }}<i class="material-icons right">more_vert</i></span>
                 <p>{{ post.author }}</p>
               </div>
               <div class="card-action">
-                <a class="jsLink" (click)="contactPostAuthor()">Kontaktieren</a><a class="jsLink" *ngIf="userIsOwner" (click)="modifyPost(post._id)">Bearbeiten</a>
+                <a class="jsLink" *ngIf="!(userId == post.authorId)" (click)="contactPostAuthor(post.authorId)">Kontaktieren</a>
+                <a class="jsLink" *ngIf="userIsOwner || userId == post.authorId" (click)="modifyPost(post._id)">Bearbeiten</a>
+                <a class="jsLink" *ngIf="userIsOwner || userId == post.authorId" (click)="openDialog(post)">Löschen</a>
               </div>
               <div class="card-reveal">
                 <span class="card-title grey-text text-darken-4">{{ post.title }}<i class="material-icons right">close</i></span>
                 <p>{{ post.content }}</p>
-                <p>Ort: ToDo</p>
                 <p>Datum: <time>{{ post.createDate | amDateFormat: 'DD-MM-YYYY'}}</time></p>
               </div>
             </div>
@@ -50,16 +55,76 @@ import {AuthService} from "../shared/auth.service";
     <div *ngIf="!authService.loggedIn()">
        <login-to-continue [backUrl]="backUrl"></login-to-continue>
     </div>
+    
+    <div id="confirmDialog" class="modal">
+      <div class="modal-content">
+        <h4>Beitrag löschen</h4>
+        <p class="flow-text">Möchten sie diesen Beitrag wirklich löschen?</p>
+      </div>
+      <div class="modal-footer">
+        <a (click)="deletePost()" class=" modal-action modal-close waves-effect waves-light btn-flat">Löschen</a>
+        <a (click)="closeDialog()" class=" modal-action modal-close waves-effect waves-light btn-flat">Abbrechen</a>
+      </div>
+    </div>
+    
+    <div  id="contactDialog" class="modal">
+      <div *ngIf="userToContact" class="modal-content">
+        <h4>{{userToContact.firstName+" "+userToContact.lastName}} kontaktieren</h4>
+        <div *ngIf="userToContact.preferredContact=='phone'">
+          <p class="flow-text">{{userToContact.firstName+" "+userToContact.lastName}} möchte telefonisch kontaktiert werden.</p>
+          <p class="flow-text"> {{userToContact.phone}}</p>
+        </div>
+        <div *ngIf="userToContact.preferredContact=='email'">
+          <p class="flow-text">{{userToContact.firstName+" "+userToContact.lastName}} möchte per E-Mail kontaktiert werden.</p>
+          <p class="flow-text"> {{userToContact.email}}</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a (click)="closeContactDialog()" class=" modal-action modal-close waves-effect waves-light btn-flat">OK</a>
+      </div>
+    </div>
+    
+    
   `,
+  styles:[`
+  
+    @media only screen and (min-width: 10px){
+      .row .col.m6 {
+          width: 100%;
+      }
+    }
+    
+    @media only screen and (min-width: 400px){
+      .row .col.m6 {
+          width: 50%;
+      }
+    }
+    
+    @media only screen and (min-width: 680px){
+      .row .col.m6 {
+          width: 33%;
+      }
+    }
+    
+    @media only screen and (min-width: 1160px){
+      .row .col.m6 {
+          width: 25%;
+      }
+    }
+`]
 })
 
 export class ForumDetailComponent implements OnInit {
 
   @Input() forum: Forum;
-  dividedPostArrays: Post[][];
+  //dividedPostArrays: Post[][];
+  postList: PostList;
   forumId:string;
+  userId:string;
   userIsOwner:boolean;
   backUrl="/forum-list";
+  postToDelete:Post;
+  userToContact:User;
 
   constructor(
     private forumService: ForumService,
@@ -67,6 +132,7 @@ export class ForumDetailComponent implements OnInit {
     private userService:UserService,
     private authService:AuthService,
     private postService: PostService,
+    private imageService: ImageService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -78,7 +144,8 @@ export class ForumDetailComponent implements OnInit {
     if(this.authService.userProfile){
 
       if(this.authService.userProfile['user_metadata']) {
-        this.openForum(this.authService.userProfile['user_metadata']['databaseId']);
+        this.userId = this.authService.userProfile['user_metadata']['databaseId'];
+        this.openForum(this.userId);
         return;
       }
       else{
@@ -102,7 +169,8 @@ export class ForumDetailComponent implements OnInit {
           this.router.navigate(['/forum-list']);
         }
         else{
-          this.openForum(metaData.databaseId);
+          this.userId = metaData.databaseId;
+          this.openForum(this.userId);
         }
       });
     });
@@ -131,20 +199,43 @@ export class ForumDetailComponent implements OnInit {
       .then(isOwner=>  {
         this.userIsOwner = isOwner;
       });
+    $('.modal').modal();
   }
 
   goBack(): void {
     this.router.navigate([this.backUrl]);
   }
 
-  deleteForum(): void {
-    this.forumService.deleteForum(this.forum._id);
+  openDialog(post:Post) {
+    this.postToDelete = post;
+    $('#confirmDialog').modal('open');
   }
 
-  getPosts(forumId:string){
-    //this.forumService.getPostsById(forumId);
-    this.postService.getDividedPostsArrays(forumId,3)
-      .then(dividedPostArrays => this.dividedPostArrays = dividedPostArrays);
+  openContactDialog() {
+    console.log("contactDialogOpen");
+    $('#contactDialog').modal('open');
+  }
+
+  deletePost(): void {
+    this.postService.deletePost(this.postToDelete._id)
+      .then(res => this.openForum(this.userId));
+  }
+
+  closeDialog() {
+    this.postToDelete = null;
+    $('#confirmDialog').modal('close');
+  }
+
+  closeContactDialog() {
+    this.userToContact = null;
+    $('#contactDialog').modal('close');
+  }
+
+  getPosts(forumId:string) {
+    this.postService.getPostsByForumId(forumId)
+      .then(posts => {
+        this.postList = new PostList(posts);
+      });
   }
 
   modifyPost(postId) {
@@ -152,8 +243,17 @@ export class ForumDetailComponent implements OnInit {
     this.postService.idOfPostToModify = postId;
   }
 
-  contactPostAuthor(){
-    console.log("contact");
+  contactPostAuthor(authorId: string){
+    this.userService.getUser(authorId)
+      .then(user =>{
+        console.log(user);
+        this.userToContact = user;
+        this.openContactDialog();
+      })
+  }
+
+  getImage(postId:string){
+    return this.imageService.getImage(postId);
   }
 }
 

@@ -110,11 +110,8 @@ export class ProfileComponent {
   }
 
   setContactMethod(){
-    let metaData=this.authService.userProfile["user_metadata"];
-
-    if(metaData && metaData.contactMethod){
-      this.preferredContact = metaData.contactMethod;
-    }
+    this.preferredContact = this.authService.getPreferredContact();
+    console.log(this.preferredContact);
   }
 
 

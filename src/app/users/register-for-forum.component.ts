@@ -8,7 +8,14 @@ import {ForumService} from "../forum-list/service/forum.service";
   selector: 'register-owner',
   template: `    
     <h2>{{pageTitle}}</h2>
-    <div >
+    <div *ngIf="!hasCompletedProfile">
+      <p>Bitte vervollständigen Sie ihr erst ihr Profil.</p>
+      <button (click)="openProfile()" class="btn waves-effect waves-light" type="submit" name="action">Zum Profil
+        <i class="material-icons right">send</i>
+      </button>
+      <button type="button" class="waves-effect waves-light btn" (click)="goBack()">Zurück</button>
+    </div>
+    <div *ngIf="hasCompletedProfile">
       <p>Damit Sie an einem runden Tische teilnehmen können müssen Sie sich für diesen registrieren. Wir leiten ihre Anfrage an die verantwortliche Institution weiter, welche Sie direkt benachrichtig sobald Sie registriert sind.</p>
       <p>Bestätigen Sie ihre Registrierungsanfrage indem Sie auf "Senden" klicken.</p>
       <button (click)="sendRequest()" class="btn waves-effect waves-light" type="submit" name="action">Senden
@@ -21,6 +28,7 @@ import {ForumService} from "../forum-list/service/forum.service";
 export class RegisterForForumComponent implements OnInit{
 
   pageTitle="Für Forum registrieren";
+  hasCompletedProfile:boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -31,7 +39,7 @@ export class RegisterForForumComponent implements OnInit{
   ) {};
 
   ngOnInit(): void {
-      console.log("oninit");
+      this.hasCompletedProfile = this.authService.hasCompletedProfile();
   }
 
   sendRequest(): void {
@@ -51,6 +59,10 @@ export class RegisterForForumComponent implements OnInit{
 
   goBack(): void {
     this.router.navigate(['/forum-list']);
+  }
+
+  openProfile(){
+    this.router.navigate(["/profile"]);
   }
 
 }

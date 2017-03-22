@@ -48,15 +48,15 @@ import {UserService} from "../users/service/user.service";
 	</div>
 	
 	<div class="row">
-		<div class="col s4" *ngIf="listViewActive"><a (click)=toggleListView(false) class="waves-effect waves-light btn"><i class="material-icons left">my_location</i>Karte</a></div>
-		<div class="col s4" *ngIf="!listViewActive"><a (click)=toggleListView(true) class="waves-effect waves-light btn"><i class="material-icons left">view_list</i>Liste</a></div>
+		<div class="col s4 waves-effect waves-light btn" *ngIf="listViewActive"><a (click)=toggleListView(false)><i class="material-icons left">my_location</i>Karte</a></div>
+		<div class="col s4 waves-effect waves-light btn" *ngIf="!listViewActive"><a (click)=toggleListView(true)><i class="material-icons left">view_list</i>Liste</a></div>
 		<div *ngIf="authService.loggedIn() && isRegisteredForAForum" class="col s4">
 		  <input type="checkbox" (change)="filterById()" [(ngModel)]="idFilterIsSet" class="filled-in" id="filled-in-box" [checked]="idFilterIsSet && this.authService.loggedIn()"/>
       <label for="filled-in-box">Nur Meine</label>
     </div>
 	</div>
-    <ul class="collection" *ngIf="listViewActive">
-      <li *ngFor="let forum of forumList.getSortedByDate() | forumSearch:searchFilter | forumFilter:{categories: categoryFilter} | forumFilter:{institution: institutionFilter} | forumFilter:{_id: idFilter}" class="collection-item avatar">
+    <ul class="collection" *ngIf="listViewActive && forumList">
+      <li (click)="openForum(forum._id)" *ngFor="let forum of forumList.getSortedByDate() | forumSearch:searchFilter | forumFilter:{categories: categoryFilter} | forumFilter:{institution: institutionFilter} | forumFilter:{_id: idFilter}" class="hoverable collection-item avatar">
         <i class="material-icons circle blue">room</i>
         <h3 class="title">{{forum.title}} - <span> {{forum.institution}}</span></h3>
         <p>Ort und Wirkungsgebiet<br>
@@ -136,6 +136,8 @@ export class ForumListComponent implements OnInit {
         });
       });
     }
+
+    //forum list will be empty because log before callback
     console.log('list of stuff:');
     console.log(this.forumList);
   }
@@ -244,9 +246,10 @@ export class ForumListComponent implements OnInit {
       // create marker
       let marker = new google.maps.Marker({
         map: map,
-        position: coords,
-        category: category,
-        institution: institution
+        position: coords
+        //,
+        //category: category,
+        //institution: institution
       });
       // add content to marker
       marker.addListener('click', function() {
