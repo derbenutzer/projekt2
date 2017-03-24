@@ -5,4 +5,5 @@ export class User {
   preferredContact:string;
   phone:string;
   email:string;
+  userImageUrl:string;
 }

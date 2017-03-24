@@ -11,14 +11,13 @@ import { ConfigurationService } from './configuration.service';
 import {provideAuth, AuthHttp, AuthConfig} from "angular2-jwt";
 import {Http, RequestOptions} from "@angular/http";
 import {LoginToContinueComponent} from "./login-to-continue.component";
-import {ImageService} from "./image.service";
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({}), http, options);
 }
 
 @NgModule({
-  providers: [ImageService, ConfigurationService, CanDeactivateGuard, DialogService, ErrorLoggerService, {provide: ErrorHandler, useClass: ErrorHandlerService}, AuthService, {
+  providers: [ConfigurationService, CanDeactivateGuard, DialogService, ErrorLoggerService, {provide: ErrorHandler, useClass: ErrorHandlerService}, AuthService, {
     provide: AuthHttp,
     useFactory: authHttpServiceFactory,
     deps: [Http, RequestOptions]
@@ -26,4 +25,4 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   declarations: [LoginToContinueComponent],
   exports:[LoginToContinueComponent]
 })
-export class SharedModule { }
+export class SharedModule{}

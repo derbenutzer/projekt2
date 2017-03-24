@@ -10,7 +10,6 @@ import {ForumDetailService} from "./service/forum-detail.service";
 import {UserService} from "../users/service/user.service";
 import {AuthService} from "../shared/auth.service";
 import {PostList} from "../posts/model/post-list";
-import {ImageService} from "../shared/image.service";
 import {User} from "../users/model/user";
 declare let $: any;
 
@@ -30,7 +29,7 @@ declare let $: any;
           <div *ngFor="let post of postList.getSortedByDate()" class="col sm12 m6">
             <div class="card sticky-action medium hoverable">
               <div class="card-image waves-effect waves-block waves-light">
-                <img class="activator" src="{{getImage(post.title)}}" />
+                <img class="activator" src="https://i1.wp.com/cdn.auth0.com/avatars/{{ post.author.substring(0, 2).toLowerCase() }}.png?ssl=1" />
               </div>
               <div class="card-content">
                 <span class="card-title activator grey-text text-darken-4">{{ post.title }}<i class="material-icons right">more_vert</i></span>
@@ -92,11 +91,25 @@ declare let $: any;
       .row .col.m6 {
           width: 100%;
       }
+      
+      .card.medium {
+          height: 480px;
+      }
     }
     
-    @media only screen and (min-width: 400px){
+    @media only screen and (min-width: 320px){
+      
+      .card.medium {
+          height: 520px;
+      }
+    }
+    
+    @media only screen and (min-width: 360px){
       .row .col.m6 {
           width: 50%;
+      }
+      .card.medium {
+          height: 450px;
       }
     }
     
@@ -104,11 +117,19 @@ declare let $: any;
       .row .col.m6 {
           width: 33%;
       }
+      
+      .card.medium {
+          height: 400px;
+      }
     }
     
     @media only screen and (min-width: 1160px){
       .row .col.m6 {
           width: 25%;
+      }
+      
+      .card.medium {
+          height: 450px;
       }
     }
 `]
@@ -117,7 +138,6 @@ declare let $: any;
 export class ForumDetailComponent implements OnInit {
 
   @Input() forum: Forum;
-  //dividedPostArrays: Post[][];
   postList: PostList;
   forumId:string;
   userId:string;
@@ -132,7 +152,6 @@ export class ForumDetailComponent implements OnInit {
     private userService:UserService,
     private authService:AuthService,
     private postService: PostService,
-    private imageService: ImageService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -250,10 +269,6 @@ export class ForumDetailComponent implements OnInit {
         this.userToContact = user;
         this.openContactDialog();
       })
-  }
-
-  getImage(postId:string){
-    return this.imageService.getImage(postId);
   }
 }
 

@@ -7,7 +7,6 @@ import { FormsModule }   from '@angular/forms';
 import {AppRoutingModule} from "../app-routing.module";
 import {ForumDetailService} from "./service/forum-detail.service";
 import {SharedModule} from "../shared/shared.module";
-import {ImageService} from "../shared/image.service";
 
 
 
@@ -15,6 +14,6 @@ import {ImageService} from "../shared/image.service";
 @NgModule({
   imports: [PostsModule, MomentModule,FormsModule,CommonModule,AppRoutingModule, SharedModule],
   declarations: [ForumDetailComponent,],
-  providers: [ForumDetailService, ImageService],
+  providers: [ForumDetailService],
 })
 export class ForumDetailModule { }
