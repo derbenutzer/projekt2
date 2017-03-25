@@ -58,7 +58,7 @@ import {UserService} from "../users/service/user.service";
     <ul class="collection" *ngIf="listViewActive && forumList">
       <li (click)="openForum(forum._id)" *ngFor="let forum of forumList.getSortedByDate() | forumSearch:searchFilter | forumFilter:{categories: categoryFilter} | forumFilter:{institution: institutionFilter} | forumFilter:{_id: idFilter}" class="hoverable collection-item avatar">
         <img class="material-icons circle" src="https://i1.wp.com/cdn.auth0.com/avatars/{{ forum.categories[0].substring(0, 2).toLowerCase() }}.png?ssl=1">
-        <h3 class="title">{{forum.title}}<span class="titleDivider"> -</span> <span class="titleInstitution"> {{forum.institution}}</span></h3>
+        <span class="title">{{forum.title}}<span class="titleDivider"> -</span> <span class="titleInstitution"> {{forum.institution}}</span></span>
         <p class="listItemContent">{{ forum.location }}<br>
         <span *ngFor="let category of forum.categories" class="category">
                 {{category}}
