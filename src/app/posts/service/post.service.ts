@@ -76,6 +76,29 @@ export class PostService {
       .catch(this.handleError);
   }
 
+  getAllPostsForUserInForum(userId: string, forumId: string): Promise<Post[]> {
+    return this.http.get(this.apiUrl)
+      .toPromise()
+      .then(response => {
+
+        let list = response.json() as Post[];
+        list = list.filter(post => post.postedIn==forumId && post.authorId==userId);
+        return list;
+      })
+      .catch(this.handleError);
+  }
+
+  deleteAllPostsOfUserInForum(userId: string, forumId: string): Promise<Post[]> {
+    return this.getAllPostsForUserInForum(userId, forumId)
+      .then(postList =>{
+
+        for(let post of postList){
+          this.deletePost(post._id);
+        }
+        return postList;
+      })
+  }
+
   createNewPost(keyValuePairs:Object): Promise<Post>{
     return this.initializePost(keyValuePairs);
   }
