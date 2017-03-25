@@ -23,6 +23,12 @@ import {Router} from "@angular/router";
           </div>
         </div>
         <div class="form-group">
+          <div class="input-field">
+            <label class="active" for="description">Adresse</label>
+            <input name="location" type="text" class="form-control" [(ngModel)]="forum.location" placeholder="Strasse, Stadt" required>
+          </div>
+        </div>
+        <div class="form-group">
           <label for="categories">Kategorien</label>
           <input name="categoriesInput" type="text" class="form-control" [(ngModel)]="categoriesInput" placeholder="Kategorie1, Kategorie2, etc." >
         </div>
@@ -94,11 +100,18 @@ export class CreateForumComponent {
   }
 
   sendForm(): void {
+    let institution;
+
     this.handleCategoriesInput();
     //this.handleInstitutionsInput();
+    console.log(this);
+    if(this.institution) {
+      institution = this.institution.institutionName;
+    } else {
+      institution = "no institution set";
+    }
 
-    let institution = this.institution.institutionName;
-    this.forumService.handleForumFormSubmit(this.forum._id,{"title": this.forum.title, "description":this.forum.description, "owner":this.institution._id ,"institution": institution,"categories": this.forum.categories})
+    this.forumService.handleForumFormSubmit(this.forum._id,{"title": this.forum.title, "description":this.forum.description, "owner":this.institution._id ,"institution": institution,"categories": this.forum.categories, "location": this.forum.location})
       .then(forum => {
         console.log(forum);
         this.userService.updateUser(this.institution._id,{"ownerOf":forum._id, "registeredFor":forum._id})

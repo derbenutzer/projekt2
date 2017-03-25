@@ -7,6 +7,7 @@ export class Forum {
   owner:string;
   description:string;
   categories: string[];
+  location: string;
 
 
   constructor() {};
