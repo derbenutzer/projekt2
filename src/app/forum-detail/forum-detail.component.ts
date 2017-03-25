@@ -32,7 +32,7 @@ declare let $: any;
                 <img class="activator" src="https://i1.wp.com/cdn.auth0.com/avatars/{{ post.author.substring(0, 2).toLowerCase() }}.png?ssl=1" />
               </div>
               <div class="card-content">
-                <span class="card-title activator grey-text text-darken-4">{{ post.title }}<i class="material-icons right">more_vert</i></span>
+                <span class="card-title activator grey-text text-darken-4"><span class="activator">{{ post.title }}</span><i class="material-icons right">more_vert</i></span>
                 <p>{{ post.author }}</p>
               </div>
               <div class="card-action">
@@ -119,19 +119,39 @@ declare let $: any;
       }
       
       .card.medium {
-          height: 400px;
+          height: 450px;
       }
     }
     
-    @media only screen and (min-width: 1160px){
+    @media only screen and (min-width: 1260px){
       .row .col.m6 {
           width: 25%;
       }
       
       .card.medium {
-          height: 450px;
+          height: 500px;
       }
     }
+    
+    .card-title span{
+      display: inline-block;
+      width: 90%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      float: left;
+    }
+    
+    .card-title i {
+      width:10%;
+      line-height: 48px;
+      margin-left:0;
+    }
+    
+    .card .card-reveal .card-title {
+      word-break:break-all;
+    }
+    
 `]
 })
 
