@@ -48,18 +48,18 @@ import {UserService} from "../users/service/user.service";
 	</div>
 	
 	<div class="row">
-		<div class="col s4" *ngIf="listViewActive"><a class="waves-effect waves-light btn" (click)=toggleListView(false) ><i class="material-icons left">my_location</i>Karte</a></div>
-		<div class="col s4" *ngIf="!listViewActive"><a class="waves-effect waves-light btn" (click)=toggleListView(true) ><i class="material-icons left">view_list</i>Liste</a></div>
-		<div *ngIf="authService.loggedIn() && isRegisteredForAForum" class="col s4">
+		<div class="switchButton col s4" *ngIf="listViewActive"><a class="waves-effect waves-light btn" (click)=toggleListView(false) ><i class="material-icons left">my_location</i>Karte</a></div>
+		<div class="switchButton col s4" *ngIf="!listViewActive"><a class="waves-effect waves-light btn" (click)=toggleListView(true) ><i class="material-icons left">view_list</i>Liste</a></div>
+		<div *ngIf="authService.loggedIn() && isRegisteredForAForum" class="checkboxFilter col s4">
 		  <input type="checkbox" (change)="filterById()" [(ngModel)]="idFilterIsSet" class="filled-in" id="filled-in-box" [checked]="idFilterIsSet && this.authService.loggedIn()"/>
       <label for="filled-in-box">Nur Meine</label>
     </div>
 	</div>
     <ul class="collection" *ngIf="listViewActive && forumList">
       <li (click)="openForum(forum._id)" *ngFor="let forum of forumList.getSortedByDate() | forumSearch:searchFilter | forumFilter:{categories: categoryFilter} | forumFilter:{institution: institutionFilter} | forumFilter:{_id: idFilter}" class="hoverable collection-item avatar">
-        <i class="material-icons circle blue">room</i>
-        <h3 class="title">{{forum.title}} - <span> {{forum.institution}}</span></h3>
-        <p>Ort und Wirkungsgebiet<br>
+        <img class="material-icons circle" src="https://i1.wp.com/cdn.auth0.com/avatars/{{ forum.categories[0].substring(0, 2).toLowerCase() }}.png?ssl=1">
+        <h3 class="title">{{forum.title}}<span class="titleDivider"> -</span> <span class="titleInstitution"> {{forum.institution}}</span></h3>
+        <p class="listItemContent">{{ forum.location }}<br>
         <span *ngFor="let category of forum.categories" class="category">
                 {{category}}
               </span>
