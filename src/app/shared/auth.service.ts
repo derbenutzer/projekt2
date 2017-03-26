@@ -106,6 +106,17 @@ export class AuthService {
     }
   }
 
+  getUserEmail(): string {
+    let metaData = this.getMetaData();
+    if(metaData && metaData['email']) {
+      let email = metaData['email'];
+      return email;
+    }
+    else{
+      return this.userProfile['email'];
+    }
+  }
+
   getDatabaseId(): string{
     let metaData= this.getMetaData();
     if(metaData) {

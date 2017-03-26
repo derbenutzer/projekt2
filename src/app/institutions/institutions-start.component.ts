@@ -13,7 +13,7 @@ import { Component} from '@angular/core';
 		<div class="row section">
 			<div class="col s6 valign-wrapper">
 				<div class="icon-block section center-align">
-					<i class="large material-icons">business</i>
+					<i class="large material-icons">contact_phone</i>
 					<h3>Registrierung</h3>
 					<p>Registrieren Sie sich als Institution</p>
 					<a routerLink="/register-institution" class="waves-effect waves-light btn-large">Registrierung</a>

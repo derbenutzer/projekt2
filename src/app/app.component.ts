@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from "./shared/auth.service";
+import {UserService} from "./users/service/user.service";
 declare let $: any;
 
 @Component({
@@ -12,36 +13,62 @@ declare let $: any;
     <div class="container">
       <div class="nav-wrapper">
 	      <a class="brand-logo" routerLink="/home">Benefitz</a>
-	      <a materialize="sideNav" data-activates="mobile-nav" class="jsLink button-collapse"><i class="material-icons">menu</i></a>
+	      <a materialize="sideNav" data-activates="mobile-nav" class="jsLink button-collapse hide-on-med-and-up"><i class="material-icons">menu</i></a>
 	      
 	      <ul class="right">
           <li>
-            <a (click)=authService.login() *ngIf="!authService.loggedIn()">Log In</a>
-            <a (click)=authService.logout() *ngIf="authService.loggedIn()">Log Out</a>
+            <a (click)=authService.login() *ngIf="!authService.loggedIn()">Login</a>
+            <a (click)=authService.logout() *ngIf="authService.loggedIn()">Logout</a>
           </li>
         </ul>
 	     
-        <ul class="right hide-on-med-and-down">
+        <ul class="right hide-on-small-and-down">
           <li>
-            <a class="navHome" routerLink="/home"><span>Startseite</span></a>
+            <a routerLink="/forum-list">
+              <span>Liste</span>
+            </a>
           </li>
           <li *ngIf="authService.loggedIn()">
-            <a routerLink="/profile" >Profil</a>
-          </li>
-          <li *ngIf="authService.loggedIn() && authService.userProfile">
-             <a routerLink="/profile"><img  class="userImage" [src]="authService.userProfile.picture"></a>
+            <a routerLink="/profile" >
+              <span>Profil</span>
+            </a>
           </li>
         </ul>
-
-        <ul (click)="hideSideNav()" id="mobile-nav" class="side-nav">
+        
+        <ul (click)="hideSideNav()" id="mobile-nav" class="side-nav hide-on-med-and-up">
+          <li *ngIf="authService.loggedIn() && authService.userProfile" >
+            <div class="userView">
+              <a routerLink="/profile">
+                <div class="background">
+                </div>
+                <img class="circle" [src]="authService.userProfile.picture">
+                <span class="white-text name">{{authService.getUserName()}}</span>
+                <span class="white-text email">{{authService.getUserEmail()}}</span>
+              </a>
+            </div>
+          </li>
           <li>
-            <a class="navHome" routerLink="/home"><span>Startseite</span></a>
+            <a routerLink="/forum-list">
+              <i class="material-icons left">list</i>
+              <span>Liste</span>
+            </a>
           </li>
-          <li *ngIf="authService.loggedIn() && authService.userProfile">
-             <a routerLink="/profile"><img  class="userImage" [src]="authService.userProfile.picture"></a>
+          <li *ngIf="authService.loggedIn()"> 
+            <a routerLink="/profile" >
+              <i class="material-icons left">account_box</i>
+              <span>Profil</span>
+            </a>
           </li>
-          <li *ngIf="authService.loggedIn()">
-            <a routerLink="/profile" >Profil</a>
+          <li>
+            
+            <a (click)=authService.login() *ngIf="!authService.loggedIn()">
+              <i class="material-icons left">account_box</i>
+              <span>Login</span>
+            </a>
+            <a (click)=authService.logout() *ngIf="authService.loggedIn()">              
+              <i class="material-icons left">exit_to_app</i>
+              <span>Logout</span>
+            </a>
           </li>
         </ul>
       </div>
@@ -62,11 +89,32 @@ declare let $: any;
   styleUrls: ['./app.component.scss'],
 })
 
-export class AppComponent{
+export class AppComponent implements OnInit{
 
   title = 'Benefitz';
+  isInstitution = false;
 
-  constructor(private authService: AuthService) {};
+  constructor(
+    private authService: AuthService,
+    private userService: UserService
+  ) {};
+
+  ngOnInit(){
+    this.checkIfIsInstitution();
+  }
+
+  ngOnChanges(){
+    this.checkIfIsInstitution();
+  }
+
+  checkIfIsInstitution(){
+    if(this.authService.loggedIn()&& !this.isInstitution){
+      this.userService.checkIfUserIsInstitution(this.authService.getDatabaseId())
+        .then(isInstitution => {
+          this.isInstitution = isInstitution;
+        });
+    }
+  }
 
   hideSideNav(){
     $('.button-collapse').sideNav('hide');
