@@ -14,3 +14,72 @@
   cursor:pointer;
 }
 
+
+
+
+
+.row .col.s4 {
+  width: 100%;
+}
+
+.checkboxFilter {
+  margin-top:0.55rem;
+}
+
+
+@media only screen and (min-width: 601px){
+  .row .col.s4 {
+    width: 50%;
+  }
+}
+
+@media only screen and (min-width: 1180px){
+  .row .col.s4 {
+    width: 33.33333%;
+  }
+}
+
+@media only screen and (max-width: 601px){
+  .row .col.s4.switchButton, .row .col.s4.checkboxFilter {
+    width:50%;
+  }
+}
+
+@media only screen and (max-width: 450px){
+  .checkboxFilter {
+    margin-top:2rem;
+  }
+
+  .row .col.s4.switchButton, .row .col.s4.checkboxFilter {
+    width:100%;
+  }
+}
+
+.listItemContent, .title{
+  max-width:80%;
+}
+
+@media only screen and (max-width: 400px){
+  .listItemContent, .collection .collection-item.avatar .title{
+  }
+
+  .collection .collection-item.avatar {
+    padding-left: 0.5rem;
+  }
+
+
+  .collection .collection-item.avatar .circle {
+    display:none;
+  }
+
+  .titleInstitution {
+    font-size: 14px;
+    font-weight: normal;
+    width: 100%;
+    display: block;
+  }
+
+  .titleDivider{
+    display:none;
+  }
+}

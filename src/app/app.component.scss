@@ -6,3 +6,37 @@
 .page-footer {
   padding-bottom: 1.25rem;
 }
+
+.background {
+  background-color:#039be5;
+}
+
+
+@media only screen and (max-width: 992px){
+  nav .brand-logo {
+    left: initial;
+    -webkit-transform: initial;
+    transform: initial;
+  }
+}
+
+
+@media only screen and (max-width: 601px){
+
+  nav .brand-logo {
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+  }
+}
+
+@media only screen and (max-width: 401px){
+  nav .button-collapse {
+    margin: 0;
+  }
+
+  nav ul a {
+    padding:0;
+  }
+}
+

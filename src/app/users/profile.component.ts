@@ -16,7 +16,6 @@ import {FormInputComponent} from "./form-input.component";
         <img [src]="authService.userProfile.picture" alt="" class="profile-img">
         </div>
       </div>
-      <div class="container">
         <div class="row">
           <form class="col s12" (ngSubmit)="onSubmit()">
           
@@ -80,7 +79,6 @@ import {FormInputComponent} from "./form-input.component";
           
         </div>
       </div>
-    </div>
     <div *ngIf="!authService.loggedIn()">
        <login-to-continue [backUrl]="backUrl"></login-to-continue>
     </div>

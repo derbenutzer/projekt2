@@ -74,6 +74,18 @@ export class UserService {
       .catch(this.handleError);
   }
 
+  unRegisterUserForForum(userId:string ,forumId:string) :Promise<string>{
+    return this.getUser(userId)
+      .then(user => {
+        let forumArray = user.registeredFor;
+        let index = forumArray.indexOf(forumId);
+        if (index > -1) {
+          forumArray.splice(index, 1);
+        }
+        return this.updateUser(userId,{"registeredFor": forumArray});
+      })
+  }
+
   registerUserForForum(userId:string ,forumId:string) :Promise<string>{
     return this.updateUser(userId,{"registeredFor": forumId});
   }
