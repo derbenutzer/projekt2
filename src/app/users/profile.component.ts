@@ -21,11 +21,11 @@ import {FormInputComponent} from "./form-input.component";
           <form class="col s12" (ngSubmit)="onSubmit()">
           
             <div class="row">
-              <div class="input-field col s6">
+              <div class="input-field col l6 m6 s12">
                 <form-input text="Vorname" placeholder="Vornamen eingeben" name="firstName" (onInputChange)="updateTempProfile($event)"></form-input>
               </div>
               
-              <div class="input-field col s6">
+              <div class="input-field col l6 m6 s12">
                 <form-input text="Nachname" placeholder="Nachnamen eingeben" name="lastName" (onInputChange)="updateTempProfile($event)"></form-input>
               </div>
             </div>

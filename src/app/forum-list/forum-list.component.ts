@@ -14,7 +14,7 @@ import {UserService} from "../users/service/user.service";
     
     <div class="row section">
     
-      <div class="input-field col s4">
+      <div class="input-field col l4 m4 s6">
         <forum-list-filter *ngIf="filters"
           [name]="filters[0].name" 
           [choices]="filters[0].choices"
@@ -23,7 +23,7 @@ import {UserService} from "../users/service/user.service";
       </div>
       
     
-      <div class="input-field col s4">
+      <div class="input-field col l4 m4 s6">
         <forum-list-filter *ngIf="filters"
           [name]="filters[1].name"
           [choices]="filters[1].choices"
@@ -31,7 +31,7 @@ import {UserService} from "../users/service/user.service";
         </forum-list-filter>
       </div>
       
-      <div class="col s4">
+      <div class="col l4 m4 s12">
         <nav>
           <div class="nav-wrapper blue">
             <form>
