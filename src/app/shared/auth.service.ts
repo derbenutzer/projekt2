@@ -163,7 +163,7 @@ export class AuthService {
           this.updateUserOnDatabase(keyValuePair);
 
         },
-        error => alert(error.json().message)
+        error => console.error(error.json().message)
       );
   }
 

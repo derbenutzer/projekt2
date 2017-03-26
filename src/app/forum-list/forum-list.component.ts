@@ -211,7 +211,7 @@ export class ForumListComponent implements OnInit {
   mapMarkerFilter(type, filterStrings) {
     for (var i = 0; i < this.markerStash.length; i++) {
       var marker = this.markerStash[i];
-      if(marker[type] == filterStrings || filterStrings == "") {
+      if(marker[type] == filterStrings || filterStrings == "" || filterStrings.includes(marker[type])) {
         marker.setVisible(true);
       } else {
         marker.setVisible(false);
@@ -219,7 +219,7 @@ export class ForumListComponent implements OnInit {
     }
   }
 
-  // todo: hide/show markers on multiple filters. link search field to map search (not entry search..). hide one marker overlay on click of another and on map click.
+  // todo: link search field to map search (not entry search..). hide one marker overlay on click of another and on map click.
   // todo: move parts of this into init function so it does not initialize the markers every time the map is built
   onMapReady(map) {
     // filling forum stash
@@ -246,10 +246,9 @@ export class ForumListComponent implements OnInit {
       // create marker
       let marker = new google.maps.Marker({
         map: map,
-        position: coords
-        //,
-        //category: category,
-        //institution: institution
+        position: coords,
+        category: category,
+        institution: institution
       });
       // add content to marker
       marker.addListener('click', function() {

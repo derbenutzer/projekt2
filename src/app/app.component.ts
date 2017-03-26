@@ -37,11 +37,22 @@ declare let $: any;
           <li>
             <a class="navHome" routerLink="/home"><span>Startseite</span></a>
           </li>
+          <hr />
           <li *ngIf="authService.loggedIn() && authService.userProfile">
              <a routerLink="/profile"><img  class="userImage" [src]="authService.userProfile.picture"></a>
           </li>
           <li *ngIf="authService.loggedIn()">
             <a routerLink="/profile" >Profil</a>
+          </li>
+          <hr/>
+          <li>
+            <a class="navHome" routerLink="/forum-list"><span>Runde Tische</span></a>
+          </li>
+          <li>
+            <a class="navHome" routerLink="/institutions-start"><span>Institutionen</span></a>
+          </li>
+          <li>
+            <a class="navHome" routerLink="/dashboard"><span>Runde Tische verwalten</span></a>
           </li>
         </ul>
       </div>
