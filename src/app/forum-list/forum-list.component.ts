@@ -246,7 +246,6 @@ export class ForumListComponent implements OnInit {
 
   }
 
-  // todo: link search field to map search (not entry search..). hide one marker overlay on click of another and on map click.
   // todo: move parts of this into init function so it does not initialize the markers every time the map is built
   onMapReady(map) {
     // filling forum stash
@@ -268,17 +267,12 @@ export class ForumListComponent implements OnInit {
       });
       // get coordinates to put marker
       let coords = { lat: latlon.lat, lng: latlon.lon};
-      let category = latlon.categories[0];
-      let institution = latlon.institution;
       let forumId = latlon._id;
       // create marker
       let marker = new google.maps.Marker({
         map: map,
         position: coords,
         title:forumId
-        //,
-        //category: category,
-        //institution: institution
       });
       // add content to marker
       marker.addListener('click', function() {

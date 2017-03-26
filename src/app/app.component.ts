@@ -69,16 +69,6 @@ declare let $: any;
               <span>Logout</span>
             </a>
           </li>
-          <hr/>
-          <li>
-            <a class="navHome" routerLink="/forum-list"><span>Runde Tische</span></a>
-          </li>
-          <li>
-            <a class="navHome" routerLink="/institutions-start"><span>Institutionen</span></a>
-          </li>
-          <li>
-            <a class="navHome" routerLink="/dashboard"><span>Runde Tische verwalten</span></a>
-          </li>
         </ul>
       </div>
       </div>
