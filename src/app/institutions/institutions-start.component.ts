@@ -6,7 +6,7 @@ import { Component} from '@angular/core';
   <h2 class="visually-hidden">{{title}}</h2>
 	<div class="row section">
 		<div class="container">
-			<p class="flow-text">Registrieren Sie sich als Institution oder Verwalten Sie ihre runden Tische</p>
+			<p class="flow-text">Registrieren Sie sich als Institution oder verwalten Sie Ihre Runden Tische</p>
 		</div>
 	</div>
 	<div class="container">
@@ -23,7 +23,7 @@ import { Component} from '@angular/core';
 				<div class="icon-block section center-align">
 					<i class="large material-icons">dashboard</i>
 					<h3>Verwaltung</h3>
-					<p>Verwalten Sie ihre runden Tische</p>
+					<p>Verwalten Sie Ihre Runden Tische</p>
 					<a routerLink="/dashboard" class="waves-effect waves-light btn-large">Verwaltung</a>
 				</div>
 			</div>

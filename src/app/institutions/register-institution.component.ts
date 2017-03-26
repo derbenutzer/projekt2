@@ -15,11 +15,11 @@ import {UserService} from "../users/service/user.service";
     </div>
     
     
-    <div *ngIf="authService.loggedIn() && !isInstitution">
+    <div *ngIf="authService.loggedIn() && !isInstitution && !submitted">
     
       <div>
-        <p class="flow-text">Institutionen müssen sich verifizieren. Entweder wir rufen Sie an oder wir kontaktieren sie per Email.</p>
-         <p class="flow-text">Geben sie die Telefonnummer und die Emailadresse der Institution an, die sie repräsentieren möchten.</p>
+        <p class="flow-text">Institutionen müssen sich verifizieren. Entweder wir rufen Sie an oder wir kontaktieren Sie per Email.</p>
+         <p class="flow-text">Geben Sie die Telefonnummer und die Emailadresse der Institution an, die Sie repräsentieren möchten.</p>
       </div>
       
       <form (ngSubmit)="sendRequest()">
@@ -36,13 +36,19 @@ import {UserService} from "../users/service/user.service";
           <input [(ngModel)]="phone" id="phone" name="phone" placeholder="Telefonnummer">
         </div>  
         <div>
-          <button class="btn waves-effect waves-light" type="submit" name="action">Senden
+          <button class="btn waves-effect waves-light" type="submit" name="action">Registrieren
             <i class="material-icons right">send</i>
           </button>
           <button type="button" class="waves-effect waves-light btn" (click)="goBack()">Zurück</button>
         </div>
       </form>
       
+    </div>
+    <div *ngIf="submitted">
+      <p class="flow-text">Vielen Dank, Sie sind jetzt als Institution registriert</p>
+      <div class="buttonPanel">
+        <button class="waves-effect waves-light btn" (click)="goToDashboard()" type="button">Zur Verwaltungsansicht</button>
+      </div>
     </div>
     
     <div *ngIf="!authService.loggedIn()">
@@ -59,6 +65,7 @@ export class RegisterInstitutionComponent implements OnInit{
   phone="";
   name="";
   isInstitution=false;
+  submitted=false;
 
   constructor(
     private authService: AuthService,
@@ -94,6 +101,7 @@ export class RegisterInstitutionComponent implements OnInit{
     let userId = this.authService.userProfile['user_metadata']['databaseId'];
     let keyValuePairs = {"institutionName":this.name, "isInstitution":true , "isVerified": true};
     this.userService.registerUserAsInstitution(userId,keyValuePairs);
+    this.submitted=true;
   }
 
 
@@ -105,6 +113,10 @@ export class RegisterInstitutionComponent implements OnInit{
       return this.userService.checkIfUserIsInstitution(userId)
         .then(res => this.isInstitution = res);
 
+  }
+
+  goToDashboard(){
+    this.router.navigate(["/dashboard"]);
   }
 
 }

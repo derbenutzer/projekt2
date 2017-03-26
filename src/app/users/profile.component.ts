@@ -108,8 +108,13 @@ export class ProfileComponent {
   }
 
   setContactMethod(){
-    this.preferredContact = this.authService.getPreferredContact();
-    console.log(this.preferredContact);
+
+    if(this.authService.getPreferredContact()){
+      this.preferredContact = this.authService.getPreferredContact();
+    }
+    else{
+      this.preferredContact = "email";
+    }
   }
 
 

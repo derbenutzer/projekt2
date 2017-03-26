@@ -43,7 +43,7 @@ declare let $: any;
                       <a (click)="openUserList(forum)" class="jsLink userList"><i class="material-icons">supervisor_account</i></a>
                       <a (click)="openForum(forum)" class="jsLink expand"><i class="material-icons">launch</i></a>
                       <a (click)="editForum(forum)" class="jsLink edit"><i class="material-icons">mode_edit</i></a>
-                      <a (click)="openDialog(forum)" class="jsLink clear"><i class="material-icons">clear</i></a>
+                      <a (click)="openDialog(forum)" class="jsLink clear"><i class="material-icons">delete_forever</i></a>
                     </div>
                   </div>
                 </div>
@@ -58,7 +58,6 @@ declare let $: any;
         </div>
     <div *ngIf="isInstitution" class="row section">
       <button (click)="createNewForum()" class="btn waves-effect waves-light" name="action">Neuen Tisch erstellen
-        <i class="material-icons right">send</i>
       </button>
     </div>
   </div>
@@ -69,7 +68,7 @@ declare let $: any;
   
   <div *ngIf="authService.loggedIn()&& !isInstitution">
     <div>
-      <p class="flow-text">Sie sind noch nicht als Institution registriert oder ihre Registrierung wurde noch nicht verifiziert.</p>
+      <p class="flow-text">Sie sind noch nicht als Institution registriert oder Ihre Registrierung wurde noch nicht verifiziert.</p>
     </div>
     <div>
       <button type="button" (click)="goBack()" class="btn">Zurück</button>
@@ -79,7 +78,7 @@ declare let $: any;
   <div id="confirmDialog" class="modal">
     <div class="modal-content">
       <h4>Runden Tisch löschen</h4>
-      <p class="flow-text">Möchten sie diesen Runden Tisch wirklich löschen?</p>
+      <p class="flow-text">Möchten Sie diesen Runden Tisch wirklich löschen?</p>
     </div>
     <div class="modal-footer">
       <a (click)="deleteForum()" class=" modal-action modal-close waves-effect waves-light btn-flat">Löschen</a>

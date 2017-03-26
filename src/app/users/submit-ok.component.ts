@@ -9,8 +9,19 @@ import {FormInputComponent} from "./form-input.component";
   selector: 'submit-ok',
   template: `
     <p class="flow-text">Vielen Dank. Ihre Änderungen wurden übernommen.</p>
+    <div class="buttonPanel">
+    <button (click)="goHome()" type="button" class="waves-effect waves-light btn">Zur Startseite</button>
+    </div>
   `,
 })
 
 export class SubmitOKComponent {
+
+
+  constructor(private router: Router) {};
+
+  goHome(){
+    this.router.navigate(["/home"]);
+  }
+
 }

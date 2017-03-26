@@ -40,8 +40,6 @@ export class AuthService {
 
         let metaData=this.userProfile["user_metadata"];
 
-        console.log(metaData);
-
         if(!metaData){
           this.userService.createNewUser({"authId":this.userProfile['user_id'], "userName": this.userProfile['nickname'], "email": this.userProfile['email'], "userImageUrl": this.userProfile['picture']})
             .then(userId => {

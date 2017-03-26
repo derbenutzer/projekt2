@@ -25,7 +25,7 @@ import { Component } from '@angular/core';
 				<div class="icon-block section center-align">
 					<i class="large material-icons">business</i>
 					<h3>Institutionen</h3>
-					<p>Registrieren Sie sich als Institution oder verwalten Sie ihre runden Tische</p>
+					<p>Registrieren Sie sich als Institution oder verwalten Sie Ihre Runden Tische</p>
 					<a routerLink="/institutions-start" class="waves-effect waves-light btn-large">Start</a>
 				</div>
 			</div>

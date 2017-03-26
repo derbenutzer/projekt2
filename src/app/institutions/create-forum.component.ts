@@ -32,8 +32,7 @@ import {Router} from "@angular/router";
           <label for="categories">Kategorien</label>
           <input name="categoriesInput" type="text" class="form-control" [(ngModel)]="categoriesInput" placeholder="Kategorie1, Kategorie2, etc." >
         </div>
-        <button class="btn waves-effect waves-light" type="submit" name="action">Senden
-          <i class="material-icons right">send</i>
+        <button class="btn waves-effect waves-light" type="submit" name="action">Speichern
         </button>
       </form>
       <br>

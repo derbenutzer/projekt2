@@ -15,13 +15,20 @@ import {ForumService} from "../forum-list/service/forum.service";
       </button>
       <button type="button" class="waves-effect waves-light btn" (click)="goBack()">Zurück</button>
     </div>
-    <div *ngIf="hasCompletedProfile">
+    <div *ngIf="hasCompletedProfile && !submitted">
       <p>Damit Sie an einem runden Tische teilnehmen können müssen Sie sich für diesen registrieren. Wir leiten ihre Anfrage an die verantwortliche Institution weiter, welche Sie direkt benachrichtig sobald Sie registriert sind.</p>
       <p>Bestätigen Sie ihre Registrierungsanfrage indem Sie auf "Senden" klicken.</p>
       <button (click)="sendRequest()" class="btn waves-effect waves-light" type="submit" name="action">Senden
         <i class="material-icons right">send</i>
       </button>
-      <button type="button" class="waves-effect waves-light btn" (click)="goBack()">Zurück</button>
+      <button type="button" class="waves-effect waves-light btn" (click)="goBack()">Zur Listenansicht</button>
+    </div>
+    
+    <div *ngIf="submitted">
+      <p class="flow-text">Vielen Dank, Sie sind jetzt für dieses Forum registriert und können eintreten.</p>
+      <div class="buttonPanel">
+        <button class="waves-effect waves-light btn" (click)="goBack()" type="button">Zur Listenansicht</button>
+      </div>
     </div>
   `,
 })
@@ -29,6 +36,7 @@ export class RegisterForForumComponent implements OnInit{
 
   pageTitle="Für Forum registrieren";
   hasCompletedProfile:boolean = false;
+  submitted = false;
 
   constructor(
     private authService: AuthService,
@@ -51,9 +59,10 @@ export class RegisterForForumComponent implements OnInit{
         return this.userService.registerUserForForum(this.authService.userProfile['user_metadata']['databaseId'], forumId);
       })
       .subscribe(response => {
-        this.forumService.addUser(forumId)
-          .then(res => this.goBack());
+        this.forumService.addUser(forumId);
       });
+
+    this.submitted = true;
   };
 
 

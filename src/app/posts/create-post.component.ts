@@ -21,8 +21,7 @@ import {AuthService} from "../shared/auth.service";
         <label class="active" for="content">Eintrag</label>
         <textarea id="content" name="content" type="text" class="form-control materialize-textarea"  [(ngModel)]="post.content" required></textarea>
       </div>
-      <button class="btn waves-effect waves-light" type="submit" name="action">Senden
-        <i class="material-icons right">send</i>
+      <button class="btn waves-effect waves-light" type="submit" name="action">Speichern
       </button>
       <button type="button" class="waves-effect waves-light btn" (click)="goBack()">Back</button>
     </form>

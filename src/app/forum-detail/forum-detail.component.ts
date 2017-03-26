@@ -21,9 +21,9 @@ declare let $: any;
     <div *ngIf="authService.loggedIn() && forum">
       <h2>{{forum.title}}</h2>
       <div>
-      <p class="flow-text">{{forum.description}}</p>
+      <p class="flow-text description">{{forum.description}}</p>
         <h3>Beiträge</h3>
-        <button routerLink="/create-post" class="btn">Eintrag erstellen</button>
+        <button (click)="createPost()" class="btn">Eintrag erstellen</button>
         
         <div *ngIf="postList" class="row section">
           <div *ngFor="let post of postList.getSortedByDate()" class="col sm12 m6">
@@ -42,7 +42,7 @@ declare let $: any;
               </div>
               <div class="card-reveal">
                 <span class="card-title grey-text text-darken-4">{{ post.title }}<i class="material-icons right">close</i></span>
-                <p>{{ post.content }}</p>
+                <p class="description">{{post.content}}</p>
                 <p>Datum: <time>{{ post.createDate | amDateFormat: 'DD-MM-YYYY'}}</time></p>
               </div>
             </div>
@@ -150,6 +150,10 @@ declare let $: any;
     
     .card .card-reveal .card-title {
       word-break:break-all;
+    }
+    
+    .description {
+      white-space: pre-wrap;
     }
     
 `]
@@ -280,6 +284,11 @@ export class ForumDetailComponent implements OnInit {
   modifyPost(postId) {
     this.router.navigate(['/create-post']);
     this.postService.idOfPostToModify = postId;
+  }
+
+  createPost(){
+    this.postService.idOfPostToModify = null;
+    this.router.navigate(['/create-post']);
   }
 
   contactPostAuthor(authorId: string){
