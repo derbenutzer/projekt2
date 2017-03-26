@@ -6,6 +6,8 @@ import {AuthHttp} from "angular2-jwt";
 import {AuthService} from "../shared/auth.service";
 import {Router} from "@angular/router";
 import {UserService} from "../users/service/user.service";
+import {ForumFilterPipe} from "./service/forum-filter.pipe";
+import {ForumSearchPipe} from "./service/forum-search.pipe";
 
 @Component({
   selector: 'forum-list',
@@ -36,7 +38,7 @@ import {UserService} from "../users/service/user.service";
           <div class="nav-wrapper blue">
             <form>
             <div class="input-field">
-              <input name="searchInput" id="search" type="search" [(ngModel)]="searchFilter">
+              <input (keyup)="mapMarkerFilter()" name="searchInput" id="search" type="search" [(ngModel)]="searchFilter">
               <label for="search"><i class="material-icons">search</i></label>
               <i (click)="resetSearchInput()" class="material-icons">close</i>
             </div>
@@ -105,6 +107,9 @@ export class ForumListComponent implements OnInit {
   forumStash = [];
   markerStash = [];
 
+  forumFilter :ForumFilterPipe;
+  forumSearch :ForumSearchPipe;
+
   forumList: ForumList = new ForumList([]);
 
   constructor(private authService: AuthService,
@@ -137,9 +142,9 @@ export class ForumListComponent implements OnInit {
       });
     }
 
-    //forum list will be empty because log before callback
-    console.log('list of stuff:');
-    console.log(this.forumList);
+    this.forumFilter = new ForumFilterPipe();
+    this.forumSearch = new ForumSearchPipe();
+
   }
 
 
@@ -160,31 +165,31 @@ export class ForumListComponent implements OnInit {
 
   resetSearchInput(): void{
     this.searchFilter="";
+    this.mapMarkerFilter();
   }
 
   filterByInstitution(filterStrings){
     this.institutionFilter=filterStrings;
-
-    this.mapMarkerFilter('institution', filterStrings);
+    this.mapMarkerFilter();
   }
 
   filterByCategory(filterStrings){
     this.categoryFilter=filterStrings;
-
-    this.mapMarkerFilter('category', filterStrings);
+    this.mapMarkerFilter();
   }
 
   filterById(){
     if(!this.idFilterIsSet){
       this.idFilter=[];
+      this.mapMarkerFilter();
     }
     else {
       this.setIdFilter(this.authService.userProfile);
+
     }
   }
 
   setIdFilter(profile: Object){
-
     if(!profile['user_metadata']){
       return;
     }
@@ -194,6 +199,7 @@ export class ForumListComponent implements OnInit {
         if (user.registeredFor.length>0){
           if(this.idFilterIsSet){
             this.idFilter = user.registeredFor;
+            this.mapMarkerFilter();
           }
           this.isRegisteredForAForum = true;
         }
@@ -208,7 +214,7 @@ export class ForumListComponent implements OnInit {
     this.listViewActive = status;
   }
 
-  mapMarkerFilter(type, filterStrings) {
+/*  mapMarkerFilter2(type, filterStrings) {
     for (var i = 0; i < this.markerStash.length; i++) {
       var marker = this.markerStash[i];
       if(marker[type] == filterStrings || filterStrings == "") {
@@ -217,6 +223,27 @@ export class ForumListComponent implements OnInit {
         marker.setVisible(false);
       }
     }
+  }*/
+
+  mapMarkerFilter() {
+
+    let filteredBySearch =  this.forumSearch.transform(this.forumList.getSortedByDate(),this.searchFilter);
+    let filteredByCategory = this.forumFilter.transform(filteredBySearch,{"categories": this.categoryFilter});
+    let filteredByInstitution = this.forumFilter.transform(filteredByCategory,{"institution": this.institutionFilter});
+    let filteredByUserId = this.forumFilter.transform(filteredByInstitution,{"_id": this.idFilter});
+
+    let ArrayOfIds = filteredByUserId.map(forum => forum._id);
+
+    for (let marker of this.markerStash){
+      if(ArrayOfIds.indexOf(marker.title)!=-1){
+        marker.setVisible(true);
+      }
+      else{
+        marker.setVisible(false);
+      }
+    }
+
+
   }
 
   // todo: hide/show markers on multiple filters. link search field to map search (not entry search..). hide one marker overlay on click of another and on map click.
@@ -243,10 +270,12 @@ export class ForumListComponent implements OnInit {
       let coords = { lat: latlon.lat, lng: latlon.lon};
       let category = latlon.categories[0];
       let institution = latlon.institution;
+      let forumId = latlon._id;
       // create marker
       let marker = new google.maps.Marker({
         map: map,
-        position: coords
+        position: coords,
+        title:forumId
         //,
         //category: category,
         //institution: institution
@@ -257,7 +286,9 @@ export class ForumListComponent implements OnInit {
       });
       // store marker in stash
       this.markerStash.push(marker);
+
     }
+    this.mapMarkerFilter();
   }
 
   // map events, not used at this time
