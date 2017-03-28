@@ -1,0 +1,32 @@
+{
+  "HOME" : {
+    "TITLE" : "Benefitz",
+    "LANG" : "Language",
+    "BRIEF" : "how to get started...",
+    "PRIVATE" : "Private person",
+    "INSTITUTION" : "Institutions",
+    "PRIVATE_BRIEF" : "Start by searching for a roundtable",
+    "INSTITUTION_BRIEF" : "Register as an institution or manage your roundtables",
+    "SEARCH" : "Search",
+    "START" : "Start",
+    "LIST" : "List",
+    "PROFILE" : "Profile",
+    "LOGIN" : "Login",
+    "LOGOUT" : "Logout"
+  },
+  "SHARED" : {
+    "TITLE" : ""
+  },
+  "POSTS" : {
+    "TITLE" : ""
+  },
+  "INSTITUTIONS" : {
+    "TITLE" : ""
+  },
+  "FORUM-LIST" : {
+    "TITLE" : ""
+  },
+  "FORUM-DETAIL" : {
+    "TITLE" : ""
+  }
+}

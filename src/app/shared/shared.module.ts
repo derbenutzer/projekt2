@@ -12,6 +12,7 @@ import {provideAuth, AuthHttp, AuthConfig} from "angular2-jwt";
 import {Http, RequestOptions} from "@angular/http";
 import {LoginToContinueComponent} from "./login-to-continue.component";
 import {StringSplitPipe} from "./string-split.pipe";
+import {TranslateModule} from '@ngx-translate/core';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp( new AuthConfig({}), http, options);
@@ -24,6 +25,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     deps: [Http, RequestOptions]
   }],
   declarations: [LoginToContinueComponent, StringSplitPipe],
-  exports:[LoginToContinueComponent, StringSplitPipe]
+  exports:[LoginToContinueComponent, StringSplitPipe, TranslateModule]
 })
 export class SharedModule{}

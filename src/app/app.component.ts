@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "./shared/auth.service";
 import {UserService} from "./users/service/user.service";
+import {TranslateService} from '@ngx-translate/core';
 declare let $: any;
 
 @Component({
@@ -9,28 +10,32 @@ declare let $: any;
     <h1 class="visually-hidden">{{title}}</h1>
     <header>
 	
+    <ul id="dropdownLang" class="dropdown-content">
+      <li><a (click)="translate.use('de')">de</a></li>
+      <li><a (click)="translate.use('en')">en</a></li>
+    </ul>
     <nav class="service-nav">
     <div class="container">
       <div class="nav-wrapper">
-	      <a class="brand-logo" routerLink="/home">Benefitz</a>
+	      <a class="brand-logo" routerLink="/home">{{ 'HOME.TITLE' | translate }}</a>
 	      <a materialize="sideNav" data-activates="mobile-nav" class="jsLink button-collapse hide-on-med-and-up"><i class="material-icons">menu</i></a>
 	      
 	      <ul class="right">
           <li>
-            <a (click)=authService.login() *ngIf="!authService.loggedIn()">Login</a>
-            <a (click)=authService.logout() *ngIf="authService.loggedIn()">Logout</a>
+            <a (click)=authService.login() *ngIf="!authService.loggedIn()">{{ 'HOME.LOGIN' | translate }}</a>
+            <a (click)=authService.logout() *ngIf="authService.loggedIn()">{{ 'HOME.LOGOUT' | translate }}</a>
           </li>
         </ul>
 	     
         <ul class="right hide-on-small-and-down">
           <li>
             <a routerLink="/forum-list">
-              <span>Liste</span>
+              <span>{{ 'HOME.LIST' | translate }}</span>
             </a>
           </li>
           <li *ngIf="authService.loggedIn()">
             <a routerLink="/profile" >
-              <span>Profil</span>
+              <span>{{ 'HOME.PROFILE' | translate }}</span>
             </a>
           </li>
         </ul>
@@ -50,23 +55,23 @@ declare let $: any;
           <li>
             <a routerLink="/forum-list">
               <i class="material-icons left">list</i>
-              <span>Liste</span>
+              <span>{{ 'HOME.LIST' | translate }}</span>
             </a>
           </li>
           <li *ngIf="authService.loggedIn()"> 
             <a routerLink="/profile" >
               <i class="material-icons left">account_box</i>
-              <span>Profil</span>
+              <span>{{ 'HOME.PROFILE' | translate }}</span>
             </a>
           </li>
           <li>
             <a (click)=authService.login() *ngIf="!authService.loggedIn()">
               <i class="material-icons left">account_box</i>
-              <span>Login</span>
+              <span>{{ 'HOME.LOGIN' | translate }}</span>
             </a>
             <a (click)=authService.logout() *ngIf="authService.loggedIn()">              
               <i class="material-icons left">exit_to_app</i>
-              <span>Logout</span>
+              <span>{{ 'HOME.LOGOUT' | translate }}</span>
             </a>
           </li>
         </ul>
@@ -82,7 +87,12 @@ declare let $: any;
     <footer class="page-footer">
         <div class="container">
         <span class="white-text">© 2017 Copyright</span>
-        </div>
+        <ul class="right">
+          <li>
+            <a class="dropdown-button" data-activates="dropdownLang"><i class="material-icons">language</i><i class="material-icons right">arrow_drop_down</i></a>
+          </li>
+        </ul>
+      </div>
     </footer>
   `,
   styleUrls: ['./app.component.scss'],
@@ -95,8 +105,15 @@ export class AppComponent implements OnInit{
 
   constructor(
     private authService: AuthService,
-    private userService: UserService
-  ) {};
+    private userService: UserService,
+    private translate: TranslateService
+  ) {
+    translate.addLangs(["en", "de"]);
+    translate.setDefaultLang('de');
+
+    let browserLang = translate.getBrowserLang();
+    translate.use(browserLang.match(/en|de/) ? browserLang : 'de');
+  };
 
   ngOnInit(){
     this.checkIfIsInstitution();

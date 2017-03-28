@@ -1,0 +1,32 @@
+{
+  "HOME": {
+    "TITLE": "Benefitz",
+    "LANG": "Sprache",
+    "BRIEF": "Kurzbeschreibung der Applikation...",
+    "PRIVATE" : "Privatnutzer",
+    "INSTITUTION" : "Institutionen",
+    "PRIVATE_BRIEF" : "Starten Sie mit der Suche nach einem Runden Tisch",
+    "INSTITUTION_BRIEF" : "Registrieren Sie sich als Institution oder verwalten Sie Ihre Runden Tische",
+    "SEARCH" : "Suche",
+    "START" : "Start",
+    "LIST" : "Liste",
+    "PROFILE" : "Profil",
+    "LOGIN" : "Anmelden",
+    "LOGOUT" : "Abmelden"
+  },
+  "SHARED" : {
+    "TITLE" : ""
+  },
+  "POSTS" : {
+    "TITLE" : ""
+  },
+  "INSTITUTIONS" : {
+    "TITLE" : ""
+  },
+  "FORUM-LIST" : {
+    "TITLE" : ""
+  },
+  "FORUM-DETAIL" : {
+    "TITLE" : ""
+  }
+}

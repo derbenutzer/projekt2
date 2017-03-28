@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
     	<!-- Titel und Bearbeiten-Felder -->
 	<div class="row section">
 		<div class="container">
-			<p class="flow-text">Kurzbeschreibung applikation, how to get started</p>
+			<p class="flow-text">{{ 'HOME.BRIEF' | translate }}</p>
 		</div>
 	</div>
 	<!-- Inhalt beginnt hier -->
@@ -16,17 +16,17 @@ import { Component } from '@angular/core';
 			<div class="col s6 valign-wrapper">
 				<div class="icon-block  section center-align">
 					<i class="large material-icons">person_pin</i>
-					<h3>Privatnutzer</h3>
-					<p>Starten Sie mit der Suche nach einem Runden Tisch</p>
-					<a routerLink="/forum-list" class="waves-effect waves-light btn-large">Suche</a>
+					<h3>{{ 'HOME.PRIVATE' | translate }}</h3>
+					<p>{{ 'HOME.PRIVATE_BRIEF' | translate }}</p>
+					<a routerLink="/forum-list" class="waves-effect waves-light btn-large">{{ 'HOME.SEARCH' | translate }}</a>
 				</div>
 			</div>
 			<div class="col s6 valign-wrapper">
 				<div class="icon-block section center-align">
 					<i class="large material-icons">business</i>
-					<h3>Institutionen</h3>
-					<p>Registrieren Sie sich als Institution oder verwalten Sie Ihre Runden Tische</p>
-					<a routerLink="/institutions-start" class="waves-effect waves-light btn-large">Start</a>
+					<h3>{{ 'HOME.INSTITUTION' | translate }}</h3>
+					<p>{{ 'HOME.INSTITUTION_BRIEF' | translate }}</p>
+					<a routerLink="/institutions-start" class="waves-effect waves-light btn-large">{{ 'HOME.START' | translate }}</a>
 				</div>
 			</div>
 		</div>
