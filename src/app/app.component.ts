@@ -85,8 +85,10 @@ declare let $: any;
     </div>
     </main>
     <footer class="page-footer">
-        <div class="container">
-        <span class="white-text">© 2017 Copyright</span>
+      <div class="container">
+        <ul class="left">
+          <a><i class="material-icons">copyright</i>2017</a>
+        </ul>
         <ul class="right">
           <li>
             <a class="dropdown-button" data-activates="dropdownLang"><i class="material-icons">language</i><i class="material-icons right">arrow_drop_down</i></a>

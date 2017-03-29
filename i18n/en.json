@@ -3,7 +3,7 @@
     "TITLE" : "Benefitz",
     "LANG" : "Language",
     "BRIEF" : "how to get started...",
-    "PRIVATE" : "Private person",
+    "PRIVATE" : "Private",
     "INSTITUTION" : "Institutions",
     "PRIVATE_BRIEF" : "Start by searching for a roundtable",
     "INSTITUTION_BRIEF" : "Register as an institution or manage your roundtables",
@@ -15,13 +15,35 @@
     "LOGOUT" : "Logout"
   },
   "SHARED" : {
-    "TITLE" : ""
+    "MESSAGE" : "Login or register to continue.",
+    "LOGIN" : "Login",
+    "BACK" : "Back"
   },
   "POSTS" : {
-    "TITLE" : ""
+    "PAGE_TITLE" : "Create entry",
+    "TITLE" : "Title",
+    "ENTRY" : "Entry",
+    "SAVE" : "Save",
+    "BACK" : "Back"
   },
   "INSTITUTIONS" : {
-    "TITLE" : ""
+    "TITLE_USER" : "User management",
+    "CONTACT" : "Contact:",
+    "JOINED" : "Joined on:",
+    "DELETE" : "Delete user",
+    "NO_USERS_YET" : "No users have registered to this forum yet.",
+    "BACK" : "Back",
+    "TITLE_REGISTER" : "Register institution",
+    "ALREADY_REGISTERED" : "You are already registered as an institution.",
+    "GO_TO_MANAGE" : "Return to <a routerLink='/dashboard'>manage</a> to create or edit roundtables.",
+    "INFORMATIONAL1" : "Institutions need to verify. We will call you or contact you by email.",
+    "INFORMATIONAL2" : "Enter the phone number or email address of the institution you represent.",
+    "INSTITUTION_NAME" : "Name of institution",
+    "EMAIL" : "Email",
+    "PHONE" : "Phone",
+    "REGISTER" : "Register",
+    "THANKS" : "Thank you, you are now registered as an institution.",
+    "BACK_TO_MANAGE" : "To management view."
   },
   "FORUM-LIST" : {
     "TITLE" : ""

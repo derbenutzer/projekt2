@@ -15,13 +15,35 @@
     "LOGOUT" : "Abmelden"
   },
   "SHARED" : {
-    "TITLE" : ""
+    "MESSAGE" : "Loggen Sie sich ein oder registrieren Sie sich um fortzufahren.",
+    "LOGIN" : "Anmelden",
+    "BACK" : "Zurück"
   },
   "POSTS" : {
-    "TITLE" : ""
+    "PAGE_TITLE" : "Eintrag erstellen",
+    "TITLE" : "Titel",
+    "ENTRY" : "Eintrag",
+    "SAVE" : "Speichern",
+    "BACK" : "Zurück"
   },
   "INSTITUTIONS" : {
-    "TITLE" : ""
+    "TITLE_USER" : "Benutzerverwaltung",
+    "CONTACT" : "Kontakt:",
+    "JOINED" : "Beigetreten am:",
+    "DELETE" : "Nutzer Löschen",
+    "NO_USERS_YET" : "Bis jetzt haben sich noch keine Nutzer für dieses Forum registriert.",
+    "BACK" : "Zurück",
+    "TITLE_REGISTER" : "Institution Registrieren",
+    "ALREADY_REGISTERED" : "Sie sind bereits als Institution registriert.",
+    "GO_TO_MANAGE" : "Gehen sie zur <a routerLink='/dashboard'>Verwaltung</a> um runde Tische zu erstellen und zu verwalten.",
+    "INFORMATIONAL1" : "Institutionen müssen sich verifizieren. Entweder wir rufen Sie an oder wir kontaktieren Sie per Email.",
+    "INFORMATIONAL2" : "Geben Sie die Telefonnummer und die Emailadresse der Institution an, die Sie repräsentieren möchten.",
+    "INSTITUTION_NAME" : "Name der Institution",
+    "EMAIL" : "Email",
+    "PHONE" : "Telefonnummer",
+    "REGISTER" : "Registrieren",
+    "THANKS" : "Vielen Dank, Sie sind jetzt als Institution registriert",
+    "BACK_TO_MANAGE" : "Zur Verwaltungsansicht"
   },
   "FORUM-LIST" : {
     "TITLE" : ""
