@@ -14,8 +14,8 @@ declare let $: any;
   template: `
       <h2 class="visually-hidden">{{title}}</h2>
 
-      <div *ngIf="authService.loggedIn() && isInstitution" class="row listContainer">
-        <div class="buttonPanel"><button (click)="goBack()" class="waves-effect waves-light btn">Zurück</button></div>
+      <div *ngIf="authService.loggedIn() && isInstitution > 0" class="row listContainer">
+        <div *ngIf="userList && userList.length > 0" class="buttonPanel"><button (click)="goBack()" class="waves-effect waves-light btn">Zurück</button></div>
         <ul *ngIf="userList && userList.length > 0" class="collection">
           <li *ngFor="let user of userList" class="collection-item avatar">
           <div>
@@ -32,7 +32,7 @@ declare let $: any;
             </div>
           </li>
         </ul>
-        <div class="buttonPanel"><button (click)="goBack()" class="waves-effect waves-light btn">Zurück</button></div>
+        <div *ngIf="userList && userList.length > 0" class="buttonPanel"><button (click)="goBack()" class="waves-effect waves-light btn">Zurück</button></div>
         <div *ngIf="userList && userList.length < 1">
         <p class="flow-text">Bis jetzt haben sich noch keine Nutzer für dieses Forum registriert.</p>
         <div class="buttonPanel"><button (click)="goBack()" class="waves-effect waves-light btn">Zurück</button></div>

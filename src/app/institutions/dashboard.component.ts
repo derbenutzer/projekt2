@@ -17,8 +17,8 @@ declare let $: any;
         <div *ngIf="forumList.forums.length > 0" class="row listContainer">
         
           <ul class="collection collapsible" data-collapsible="expandable">
-            <li *ngFor="let forum of forumList.getSortedByDate()" class="collection-item avatar">
-            <div class="collapsible-header">
+            <li (click)="checkIfClosed(forum._id)" *ngFor="let forum of forumList.getSortedByDate()" class="collection-item avatar">
+            <div id="{{forum._id}}" class="collapsible-header">
               <i class="material-icons circle blue">room</i>
               <h3 class="title">{{forum.title}} - <span>{{forum.institution}}</span></h3>
               <p class="categories">
@@ -213,6 +213,7 @@ export class DashboardComponent {
   backUrl="/institutions-start";
   forumListIsLoaded = false;
   init = false;
+  expandedTables;
 
   confirmTitle = "Runden Tisch löschen";
   confirmQuestion = "Möchten sie diesen Runden Tisch wirklich löschen?";
@@ -251,10 +252,42 @@ export class DashboardComponent {
     this.init = false;
   }
 
+
+  ngOnDestroy(){
+    localStorage.setItem("openTables",this.expandedTables);
+  }
+
+
+
   ngAfterViewChecked(){
     if(!this.init && $('.collapsible')[0]) {
       $('.collapsible').collapsible();
       this.init = true;
+      if(localStorage.hasOwnProperty("openTables")){
+        this.expandedTables=localStorage.getItem("openTables");
+
+        for(let id of this.expandedTables.split(",")){
+          $('#'+id).click();
+        }
+      }
+    }
+  }
+
+  storeExpanded(){
+    this.expandedTables = $('.collapsible-header.active').map(function() {
+      return this.id;
+    })
+      .get()
+      .join();
+
+    if(!$('.collapsible-header.active')[0]){
+      this.expandedTables="";
+    }
+  }
+
+  checkIfClosed(forumId: string){
+    if($('#'+forumId).hasClass("active")){
+      this.expandedTables = this.expandedTables.replace(forumId,"");
     }
   }
 
@@ -267,16 +300,19 @@ export class DashboardComponent {
   }
 
   openForum(forum: Forum) {
+    this.storeExpanded();
     let id = forum._id;
     this.router.navigate(['/forum', forum._id]);
   }
 
   createNewForum() {
+    this.storeExpanded();
     this.forumService.idOfForumToModify = null;
     this.router.navigate(['/forum']);
   }
 
   editForum(forum) {
+    this.storeExpanded();
     this.forumService.idOfForumToModify = forum._id;
     this.init = false;
     this.router.navigate(['/forum']);
@@ -284,6 +320,7 @@ export class DashboardComponent {
   }
 
   openUserList(forum){
+    this.storeExpanded();
     this.forumService.idOfForumToModify = forum._id;
     this.router.navigate(['/user-list',forum._id]);
   }
