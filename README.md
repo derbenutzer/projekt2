@@ -1,4 +1,4 @@
-# Benefitz Backend
+# Benefitz Frontend
 
 Benefitz. A social webapp for volunteers and people in need.
 
