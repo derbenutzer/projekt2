@@ -8,15 +8,22 @@ import {PostList} from "../model/post-list";
 @Injectable()
 export class PostService {
 
-  private apiUrl = 'http://localhost:8180/api/post';  // URL to web api
-  private apiUrl2 = 'http://localhost:8180/api/posts';  // URL to web api
+  private apiUrl = 'http://localhost:8180/private/post';  // URL to web api
+  private apiUrl2 = 'http://localhost:8180/private/posts';  // URL to web api
 
   public idOfPostToModify:string;
 
   constructor (private http: Http){};
 
+  getAuthHeader(){
+    let headers = new Headers({ 'Authorization': 'Bearer '+ localStorage.getItem('id_token')});
+    let options = new RequestOptions({ headers: headers });
+
+    return options;
+  }
+
   getPostList(): Promise<PostList> {
-    return this.http.get(this.apiUrl)
+    return this.http.get(this.apiUrl, this.getAuthHeader())
       .toPromise()
       .then(response => new PostList(response.json() as Post[]))
       .catch(this.handleError);
@@ -24,7 +31,7 @@ export class PostService {
 
   getPostsByForumId(forumId): Promise<Post[]> {
     const url = `${this.apiUrl2}/${forumId}`;
-    return this.http.get(url)
+    return this.http.get(url, this.getAuthHeader())
       .toPromise()
       .then(response => response.json() as Post[])
       .catch(this.handleError);
@@ -62,22 +69,26 @@ export class PostService {
       return Promise.resolve(new Post());
     }
 
+    console.log("getPost");
+    console.log(this.getAuthHeader());
+    console.log(this.apiUrl);
+
     const url = `${this.apiUrl}/${this.idOfPostToModify}`;
-    return this.http.get(url)
+    return this.http.get(url, this.getAuthHeader())
       .toPromise()
       .then(response => response.json() as Post)
       .catch(this.handleError);
   }
 
   getAllPosts(): Promise<Post[]> {
-    return this.http.get(this.apiUrl)
+    return this.http.get(this.apiUrl, this.getAuthHeader())
       .toPromise()
       .then(response => response.json() as Post[])
       .catch(this.handleError);
   }
 
   getAllPostsForUserInForum(userId: string, forumId: string): Promise<Post[]> {
-    return this.http.get(this.apiUrl)
+    return this.http.get(this.apiUrl, this.getAuthHeader())
       .toPromise()
       .then(response => {
 
@@ -104,7 +115,8 @@ export class PostService {
   }
 
   initializePost(keyValuePairs: Object): Promise<Post> {
-    return this.http.post(this.apiUrl,"test")
+
+    return this.http.post(this.apiUrl, "empty", this.getAuthHeader())
       .toPromise()
       .then(response => {
         let id = response.json().id;
@@ -115,11 +127,11 @@ export class PostService {
 
   updatePost(id:string, keyValuePairs: Object): Promise<Post> {
 
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers({ 'Authorization': 'Bearer '+ localStorage.getItem('id_token'), 'Content-Type': 'application/json'});
     let options = new RequestOptions({ headers: headers });
 
     const url = `${this.apiUrl}/${id}`;
-    return this.http.put(url,keyValuePairs,options)
+    return this.http.put(url, keyValuePairs, options)
       .toPromise()
       .then(response => response.json())
       .catch(this.handleError);
@@ -133,7 +145,7 @@ export class PostService {
 
   deletePost(postId: string): Promise<string> {
     const url = `${this.apiUrl}/${postId}`;
-    return this.http.delete(url)
+    return this.http.delete(url, this.getAuthHeader())
       .toPromise()
       .then(response => response.json())
       .catch(this.handleError);

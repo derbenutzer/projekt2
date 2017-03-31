@@ -4,23 +4,30 @@ import { Headers, Http, RequestOptions } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 import {ForumList} from "../model/forum-list";
-import {Post} from "../../posts/model/post";
 import {PostService} from "../../posts/service/post.service";
 
 @Injectable()
 export class ForumService {
 
-  private apiUrl = 'http://localhost:8180/api/roundtable';  // URL to web api
+  private publicApiUrl = 'http://localhost:8180/public/roundtable';
+  private privateApiUrl = 'http://localhost:8180/private/roundtable'; // URL to web api
 
   public idOfForumToModify:string;
 
   constructor (private http: Http, private postService: PostService){};
 
-  getForums(): Promise<ForumList> {
+  getAuthHeader(){
     let headers = new Headers({ 'Authorization': 'Bearer '+ localStorage.getItem('id_token')});
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.get(this.apiUrl,options)
+    return options;
+  }
+
+  getForums(): Promise<ForumList> {
+
+    this.deleteForum("58de8e5c1a3897c3d01443c6");
+
+    return this.http.get(this.publicApiUrl)
       .toPromise()
       .then(response => new ForumList(response.json() as Forum[]))
       .catch(this.handleError);
@@ -31,16 +38,16 @@ export class ForumService {
       return Promise.resolve(new Forum());
     }
 
-    const url = `${this.apiUrl}/${this.idOfForumToModify}`;
-    return this.http.get(url)
+    const url = `${this.privateApiUrl}/${this.idOfForumToModify}`;
+    return this.http.get(url, this.getAuthHeader())
       .toPromise()
       .then(response => response.json() as Forum)
       .catch(this.handleError);
   }
 
   getForumById(forumId:string): Promise<Forum> {
-    const url = `${this.apiUrl}/${forumId}`;
-    return this.http.get(url)
+    const url = `${this.privateApiUrl}/${forumId}`;
+    return this.http.get(url, this.getAuthHeader())
       .toPromise()
       .then(response => response.json() as Forum)
       .catch(this.handleError);
@@ -78,7 +85,7 @@ export class ForumService {
 */
 
   initializeForum(): Promise<string> {
-    return this.http.post(this.apiUrl,"test")
+    return this.http.post(this.privateApiUrl, "empty", this.getAuthHeader())
       .toPromise()
       .then(response => response.json().id)
       .catch(this.handleError);
@@ -91,10 +98,10 @@ export class ForumService {
 
   updateForum(id:string, keyValuePairs: Object): Promise<Forum> {
 
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': 'Bearer '+ localStorage.getItem('id_token') });
     let options = new RequestOptions({ headers: headers });
 
-    const url = `${this.apiUrl}/${id}`;
+    const url = `${this.privateApiUrl}/${id}`;
 
     return this.http.put(url,keyValuePairs,options)
       .toPromise()
@@ -142,8 +149,8 @@ export class ForumService {
 
 
   deleteForum(id: string): Promise<string> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.delete(url)
+    const url = `${this.privateApiUrl}/${id}`;
+    return this.http.delete(url, this.getAuthHeader())
       .toPromise()
       .then(response => response.json())
       .then(response => this.postService.deletePostsAfterForumDelete(id))

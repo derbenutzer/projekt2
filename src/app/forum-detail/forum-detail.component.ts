@@ -20,6 +20,7 @@ declare let $: any;
   template: `
     <div *ngIf="authService.loggedIn() && forum">
       <h2>{{forum.title}}</h2>
+      <button *ngIf="userIsOwner" (click)="goToDashboard()" class="btn">Zur Verwaltung</button>
       <div>
       <p class="flow-text description">{{forum.description}}</p>
         <h3>Beiträge</h3>
@@ -289,6 +290,10 @@ export class ForumDetailComponent implements OnInit {
   createPost(){
     this.postService.idOfPostToModify = null;
     this.router.navigate(['/create-post']);
+  }
+
+  goToDashboard(){
+    this.router.navigate(['/dashboard']);
   }
 
   contactPostAuthor(authorId: string){

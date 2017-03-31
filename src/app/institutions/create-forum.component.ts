@@ -34,6 +34,8 @@ import {Router} from "@angular/router";
         </div>
         <button class="btn waves-effect waves-light" type="submit" name="action">Speichern
         </button>
+        <button (click)="goBackToDashboard()" class="btn waves-effect waves-light" type="button" name="action">Zurück
+        </button>
       </form>
       <br>
     </div>
@@ -102,8 +104,7 @@ export class CreateForumComponent {
     let institution;
 
     this.handleCategoriesInput();
-    //this.handleInstitutionsInput();
-    console.log(this);
+
     if(this.institution) {
       institution = this.institution.institutionName;
     } else {
@@ -114,12 +115,16 @@ export class CreateForumComponent {
       .then(forum => {
         console.log(forum);
         this.userService.updateUser(this.institution._id,{"ownerOf":forum._id, "registeredFor":forum._id})
-          .then(res => this.goBack());
+          .then(res => this.goBackToDashboard());
       });
   };
 
   goBack(): void {
     this.router.navigate([this.backUrl]);
+  }
+
+  goBackToDashboard(): void {
+    this.router.navigate(["/dashboard"]);
   }
 
 }
