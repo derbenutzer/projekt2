@@ -5,6 +5,7 @@ import {User} from "../users/model/user";
 import {ForumDetailService} from "../forum-detail/service/forum-detail.service";
 import {ForumService} from "../forum-list/service/forum.service";
 import {PostService} from "../posts/service/post.service";
+import {AuthService} from "../shared/auth.service";
 declare let $: any;
 
 
@@ -13,8 +14,8 @@ declare let $: any;
   template: `
       <h2 class="visually-hidden">{{title}}</h2>
 
-      <div class="row listContainer">
-      
+      <div *ngIf="authService.loggedIn() && isInstitution" class="row listContainer">
+        <div class="buttonPanel"><button (click)="goBack()" class="waves-effect waves-light btn">Zurück</button></div>
         <ul *ngIf="userList && userList.length > 0" class="collection">
           <li *ngFor="let user of userList" class="collection-item avatar">
           <div>
@@ -31,10 +32,15 @@ declare let $: any;
             </div>
           </li>
         </ul>
+        <div class="buttonPanel"><button (click)="goBack()" class="waves-effect waves-light btn">Zurück</button></div>
         <div *ngIf="userList && userList.length < 1">
         <p class="flow-text">Bis jetzt haben sich noch keine Nutzer für dieses Forum registriert.</p>
         <div class="buttonPanel"><button (click)="goBack()" class="waves-effect waves-light btn">Zurück</button></div>
         </div>
+      </div>
+      
+      <div *ngIf="!authService.loggedIn()">
+       <login-to-continue [backUrl]="backUrl"></login-to-continue>
       </div>
         
   `,
@@ -57,6 +63,7 @@ export class UserListComponent {
   userList: User[];
 
   constructor(private forumService: ForumService,
+              private authService: AuthService,
               private userService: UserService,
               private postService: PostService,
               private router: Router) {

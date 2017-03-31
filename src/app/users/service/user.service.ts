@@ -11,13 +11,20 @@ export class UserService {
 
   userId:string;
 
-  private apiUrl = 'http://localhost:8180/api/user';  // URL to web api
-  private apiUrl2 = 'http://localhost:8180/api/users';  // URL to web api
+  private apiUrl = 'http://localhost:8180/private/user';  // URL to web api
+  private apiUrl2 = 'http://localhost:8180/private/users';  // URL to web api
 
   constructor (private http: Http){};
 
+  getAuthHeader(){
+    let headers = new Headers({ 'Authorization': 'Bearer '+ localStorage.getItem('id_token')});
+    let options = new RequestOptions({ headers: headers });
+
+    return options;
+  }
+
   initializeUser(): Promise<string> {
-    return this.http.post(this.apiUrl,"test")
+    return this.http.post(this.apiUrl, "empty", this.getAuthHeader())
       .toPromise()
       .then(response => response.json().id as string)
       .catch(this.handleError);
@@ -25,7 +32,7 @@ export class UserService {
 
   updateUser(userId:string, keyValuePairs: Object): Promise<string> {
 
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': 'Bearer '+ localStorage.getItem('id_token') });
     let options = new RequestOptions({ headers: headers });
 
     const url = `${this.apiUrl}/${userId}`;
@@ -48,7 +55,7 @@ export class UserService {
 
   getUsersByForumId(forumId): Promise<User[]> {
     const url = `${this.apiUrl2}/${forumId}`;
-    return this.http.get(url)
+    return this.http.get(url, this.getAuthHeader())
       .toPromise()
       .then(response => response.json() as User[])
       .catch(this.handleError);
@@ -56,7 +63,7 @@ export class UserService {
 
   userIsRegisteredForForum(userId, forumId): Promise<User[]> {
     const url = `${this.apiUrl}/${forumId}`;
-    return this.http.get(url)
+    return this.http.get(url, this.getAuthHeader())
       .toPromise()
       .then(response => response.json() as User[])
       .catch(this.handleError);
@@ -68,7 +75,7 @@ export class UserService {
 
   getUser(id: string): Promise<User> {
     const url = `${this.apiUrl}/${id}`;
-    return this.http.get(url)
+    return this.http.get(url, this.getAuthHeader())
       .toPromise()
       .then(response => response.json() as User)
       .catch(this.handleError);

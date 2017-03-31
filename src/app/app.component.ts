@@ -87,11 +87,11 @@ declare let $: any;
     <footer class="page-footer">
       <div class="container">
         <ul class="left">
-          <a><i class="material-icons">copyright</i>2017</a>
+          <a class="copyright"><i class="material-icons">copyright</i>2017</a>
         </ul>
         <ul class="right">
           <li>
-            <a class="dropdown-button" data-activates="dropdownLang"><i class="material-icons">language</i><i class="material-icons right">arrow_drop_down</i></a>
+            <a class="dropdown-button jsLink" data-activates="dropdownLang"><i class="material-icons">language</i><i class="material-icons right">arrow_drop_down</i></a>
           </li>
         </ul>
       </div>
