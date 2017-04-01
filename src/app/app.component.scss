@@ -39,8 +39,12 @@
     margin: 0;
   }
 
-  nav ul a {
+  nav ul a.button-collapse, nav ul li.login a {
     padding:0;
+  }
+
+  nav .brand-logo{
+    left: 45%;
   }
 }
 
