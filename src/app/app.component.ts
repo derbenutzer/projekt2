@@ -33,6 +33,11 @@ declare let $: any;
               <span>{{ 'HOME.LIST' | translate }}</span>
             </a>
           </li>
+          <li *ngIf="authService.isInstitution()">
+            <a routerLink="/dashboard">
+              <span>{{ 'HOME.DASHBOARD' | translate }}</span>
+            </a>
+          </li>
           <li *ngIf="authService.loggedIn()">
             <a routerLink="/profile" >
               <span>{{ 'HOME.PROFILE' | translate }}</span>
@@ -56,6 +61,12 @@ declare let $: any;
             <a routerLink="/forum-list">
               <i class="material-icons left">list</i>
               <span>{{ 'HOME.LIST' | translate }}</span>
+            </a>
+          </li>
+          <li *ngIf="authService.isInstitution()">
+            <a routerLink="/dashboard">
+            <i class="material-icons left">dashboard</i>
+              <span>{{ 'HOME.DASHBOARD' | translate }}</span>
             </a>
           </li>
           <li *ngIf="authService.loggedIn()"> 

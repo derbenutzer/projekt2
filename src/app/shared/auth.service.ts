@@ -35,8 +35,8 @@ export class AuthService {
         if (error) {
           console.log(error);
         }
-        localStorage.setItem('profile', JSON.stringify(profile));
         this.userProfile=profile;
+        localStorage.setItem('profile', JSON.stringify(this.userProfile));
 
         let metaData=this.userProfile["user_metadata"];
 
@@ -47,6 +47,14 @@ export class AuthService {
               this.router.navigate(["/profile"]);
             });
         }
+        else{
+          this.userService.checkIfUserIsInstitution(this.getDatabaseId())
+            .then(isInstitution => {
+              this.userProfile['user_metadata']['isInstitution'] = isInstitution;
+              localStorage.setItem('profile', JSON.stringify(this.userProfile));
+            });
+        }
+
       });
 
       this.lock.hide();
@@ -129,6 +137,15 @@ export class AuthService {
     }
   }
 
+
+  isInstitution() {
+    let metaData= this.getMetaData();
+    if(metaData) {
+      return metaData['isInstitution'];
+    }
+  }
+
+
   updateUserOnDatabase(keyValuePair){
     if(this.getDatabaseId()) {
       this.userService.updateUser(this.getDatabaseId(), keyValuePair);
@@ -144,7 +161,6 @@ export class AuthService {
     else{
       return false;
     }
-
   }
 
   editProfile(keyValuePair) {
