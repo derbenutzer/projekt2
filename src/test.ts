@@ -9,6 +9,9 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
+
+//we have to import materialize-css here to avoid an error. It is imported by index.html in the non-test build
+import "materialize-css";
 import {AppModule} from "./app/app.module";
 
 AppModule
