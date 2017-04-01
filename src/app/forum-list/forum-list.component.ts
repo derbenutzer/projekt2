@@ -232,7 +232,7 @@ export class ForumListComponent implements OnInit {
     let filteredByInstitution = this.forumFilter.transform(filteredByCategory,{"institution": this.institutionFilter});
     let filteredByUserId = this.forumFilter.transform(filteredByInstitution,{"_id": this.idFilter});
 
-    let ArrayOfIds = filteredByUserId.map(forum => forum.title);
+    let ArrayOfIds = filteredByUserId.map(forum => forum.title + " - " + forum.institution);
 
     for (let marker of this.markerStash){
       if(ArrayOfIds.indexOf(marker.title)!=-1){
@@ -267,7 +267,7 @@ export class ForumListComponent implements OnInit {
       });
       // get coordinates to put marker
       let coords = { lat: latlon.lat, lng: latlon.lon};
-      let forumTitle = latlon.title;
+      let forumTitle = latlon.title + " - " + latlon.institution;
       // create marker
       let marker = new google.maps.Marker({
         map: map,
