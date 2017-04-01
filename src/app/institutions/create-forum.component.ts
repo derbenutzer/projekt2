@@ -39,9 +39,6 @@ import {Router} from "@angular/router";
       </form>
       <br>
     </div>
-     <div *ngIf="!authService.loggedIn()">
-      <login-to-continue [backUrl]="backUrl"></login-to-continue>
-    </div>
   `,
 })
 export class CreateForumComponent {
@@ -57,7 +54,15 @@ export class CreateForumComponent {
               private authService: AuthService,
               private userService: UserService,
               private router: Router)
-  {
+  {};
+
+  ngOnInit(){
+
+    if(!this.authService.loggedIn()){
+      this.router.navigate(["/home"]);
+      return;
+    }
+
     this.userService.checkIfUserIsInstitution(this.authService.getDatabaseId())
       .then(isInstitution => {
         if(!isInstitution){
@@ -73,7 +78,7 @@ export class CreateForumComponent {
 
     this.userService.getInstitution(this.authService.getDatabaseId())
       .then(institution => this.institution = institution);
-  };
+  }
 
   ngOnDestroy(){
     this.forumService.idOfForumToModify = null;

@@ -70,6 +70,12 @@ export class UserListComponent {
   }
 
   ngOnInit(): void {
+
+    if(!this.authService.loggedIn()){
+      this.router.navigate(["/home"]);
+      return;
+    }
+
     this.forumId = this.forumService.idOfForumToModify;
     this.getUsersFromService();
   }
