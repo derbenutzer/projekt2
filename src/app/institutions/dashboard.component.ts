@@ -254,7 +254,7 @@ export class DashboardComponent {
 
 
   ngOnDestroy(){
-    localStorage.setItem("openTables",this.expandedTables);
+    sessionStorage.setItem("openTables",this.expandedTables);
   }
 
 
@@ -263,8 +263,8 @@ export class DashboardComponent {
     if(!this.init && $('.collapsible')[0]) {
       $('.collapsible').collapsible();
       this.init = true;
-      if(localStorage.hasOwnProperty("openTables")){
-        this.expandedTables=localStorage.getItem("openTables");
+      if(sessionStorage.hasOwnProperty("openTables")){
+        this.expandedTables=sessionStorage.getItem("openTables");
 
         for(let id of this.expandedTables.split(",")){
           $('#'+id).click();
