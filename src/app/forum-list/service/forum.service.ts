@@ -24,9 +24,6 @@ export class ForumService {
   }
 
   getForums(): Promise<ForumList> {
-
-    this.deleteForum("58de8e5c1a3897c3d01443c6");
-
     return this.http.get(this.publicApiUrl)
       .toPromise()
       .then(response => new ForumList(response.json() as Forum[]))
