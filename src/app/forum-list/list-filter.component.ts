@@ -1,7 +1,5 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
 
-
-
 @Component({
   selector: 'forum-list-filter',
   template: `

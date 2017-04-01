@@ -1,17 +1,10 @@
-import { NgModule, ErrorHandler } from '@angular/core';
-import { CanDeactivateGuard } from './can-deactivate-guard.service';
-import { DialogService } from './dialog.service';
+import { NgModule } from '@angular/core';
 import { AuthService } from './auth.service';
 
 
-//Shared
-import { ErrorHandlerService } from './error-handler.service';
-import { ErrorLoggerService } from './error-logger.service';
-import { ConfigurationService } from './configuration.service';
-import {provideAuth, AuthHttp, AuthConfig} from "angular2-jwt";
+import {AuthHttp, AuthConfig} from "angular2-jwt";
 import {Http, RequestOptions} from "@angular/http";
 import {LoginToContinueComponent} from "./login-to-continue.component";
-import {StringSplitPipe} from "./string-split.pipe";
 import {TranslateModule} from '@ngx-translate/core';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -19,12 +12,12 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
 }
 
 @NgModule({
-  providers: [ConfigurationService, CanDeactivateGuard, DialogService, ErrorLoggerService, {provide: ErrorHandler, useClass: ErrorHandlerService}, AuthService, StringSplitPipe, {
+  providers: [AuthService, {
     provide: AuthHttp,
     useFactory: authHttpServiceFactory,
     deps: [Http, RequestOptions]
   }],
-  declarations: [LoginToContinueComponent, StringSplitPipe],
-  exports:[LoginToContinueComponent, StringSplitPipe, TranslateModule]
+  declarations: [LoginToContinueComponent],
+  exports:[LoginToContinueComponent, TranslateModule]
 })
 export class SharedModule{}

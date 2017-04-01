@@ -4,14 +4,15 @@ import {FormsModule}    from '@angular/forms';
 import {HttpModule, Http}    from '@angular/http';
 import {MomentModule} from 'angular2-moment/moment.module';
 import {MaterializeModule} from 'angular2-materialize';
+import {TranslateModule, TranslateLoader} from "@ngx-translate/core";
+import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 
 import {AppComponent}  from './app.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {HomeModule} from "./home/home.module";
 import {UserModule} from "./users/user.module";
 import {InstitutionsModule} from "./institutions/institutions.module";
-import {TranslateModule, TranslateLoader} from "@ngx-translate/core";
-import {TranslateHttpLoader} from "@ngx-translate/http-loader";
+
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: Http) {
