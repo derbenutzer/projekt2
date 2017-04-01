@@ -21,7 +21,7 @@ declare let $: any;
 	      <a materialize="sideNav" data-activates="mobile-nav" class="jsLink button-collapse hide-on-med-and-up"><i class="material-icons">menu</i></a>
 	      
 	      <ul class="right">
-          <li class="login">
+          <li>
             <a (click)=authService.login() *ngIf="!authService.loggedIn()">{{ 'HOME.LOGIN' | translate }}</a>
             <a (click)=authService.logout() *ngIf="authService.loggedIn()">{{ 'HOME.LOGOUT' | translate }}</a>
           </li>
@@ -65,7 +65,7 @@ declare let $: any;
           </li>
           <li *ngIf="authService.isInstitution()">
             <a routerLink="/dashboard">
-            <i class="material-icons left">dashboard</i>
+              <i class="material-icons left">dashboard</i>
               <span>{{ 'HOME.DASHBOARD' | translate }}</span>
             </a>
           </li>

@@ -6,7 +6,8 @@ import { Component} from '@angular/core';
   <h2 class="visually-hidden">{{title}}</h2>
 	<div class="row section">
 		<div class="container">
-			<p class="flow-text">Registrieren Sie sich als Institution oder verwalten Sie Ihre Runden Tische</p>
+			<p class="flow-text">Benefitz stellt privaten und öffentlichen Non-Profit-Organisationen ein Instrument zur Verfügung, mit dem sich Angebote und Leistungen von freiwillig engagierten Personen koordinieren lassen: über die Verwaltung der organisationseigenen "Runden Tische".
+			</p>
 		</div>
 	</div>
 	<div class="container">
@@ -29,7 +30,6 @@ import { Component} from '@angular/core';
 			</div>
 		</div>
 	</div>
-
   `,
   styles:[`
 

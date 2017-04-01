@@ -2,6 +2,7 @@
 
 import { TestBed, async } from '@angular/core/testing';
 import {AppRoutingModule} from "./app-routing.module";
+import { AppModule } from './app.module';
 import { AppComponent } from './app.component';
 
 
@@ -27,10 +28,14 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('app works!');
   }));*/
 
+  it('should pass this test', async(() => {
+    expect(1).toBe(1);
+  }));
+
   it('should render title in a h1 tag', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Benefitz');
+    expect(compiled.querySelector('h1').textContent).toContain('Benefitz2');
   }));
 });

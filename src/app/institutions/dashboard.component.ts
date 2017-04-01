@@ -148,7 +148,7 @@ declare let $: any;
     @media(max-width:560px){
       .buttonPanel a{
           margin-left: 0rem;
-          margin-right: 2rem;
+          margin-right: 1.5rem;
       }
 
       .buttonPanel {
