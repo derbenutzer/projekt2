@@ -50,37 +50,6 @@ export class ForumService {
       .catch(this.handleError);
   }
 
-/*  getPostsById(id: string): Promise<Post[]> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.get(url)
-      .toPromise()
-      .then(forum => {
-        let myForum = forum.json() as Forum;
-
-        console.log("myForum.posts");
-        console.log(myForum.posts);
-
-        return myForum.posts;
-      })
-      .catch(this.handleError);
-  }*/
-
-/*  addPostToForum(forumId:string, post:Post){
-    this.getPostsById(forumId)
-      .then(posts => {
-        posts.push(post);
-        console.log(posts);
-        this.updateForum(forumId, {"posts":posts});
-      })
-  }*/
-
-/*
-  createNewForum2(title: string, owner: string, categories: string[], institutions: string[]): void{
-    this.initializeForum()
-      .then(id => this.updateForum(id, {"title":title, "owner":owner, "categories": categories, "institutions": institutions}));
-  }
-*/
-
   initializeForum(): Promise<string> {
     return this.http.post(this.privateApiUrl, "empty", this.getAuthHeader())
       .toPromise()
@@ -107,6 +76,22 @@ export class ForumService {
 
   }
 
+  setNumberOfUsers(forumId: string, number: number){
+    this.getForumById(forumId)
+      .then(forum => {
+        let delta =  number - forum.numberOfUsers;
+        this.updateForum(forumId,{"numberOfUsers": delta});
+      })
+  }
+
+  setNumberOfPosts(forumId: string, number: number){
+    this.getForumById(forumId)
+      .then(forum => {
+        let delta =  number - forum.numberOfPosts;
+        this.updateForum(forumId,{"numberOfPosts": delta});
+      })
+  }
+
 
   handleForumFormSubmit(forumId:string, keyValuePairs:Object): Promise<Forum>{
     if(forumId){
@@ -124,26 +109,6 @@ export class ForumService {
   addPost(forumId: string) :Promise<Forum>{
     return this.updateForum(forumId, {"numberOfPosts":1});
   }
-
-
-
-
-
-
-
-/*  updateForum2(id: string, title: string, owner: string, categories: string[], institutions: string[] ): Promise<Forum> {
-
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
-
-    const url = `${this.apiUrl}/${id}`;
-
-    return this.http.put(url,{"title":title,"owner":owner, "categories":categories, "institutions":institutions},options)
-      .toPromise()
-      .then(response => response.json())
-      .catch(this.handleError);
-  }*/
-
 
   deleteForum(id: string): Promise<string> {
     const url = `${this.privateApiUrl}/${id}`;

@@ -5,6 +5,7 @@ import {AuthService} from "../shared/auth.service";
 import {Institution} from "./model/Institution";
 import {UserService} from "../users/service/user.service";
 import {Router} from "@angular/router";
+import {isUndefined} from "util";
 
 @Component({
   selector: 'create-forum',
@@ -60,6 +61,11 @@ export class CreateForumComponent {
 
     if(!this.authService.loggedIn()){
       this.router.navigate(["/home"]);
+      return;
+    }
+
+    if(this.forumService.idOfForumToModify===undefined){
+      this.router.navigate(["/dashboard"]);
       return;
     }
 

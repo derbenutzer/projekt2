@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import {UserService} from "../users/service/user.service";
 import {Router} from "@angular/router";
 import {User} from "../users/model/user";
-import {ForumDetailService} from "../forum-detail/service/forum-detail.service";
 import {ForumService} from "../forum-list/service/forum.service";
 import {PostService} from "../posts/service/post.service";
 import {AuthService} from "../shared/auth.service";
@@ -28,7 +27,7 @@ declare let $: any;
               Kontakt: {{user.preferredContact}}<br>
               Beigetreten am: {{user.createDate | amDateFormat: 'DD-MM-YYYY'}}<br>
             </p>
-            <div class="buttonPanel"><button (click)="deleteUser(user._id)" class="waves-effect waves-light btn">Nutzer Löschen</button></div>
+            <div class="buttonPanel"><button (click)="openDialog(user)"  class="waves-effect waves-light btn">Nutzer Löschen</button></div>
             </div>
           </li>
         </ul>
@@ -39,8 +38,15 @@ declare let $: any;
         </div>
       </div>
       
-      <div *ngIf="!authService.loggedIn()">
-       <login-to-continue [backUrl]="backUrl"></login-to-continue>
+      <div id="confirmDialog" class="modal">
+        <div class="modal-content">
+          <h4>Nutzer löschen</h4>
+          <p class="flow-text">Möchten Sie diesen Nutzer wirklich löschen?</p>
+        </div>
+        <div class="modal-footer">
+          <a (click)="deleteUser()" class=" modal-action modal-close waves-effect waves-light btn-flat">Löschen</a>
+          <a (click)="closeDialog()" class=" modal-action modal-close waves-effect waves-light btn-flat">Abbrechen</a>
+        </div>
       </div>
         
   `,
@@ -61,6 +67,7 @@ export class UserListComponent {
   isInstitution = true;
   backUrl="/dashboard";
   userList: User[];
+  userToDelete: User;
 
   constructor(private forumService: ForumService,
               private authService: AuthService,
@@ -76,17 +83,22 @@ export class UserListComponent {
       return;
     }
 
+    if(!this.forumService.idOfForumToModify){
+      this.router.navigate(["/dashboard"]);
+      return;
+    }
+
     this.forumId = this.forumService.idOfForumToModify;
     this.getUsersFromService();
+    this.userToDelete = null;
+    $('.modal').modal();
   }
 
   getUsersFromService() {
     this.userService.getUsersByForumId(this.forumId)
       .then(userList => {
-        //console.log(userList);
         this.userList = userList.filter(user => user.ownerOf.indexOf(this.forumId)==-1);
-        console.log(this.userList);
-        console.log(this.userList.length);
+        this.forumService.setNumberOfUsers(this.forumId, this.userList.length);
       });
   }
 
@@ -95,12 +107,23 @@ export class UserListComponent {
       .then(res => this.isInstitution = res);
   }
 
-  deleteUser(userId){
-    this.userService.unRegisterUserForForum(userId, this.forumId)
+  deleteUser(){
+    this.userService.unRegisterUserForForum(this.userToDelete._id, this.forumId)
       .then(userId => {
         this.getUsersFromService();
         this.postService.deleteAllPostsOfUserInForum(userId, this.forumId);
+        this.userToDelete = null;
       })
+  }
+
+  openDialog(user) {
+    this.userToDelete = user;
+    $('#confirmDialog').modal('open');
+  }
+
+  closeDialog() {
+    this.userToDelete = null;
+    $('#confirmDialog').modal('close');
   }
 
   goBack(){

@@ -279,6 +279,7 @@ export class ForumDetailComponent implements OnInit {
     this.postService.getPostsByForumId(forumId)
       .then(posts => {
         this.postList = new PostList(posts);
+        this.forumService.setNumberOfPosts(this.forumId, posts.length);
       });
   }
 

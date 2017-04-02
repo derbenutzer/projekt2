@@ -45,8 +45,6 @@ import { Component} from '@angular/core';
     
 `]
 })
-
-
 export class InstitutionsStartComponent {
   title="Institutionen";
 }

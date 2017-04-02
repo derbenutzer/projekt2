@@ -23,7 +23,7 @@ import {AuthService} from "../shared/auth.service";
       </div>
       <button class="btn waves-effect waves-light" type="submit" name="action">Speichern
       </button>
-      <button type="button" class="waves-effect waves-light btn" (click)="goBack()">Back</button>
+      <button type="button" class="waves-effect waves-light btn" (click)="goBack()">Zurück</button>
     </form>
   `,
 })
@@ -47,7 +47,19 @@ export class CreatePostComponent {
       });
   };
 
-  onDestroy(){
+  ngOnInit(){
+    if(!this.authService.loggedIn()){
+      this.router.navigate(["/home"]);
+      return;
+    }
+
+    if(this.postService.idOfPostToModify===undefined){
+      this.router.navigate(["/forum-list"]);
+      return;
+    }
+  }
+
+  ngOnDestroy(){
     this.postService.idOfPostToModify = null;
     this.forumDetailService.openForumId = null;
   }

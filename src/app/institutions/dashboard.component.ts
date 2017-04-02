@@ -11,7 +11,7 @@ declare let $: any;
 @Component({
   selector: 'dashboard',
   template: `
-      <h2 class="visually-hidden">{{title}}</h2>
+      <h2>{{ title }}</h2>
 
       <div *ngIf="authService.loggedIn()">
         <div *ngIf="forumList.forums.length > 0" class="row listContainer">
@@ -247,6 +247,7 @@ export class DashboardComponent {
         });
       });
     }
+    this.forumToDelete = null;
     $('.modal').modal();
     $('.collapsible').collapsible();
     this.init = false;
@@ -330,17 +331,6 @@ export class DashboardComponent {
       .then(res => {
         this.ngOnInit();
       })
-  }
-
-  confirmDelete(choice:string){
-
-    if(choice=="delete"){
-      this.deleteForum();
-    }
-    else{
-      this.closeDialog();
-    }
-
   }
 
   openDialog(forum) {

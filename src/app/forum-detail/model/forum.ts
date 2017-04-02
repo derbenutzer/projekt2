@@ -8,6 +8,8 @@ export class Forum {
   description:string;
   categories: string[];
   location: string;
+  numberOfUsers: number;
+  numberOfPosts: number;
 
 
   constructor() {};
