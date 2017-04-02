@@ -12,9 +12,6 @@ import {
 
 //we have to import materialize-css here to avoid an error. It is imported by index.html in the non-test build
 import "materialize-css";
-import {AppModule} from "./app/app.module";
-
-AppModule
 
 // Unfortunately there's no typing for the `__karma__` variable. Just declare it as any.
 declare var __karma__: any;

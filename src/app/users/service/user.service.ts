@@ -9,8 +9,6 @@ import {Institution} from "../../institutions/model/Institution";
 @Injectable()
 export class UserService {
 
-  userId:string;
-
   private apiUrl = 'http://localhost:8180/private/user';  // URL to web api
   private apiUrl2 = 'http://localhost:8180/private/users';  // URL to web api
 
@@ -55,14 +53,6 @@ export class UserService {
 
   getUsersByForumId(forumId): Promise<User[]> {
     const url = `${this.apiUrl2}/${forumId}`;
-    return this.http.get(url, this.getAuthHeader())
-      .toPromise()
-      .then(response => response.json() as User[])
-      .catch(this.handleError);
-  }
-
-  userIsRegisteredForForum(userId, forumId): Promise<User[]> {
-    const url = `${this.apiUrl}/${forumId}`;
     return this.http.get(url, this.getAuthHeader())
       .toPromise()
       .then(response => response.json() as User[])

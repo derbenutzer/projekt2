@@ -66,14 +66,6 @@ export class AuthService {
     this.lock.show();
   }
 
-  checkLoginAndOpenLogin(){
-    if(!this.loggedIn()){
-      this.login();
-      return false;
-    }
-    return true;
-  }
-
   logout() {
     // To log out, just remove the token and profile
     // from local storage
@@ -85,14 +77,6 @@ export class AuthService {
 
   loggedIn() {
     return tokenNotExpired();
-  }
-
-  getUserImage() {
-    let profileJSON = localStorage.getItem('profile');
-    if(profileJSON){
-      return JSON.parse(profileJSON).picture;
-    }
-    return "no image";
   }
 
   getMetaData(){
@@ -164,17 +148,17 @@ export class AuthService {
   }
 
   editProfile(keyValuePair) {
-    var headers: any = {
+    let headers: any = {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
-    }
+    };
 
 
 
     let user_metadata = keyValuePair;
     //user_metadata[key]=value;
 
-    var data: any = JSON.stringify({user_metadata});
+    let data: any = JSON.stringify({user_metadata});
 
     this.authHttp
       .patch('https://' + 'scl2.eu.auth0.com' + '/api/v2/users/' + this.userProfile['user_id'], data, {headers: headers})

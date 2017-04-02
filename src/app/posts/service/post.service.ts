@@ -22,13 +22,6 @@ export class PostService {
     return options;
   }
 
-  getPostList(): Promise<PostList> {
-    return this.http.get(this.apiUrl, this.getAuthHeader())
-      .toPromise()
-      .then(response => new PostList(response.json() as Post[]))
-      .catch(this.handleError);
-  }
-
   getPostsByForumId(forumId): Promise<Post[]> {
     const url = `${this.apiUrl2}/${forumId}`;
     return this.http.get(url, this.getAuthHeader())
@@ -37,53 +30,15 @@ export class PostService {
       .catch(this.handleError);
   }
 
-  getDividedPostsArrays(forumId,divideBy:number): Promise<Post[][]> {
-
-    return this.getPostsByForumId(forumId)
-      .then(postArray => {
-        let postList = new PostList(postArray);
-        let ArrayToDivide = postList.getSortedByDate();
-        let dividedArrays=[];
-
-        let i,j,temparray,chunk = divideBy;
-        for (i=0,j=ArrayToDivide.length; i<j; i+=chunk) {
-          temparray = ArrayToDivide.slice(i,i+chunk);
-          dividedArrays[((i+chunk)/chunk)-1]=temparray;
-        }
-        return dividedArrays;
-      })
-      .catch(this.handleError);
-  }
-
-
-/*  getPost(id: string): Promise<Post> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.get(url)
-      .toPromise()
-      .then(response => response.json() as Post)
-      .catch(this.handleError);
-  }*/
-
   getPost(): Promise<Post> {
     if(!this.idOfPostToModify){
       return Promise.resolve(new Post());
     }
 
-    console.log("getPost");
-    console.log(this.getAuthHeader());
-    console.log(this.apiUrl);
-
     const url = `${this.apiUrl}/${this.idOfPostToModify}`;
     return this.http.get(url, this.getAuthHeader())
       .toPromise()
       .then(response => response.json() as Post)
-      .catch(this.handleError);
-  }
-
-  getAllPosts(): Promise<Post[]> {
-    return this.http.get(this.apiUrl, this.getAuthHeader())
-      .toPromise()
-      .then(response => response.json() as Post[])
       .catch(this.handleError);
   }
 

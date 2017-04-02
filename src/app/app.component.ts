@@ -22,8 +22,8 @@ declare let $: any;
 	      
 	      <ul class="right">
           <li>
-            <a (click)=authService.login() *ngIf="!authService.loggedIn()">{{ 'HOME.LOGIN' | translate }}</a>
-            <a (click)=authService.logout() *ngIf="authService.loggedIn()">{{ 'HOME.LOGOUT' | translate }}</a>
+            <a (click)="authService.login()" *ngIf="!authService.loggedIn()">{{ 'HOME.LOGIN' | translate }}</a>
+            <a (click)="authService.logout()" *ngIf="authService.loggedIn()">{{ 'HOME.LOGOUT' | translate }}</a>
           </li>
         </ul>
 	     
@@ -98,7 +98,9 @@ declare let $: any;
     <footer class="page-footer">
       <div class="container">
         <ul class="left">
-          <a class="copyright"><i class="material-icons">copyright</i>2017</a>
+          <li>
+            <a class="copyright"><i class="material-icons">copyright</i>2017</a>
+          </li>
         </ul>
         <ul class="right">
           <li>

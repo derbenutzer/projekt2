@@ -5,7 +5,6 @@ import {AuthService} from "../shared/auth.service";
 import {Institution} from "./model/Institution";
 import {UserService} from "../users/service/user.service";
 import {Router} from "@angular/router";
-import {isUndefined} from "util";
 
 @Component({
   selector: 'create-forum',
@@ -129,10 +128,6 @@ export class CreateForumComponent {
           .then(res => this.goBackToDashboard());
       });
   };
-
-  goBack(): void {
-    this.router.navigate([this.backUrl]);
-  }
 
   goBackToDashboard(): void {
     this.router.navigate(["/dashboard"]);

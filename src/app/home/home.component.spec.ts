@@ -6,7 +6,7 @@ describe('HomeComponent', () => {
 
   beforeEach(() => {
     home = new HomeComponent();
-  })
+  });
 
   it('should have the correct title', () => {
     expect(home.title).toBe("Startseite");

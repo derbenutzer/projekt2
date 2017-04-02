@@ -53,7 +53,7 @@ import {ForumSearchPipe} from "./service/forum-search.pipe";
 		<div class="switchButton col s4" *ngIf="listViewActive"><a class="waves-effect waves-light btn" (click)=toggleListView(false) ><i class="material-icons left">my_location</i>Karte</a></div>
 		<div class="switchButton col s4" *ngIf="!listViewActive"><a class="waves-effect waves-light btn" (click)=toggleListView(true) ><i class="material-icons left">view_list</i>Liste</a></div>
 		<div *ngIf="authService.loggedIn() && isRegisteredForAForum" class="checkboxFilter col s4">
-		  <input type="checkbox" (change)="filterById()" [(ngModel)]="idFilterIsSet" class="filled-in" id="filled-in-box" [checked]="idFilterIsSet && this.authService.loggedIn()"/>
+		  <input type="checkbox" (change)="filterById()" [(ngModel)]="idFilterIsSet" class="filled-in" id="filled-in-box" [checked]="idFilterIsSet && authService.loggedIn()"/>
       <label for="filled-in-box">Nur Meine</label>
     </div>
 	</div>
@@ -283,16 +283,5 @@ export class ForumListComponent implements OnInit {
 
     }
     this.mapMarkerFilter();
-  }
-
-  // map events, not used at this time
-  onIdle(event) {
-    /*console.log('map', event.target);*/
-  }
-  onMarkerInit(marker) {
-    /*console.log('marker', marker);*/
-  }
-  onMapClick(event) {
-    /*console.log('click');*/
   }
 }

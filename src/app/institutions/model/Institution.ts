@@ -5,5 +5,4 @@ export class Institution extends User{
   isInstitution:boolean = true;
   institutionName:string;
   isVerified: boolean;
-  ownerOf: string[];
 }

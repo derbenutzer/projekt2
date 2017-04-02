@@ -1,5 +1,4 @@
 import {ListFilterComponent} from "./list-filter.component";
-import {EventEmitter} from '@angular/core';
 
 describe('ListFilterComponent', () => {
 
@@ -7,7 +6,7 @@ describe('ListFilterComponent', () => {
 
   beforeEach(() => {
     listFilter = new ListFilterComponent();
-  })
+  });
 
 
   it('should be initialzed with empty filter string', () => {
@@ -21,7 +20,8 @@ describe('ListFilterComponent', () => {
 
       expect(event).toEqual(["test"]);
       }
-    )
+    );
+
     listFilter.updateFilter();
   });
 

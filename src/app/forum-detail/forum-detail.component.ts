@@ -246,10 +246,6 @@ export class ForumDetailComponent implements OnInit {
     $('.modal').modal();
   }
 
-  goBack(): void {
-    this.router.navigate([this.backUrl]);
-  }
-
   openDialog(post:Post) {
     this.postToDelete = post;
     $('#confirmDialog').modal('open');

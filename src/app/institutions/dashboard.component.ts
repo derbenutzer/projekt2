@@ -53,7 +53,7 @@ declare let $: any;
           </ul>
         </div>
         
-        <div *ngIf="forumListIsLoaded && isInstitution && forumList.forums == 0" class="row listContainer">
+        <div *ngIf="forumListIsLoaded && isInstitution && forumList.forums.length == 0" class="row listContainer">
           <p class="flow-text">Sie haben noch keine runden Tische eröffnet.</p>
         </div>
     <div *ngIf="isInstitution" class="row section">
@@ -147,7 +147,7 @@ declare let $: any;
     
     @media(max-width:560px){
       .buttonPanel a{
-          margin-left: 0rem;
+          margin-left: 0;
           margin-right: 1.5rem;
       }
 
@@ -172,7 +172,7 @@ declare let $: any;
           padding-left: 1rem;
       }
       .collapsible-header {
-       padding: 0rem;
+       padding: 0;
       }
     }
     
@@ -214,9 +214,6 @@ export class DashboardComponent {
   forumListIsLoaded = false;
   init = false;
   expandedTables;
-
-  confirmTitle = "Runden Tisch löschen";
-  confirmQuestion = "Möchten sie diesen Runden Tisch wirklich löschen?";
 
   constructor(private authService: AuthService,
               private forumService: ForumService,
@@ -302,7 +299,6 @@ export class DashboardComponent {
 
   openForum(forum: Forum) {
     this.storeExpanded();
-    let id = forum._id;
     this.router.navigate(['/forum', forum._id]);
   }
 

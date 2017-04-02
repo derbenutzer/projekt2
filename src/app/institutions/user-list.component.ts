@@ -102,11 +102,6 @@ export class UserListComponent {
       });
   }
 
-  checkIfIsInstitution(): Promise<boolean> {
-    return this.userService.checkIfUserIsInstitution(this.ownerId)
-      .then(res => this.isInstitution = res);
-  }
-
   deleteUser(){
     this.userService.unRegisterUserForForum(this.userToDelete._id, this.forumId)
       .then(userId => {
