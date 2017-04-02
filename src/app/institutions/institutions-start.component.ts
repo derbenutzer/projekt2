@@ -4,13 +4,10 @@ import { Component} from '@angular/core';
   selector: 'home',
   template: `
   <h2 class="visually-hidden">{{title}}</h2>
-	<div class="row section">
-		<div class="container">
+	<div>
 			<p class="flow-text">Benefitz stellt privaten und öffentlichen Non-Profit-Organisationen ein Instrument zur Verfügung, mit dem sich Angebote und Leistungen von freiwillig engagierten Personen koordinieren lassen: über die Verwaltung der organisationseigenen "Runden Tische".
 			</p>
 		</div>
-	</div>
-	<div class="container">
 		<div class="row section">
 			<div class="col s6 valign-wrapper">
 				<div class="icon-block section center-align">
@@ -29,7 +26,6 @@ import { Component} from '@angular/core';
 				</div>
 			</div>
 		</div>
-	</div>
   `,
   styles:[`
 
